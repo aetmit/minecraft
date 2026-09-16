@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 4.2)
 
 project(minecraft LANGUAGES CXX)
 
-# C++ 26 Standard enforced
-set(CMAKE_CXX_STANDARD 26)
+# C++ 23 Standard enforced
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(SOURCES)
