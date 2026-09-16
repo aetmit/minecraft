@@ -2,10 +2,16 @@
 
 namespace engine {
 
-    EngineConfig::EngineConfig(int windowWidth, int windowHeight, std::string windowName)
-        :windowWidth(windowWidth), windowHeight(windowHeight), windowName(windowName) 
-    {}
+EngineConfig::EngineConfig(int windowWidth, int windowHeight, std::string windowName)
+    :windowWidth(windowWidth), windowHeight(windowHeight), windowName(windowName) 
+{}
 
-    Engine::Engine(EngineConfig& config): window(config.windowWidth, config.windowHeight, config.windowName) {}
+Engine::Engine(EngineConfig& config): window(config.windowWidth, config.windowHeight, config.windowName) {}
+
+void Engine::run() {
+    while (!window.shouldClose()) {
+
+    }
+}    
 
 } // namespace engine

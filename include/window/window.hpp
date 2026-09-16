@@ -14,16 +14,17 @@ public:
 
     Window(int width, int height, std::string name);
 
-private:
-    GLFWwindow *getWindow() const;
-
-    GLFWwindow *window;
-
     void pollEvents();
 
     void swapBuffers();
 
     bool shouldClose() const;
+
+private:
+    GLFWwindow *getWindow() const;
+
+    GLFWwindow *window;
+
 };
 
 } // namespace engine

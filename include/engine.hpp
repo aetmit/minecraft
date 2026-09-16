@@ -20,6 +20,8 @@ class Engine {
 public:
     explicit Engine(EngineConfig& config);
 
+    void run();
+
 private:
     Window window;
 };
