@@ -1,3 +1,6 @@
+#ifndef WINDOW_WINDOW_HPP
+#define WINDOW_WINDOW_HPP
+
 #include <string>
 
 #include <GLFW/glfw3.h>
@@ -24,3 +27,5 @@ private:
 };
 
 } // namespace engine
+
+#endif // WINDOW_WINDOW_HPP
