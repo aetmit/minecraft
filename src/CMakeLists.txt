@@ -4,6 +4,6 @@ list(APPEND SOURCES
     ${DIR}/main.cpp
 )
 
-add_subdirectory(engine)
+add_subdirectory(window)
 
 set(SOURCES ${SOURCES} PARENT_SCOPE)
