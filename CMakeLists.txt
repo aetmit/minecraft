@@ -33,8 +33,9 @@ if (APPLE OR LINUX)  # Apple or Linux platform
 endif()
 
 find_package(glfw3 REQUIRED)
+find_package(OpenGL REQUIRED)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     glfw
-    "-framework OpenGL"
+    OpenGL::GL
 )
