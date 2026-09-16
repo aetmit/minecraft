@@ -10,10 +10,25 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_compile_options(${PROJECT_NAME} PRIVATE -std=c++26)
 
-target_include_directories(${PROJECT_NAME} PRIVATE
-    "/opt/homebrew/include"
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
+if (APPLE OR LINUX)  # Apple or Linux platform
+
+    find_program(HOMEBREW brew)  # Get homebrew
+
+    if (HOMEBREW)  # Homebrew
+        # Get homebrew prefix
+        execute_process(
+            COMMAND ${HOMEBREW} --prefix
+            OUTPUT_VARIABLE HOMEBREW_PREFIX
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+
+        # Include homebrew /include directory
+        target_include_directories(${PROJECT_NAME} PRIVATE
+            "${HOMEBREW_PREFIX}/include"
+            ${CMAKE_CURRENT_SOURCE_DIR}/include
+        )
+    endif()
+endif()
 
 find_package(glfw3 REQUIRED)
 
