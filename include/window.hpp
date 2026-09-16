@@ -18,6 +18,9 @@ private:
 
     void pollEvents();
 
+    void swapBuffers();
+
+    bool shouldClose() const;
 };
 
 } // namespace engine
