@@ -1,14 +1,16 @@
 cmake_minimum_required(VERSION 4.2)
 
-project(minecraft)
+project(minecraft LANGUAGES CXX)
+
+# C++ 26 Standard enforced
+set(CMAKE_CXX_STANDARD 26)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(SOURCES)
 
 add_subdirectory(src)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
-
-target_compile_options(${PROJECT_NAME} PRIVATE -std=c++26)
 
 if (APPLE OR LINUX)  # Apple or Linux platform
 
