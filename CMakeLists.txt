@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 4.2)
 
-project(game)
+project(minecraft)
 
 set(SOURCES)
 
