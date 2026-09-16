@@ -6,8 +6,6 @@ namespace engine {
         :windowWidth(windowWidth), windowHeight(windowHeight), windowName(windowName) 
     {}
 
-    Engine::Engine(EngineConfig& config) {
-        window = Window(config.windowWidth, config.windowHeight, config.windowName);
+    Engine::Engine(EngineConfig& config): window(config.windowWidth, config.windowHeight, config.windowName) {}
 
-    }
 } // namespace engine
