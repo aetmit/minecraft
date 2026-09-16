@@ -10,7 +10,10 @@ Engine::Engine(EngineConfig& config): window(config.windowWidth, config.windowHe
 
 void Engine::run() {
     while (!window.shouldClose()) {
+        
+        window.pollEvents();
 
+        window.swapBuffers();
     }
 }    
 
