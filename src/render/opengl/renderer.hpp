@@ -5,7 +5,8 @@
 namespace engine {
 
 class OpenGLRenderer : public Renderer {
-
+public:
+    void drawTriangle() override;
 };
 
 } // namespace engine
