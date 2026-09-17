@@ -22,13 +22,12 @@ if (APPLE OR LINUX)  # Apple or Linux platform
             COMMAND ${HOMEBREW} --prefix
             OUTPUT_VARIABLE HOMEBREW_PREFIX
             OUTPUT_STRIP_TRAILING_WHITESPACE
+            ERROR_QUIET
         )
 
-        # Include homebrew /include directory
-        target_include_directories(${PROJECT_NAME} PRIVATE
-            "${HOMEBREW_PREFIX}/include"
-            ${CMAKE_CURRENT_SOURCE_DIR}/include
-        )
+        if (HOMEBREW_PREFIX)
+            list(APPEND CMAKE_PREFIX_PATH "${HOMEBREW_PREFIX}")
+        endif()
     endif()
 endif()
 
