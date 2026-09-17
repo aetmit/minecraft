@@ -10,7 +10,7 @@ set(SOURCES)
 
 add_subdirectory(src)
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCES} "deps/glad/src/glad.c")
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     "/opt/homebrew/include"
