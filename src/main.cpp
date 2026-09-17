@@ -6,7 +6,7 @@ using namespace engine;
 
 int main(int argc, const char *argv[]) {
 
-    EngineConfig config(800, 600, "test window");
+    EngineConfig config(800, 600, "Minecraft");
     Engine engine(config);
     engine.run();
 
