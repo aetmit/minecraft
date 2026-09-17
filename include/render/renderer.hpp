@@ -1,17 +1,20 @@
-#ifndef RENDER_RENDERER_HPP
-#define RENDER_RENDERER_HPP
+#pragma once
 
+#include "window/window.hpp"
 namespace engine {
-// TODO: provide a generic interface for the game logic to use and then create a subclass that inherits from this api
-// so calling code does not need to be concerned with implementation details
+
+// acts as an abstraction over the rendering backend so calling code does not need to
+// care about what the underlying graphgics api is
 class Renderer {
 
 public:
     virtual ~Renderer() = default;
+
+protected:
+    Window window;
 };
 
 } // namespace engine
 
 
 
-#endif // RENDER_RENDERER_HPP

@@ -1,5 +1,4 @@
-#ifndef ENGINE_HPP
-#define ENGINE_HPP
+#pragma once
 
 #include <string>
 
@@ -27,5 +26,3 @@ private:
 };
 
 } // namespace engine
-
-#endif // ENGINE_HPP
