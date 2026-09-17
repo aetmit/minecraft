@@ -15,6 +15,7 @@ add_executable(${PROJECT_NAME} ${SOURCES} "deps/glad/src/glad.c")
 target_include_directories(${PROJECT_NAME} PRIVATE
     "/opt/homebrew/include"
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/deps/glad/include
 )
 
 if (APPLE OR LINUX)  # Apple or Linux platform
