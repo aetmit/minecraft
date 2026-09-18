@@ -4,7 +4,7 @@
 
 namespace engine {
 
-Window::Window(int width, int height, std::string name) {
+Window::Window(int width, int height, std::string name, Input &input): input(input) {
     if (!glfwInit()) {
         throw std::runtime_error("failed to initialize GLFW");
     }

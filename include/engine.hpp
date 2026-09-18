@@ -5,6 +5,7 @@
 
 #include <window/window.hpp>
 #include <render/renderer.hpp>
+#include <input/input.hpp>
 
 namespace engine {
 
@@ -24,7 +25,7 @@ struct EngineConfig {
 class Engine {
 
 public:
-    explicit Engine(EngineConfig& config);
+    explicit Engine(EngineConfig& config, Input &input);
 
     void run();
 
@@ -34,6 +35,9 @@ private:
     std::unique_ptr<Renderer> renderer;
 
     double previousTime;
+
+
+    Input &input;
 };
 
 } // namespace engine

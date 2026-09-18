@@ -8,6 +8,8 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
+#include <input/input.hpp>
+
 namespace engine {
 
 class Window {
@@ -15,7 +17,7 @@ class Window {
 public:
     ~Window();
 
-    Window(int width, int height, std::string name);
+    Window(int width, int height, std::string name, Input &input);
 
     void pollEvents();
 
@@ -32,6 +34,8 @@ private:
 
     GLFWwindow *window;
 
+
+    Input &input;
 };
 
 } // namespace engine
