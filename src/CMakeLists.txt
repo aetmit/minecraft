@@ -6,5 +6,6 @@ list(APPEND SOURCES
 )
 
 add_subdirectory(window)
+add_subdirectory(render)
 
 set(SOURCES ${SOURCES} PARENT_SCOPE)
