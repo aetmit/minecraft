@@ -16,11 +16,17 @@ Window::Window(int width, int height, std::string name, Input &input): input(inp
         throw std::runtime_error("failed to create window");
     }
 
+    glfwSetWindowUserPointer(window, this);
+    glfwSetKeyCallback(window, keyCallback);
 }
 
 Window::~Window() {
     glfwDestroyWindow(window);
     glfwTerminate();
+}
+
+void Window::keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+
 }
 
 void Window::pollEvents() {

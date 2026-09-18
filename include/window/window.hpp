@@ -34,7 +34,7 @@ private:
 
     GLFWwindow *window;
 
-
+    static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
     Input &input;
 };
 
