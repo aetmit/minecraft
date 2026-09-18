@@ -12,6 +12,8 @@ public:
     void clearScreen() override;
 
     ~OpenGLRenderer() override;
+
+    OpenGLRenderer();
 };
 
 } // namespace engine

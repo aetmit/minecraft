@@ -2,6 +2,6 @@
 
 namespace engine {
 
-Renderer::Renderer(): window(nullptr) {}
+Renderer::Renderer(Window *window): window(window) {}
 
 } // engine

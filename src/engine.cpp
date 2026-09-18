@@ -19,7 +19,7 @@ Engine::Engine(EngineConfig& config): window(config.windowWidth, config.windowHe
 
     switch (config.backend) {
         case GraphicsBackend::OpenGL:
-            renderer = std::make_unique<OpenGLRenderer>();
+            renderer = std::make_unique<OpenGLRenderer>(&window);
             break;
     }
 }

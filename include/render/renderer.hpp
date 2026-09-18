@@ -10,7 +10,6 @@ class Renderer {
 public:
     virtual ~Renderer() = default;
 
-    explicit Renderer();
 
     // temporary function to test rnedering
     virtual void drawTriangle() = 0;
