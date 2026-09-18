@@ -1,6 +1,7 @@
 #pragma once
 
 #include "render/renderer.hpp"
+#include "window/window.hpp"
 
 namespace engine {
 
@@ -13,7 +14,7 @@ public:
 
     ~OpenGLRenderer() override;
 
-    OpenGLRenderer();
+    explicit OpenGLRenderer(Window *window);
 };
 
 } // namespace engine

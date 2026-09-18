@@ -24,6 +24,8 @@ public:
 
     bool shouldClose() const;
 
+    void makeContextCurrent();
+
 private:
     GLFWwindow *getWindow() const;
 

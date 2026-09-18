@@ -16,6 +16,8 @@ public:
 
     // abstration over screen clearing
     virtual void clearScreen() = 0;
+
+    Renderer(Window *window);
 protected:
     Window *window;
 };
