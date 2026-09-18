@@ -10,10 +10,14 @@ class Renderer {
 public:
     virtual ~Renderer() = default;
 
-    explicit Renderer();
 
     // temporary function to test rnedering
     virtual void drawTriangle() = 0;
+
+    // abstration over screen clearing
+    virtual void clearScreen() = 0;
+
+    Renderer(Window *window);
 protected:
     Window *window;
 };

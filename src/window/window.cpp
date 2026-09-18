@@ -16,7 +16,6 @@ Window::Window(int width, int height, std::string name) {
         throw std::runtime_error("failed to create window");
     }
 
-    glfwMakeContextCurrent(window);
 }
 
 Window::~Window() {
@@ -26,6 +25,10 @@ Window::~Window() {
 
 void Window::pollEvents() {
     glfwPollEvents();
+}
+
+void Window::makeContextCurrent() {
+    glfwMakeContextCurrent(window);
 }
 
 void Window::swapBuffers() {
