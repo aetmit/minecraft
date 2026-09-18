@@ -1,5 +1,8 @@
 #pragma once
 
+#include <array>
+#include <cstddef>
+
 namespace engine {
 
 enum class Key {
@@ -76,6 +79,12 @@ enum class Key {
     Count,
 };
 
+struct KeyState {
+    bool down;
+    bool current;
+    bool previous;
+};
+
 class Input {
 
 public: 
@@ -88,6 +97,11 @@ public:
     bool wasKeyPressed(Key key) const;
     // key went from down to up this frame
     bool wasKeyReleased(Key key) const;
+
+    void update();
+
+private:
+    std::array<KeyState, static_cast<std::size_t>(Key::Count)> keys;
 };
 
 } // namespace engine

@@ -28,13 +28,14 @@ Engine::Engine(EngineConfig& config): window(config.windowWidth, config.windowHe
 
 void Engine::run() {
 
-    renderer->clearScreen();    
     while (!window.shouldClose()) {
         double currentTime = window.getTime();
         double deltaTime = currentTime - previousTime;
         previousTime = currentTime;
 
         renderer->drawTriangle();
+
+        renderer->clearScreen();    
 
         window.swapBuffers();
 
