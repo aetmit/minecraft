@@ -1,6 +1,7 @@
 #pragma once
 
 #include <render/renderer.hpp>
+#include <window/window.hpp>
 
 namespace engine {
 
@@ -9,7 +10,11 @@ public:
 
     void drawTriangle() override;
 
+    void clearScreen() override;
+
     ~OpenGLRenderer() override;
+
+    explicit OpenGLRenderer(Window *window);
 };
 
 } // namespace engine

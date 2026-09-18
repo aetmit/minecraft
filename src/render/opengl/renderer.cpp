@@ -1,7 +1,8 @@
-#include "renderer.hpp"
+#include <render/opengl/renderer.hpp>
 
 #include <stdexcept>
 #include <glad/glad.h>
+
 namespace engine {
 
 void OpenGLRenderer::drawTriangle() {
