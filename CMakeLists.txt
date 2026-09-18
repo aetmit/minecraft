@@ -2,21 +2,20 @@ cmake_minimum_required(VERSION 4.2)
 
 project(minecraft LANGUAGES C CXX)
 
-# C++ 23 Standard enforced
+# Set C++ standard 23
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(SOURCES)
+set(PROGRAM_NAME minecraft)
 
-add_subdirectory(src)
+# Link GLAD Library as a static library
+add_library(glad STATIC "deps/glad/src/glad.c")
+target_include_directories(glad PUBLIC "deps/glad/include")
 
-add_executable(${PROJECT_NAME} ${SOURCES} "deps/glad/src/glad.c")
-
-target_include_directories(${PROJECT_NAME} PRIVATE
-    "/opt/homebrew/include"
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/deps/glad/include
-)
+# Linux: GLAD requires dynamic loader library to fetch OpenGL pointers
+if(NOT WIN32 AND NOT APPLE)
+    target_link_libraries(glad PRIVATE ${CMAKE_DL_LIBS})
+endif()
 
 if (APPLE OR LINUX)  # Apple or Linux platform
 
@@ -40,7 +39,14 @@ endif()
 find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE
+add_subdirectory(${CMAKE_SOURCE_DIR}/src)
+
+add_executable(${PROGRAM_NAME} src/main.cpp "deps/glad/src/glad.c")
+
+target_link_libraries(${PROGRAM_NAME} PRIVATE
     glfw
+    glad
     OpenGL::GL
+
+    core
 )

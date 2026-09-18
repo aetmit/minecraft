@@ -3,6 +3,10 @@
 
 #include <string>
 
+
+#include <glad/glad.h>
+// tell glfw not to include system opengl headers
+#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
 namespace engine {

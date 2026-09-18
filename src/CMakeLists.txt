@@ -1,10 +1,28 @@
-set(DIR ${CMAKE_CURRENT_SOURCE_DIR})
+set(SOURCES
+    render/renderer.cpp
 
-list(APPEND SOURCES
-    ${DIR}/main.cpp
-    ${DIR}/engine.cpp
+    render/opengl/renderer.cpp
+
+    window/window.cpp
+
+    engine.cpp
 )
 
-add_subdirectory(window)
+set(HEADERS ${CMAKE_SOURCE_DIR}/include)
 
-set(SOURCES ${SOURCES} PARENT_SCOPE)
+add_library(
+    core STATIC
+    ${SOURCES}
+)
+
+target_include_directories(
+    core PUBLIC
+    ${HEADERS}
+)
+
+target_link_libraries(
+    core PUBLIC
+    glfw
+    glad
+    OpenGL::GL
+)
