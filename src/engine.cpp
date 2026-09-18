@@ -10,7 +10,7 @@ EngineConfig::EngineConfig(int windowWidth, int windowHeight, std::string window
     :windowWidth(windowWidth), windowHeight(windowHeight), windowName(windowName), backend(backend)
 {}
 
-Engine::Engine(EngineConfig& config): window(config.windowWidth, config.windowHeight, config.windowName) {
+Engine::Engine(EngineConfig& config): window(config.windowWidth, config.windowHeight, config.windowName), previousTime(0) {
 
     // make sure that we are using opengl v4.1 because that is the latest version macos supports 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -29,8 +29,10 @@ Engine::Engine(EngineConfig& config): window(config.windowWidth, config.windowHe
 void Engine::run() {
 
     renderer->clearScreen();    
-
     while (!window.shouldClose()) {
+        double currentTime = window.getTime();
+        double deltaTime = currentTime - previousTime;
+        previousTime = currentTime;
 
         renderer->drawTriangle();
 

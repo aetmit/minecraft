@@ -68,15 +68,25 @@ enum class Key {
     F10,
     F11,
     F12, 
+
+
+    // because c++23 does not provide reflection, we can determine how many keys there are in this enum class
+    // by simply doing static_cast<std::size_t>(Key::Count) to get the number of elements since the variants 
+    // are numbered from 0 upwards
+    Count,
 };
 
 class Input {
 
 public: 
+    // key currently being held
     bool isKeyDown(Key key) const;
+    // key currently NOT being held
     bool isKeyUp(Key key) const;
 
+    // key went from up to down this frame
     bool wasKeyPressed(Key key) const;
+    // key went from down to up this frame
     bool wasKeyReleased(Key key) const;
 };
 

@@ -25,6 +25,8 @@ public:
 
     void makeContextCurrent();
 
+    double getTime();
+
 private:
     GLFWwindow *getWindow() const;
 

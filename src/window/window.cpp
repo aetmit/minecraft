@@ -38,4 +38,8 @@ void Window::swapBuffers() {
 bool Window::shouldClose() const {
     return glfwWindowShouldClose(window);
 }
+
+double Window::getTime() {
+    return glfwGetTime();
+}
 } // namespace engine

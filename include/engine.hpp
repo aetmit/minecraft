@@ -32,6 +32,8 @@ private:
     Window window;
 
     std::unique_ptr<Renderer> renderer;
+
+    double previousTime;
 };
 
 } // namespace engine
