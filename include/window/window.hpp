@@ -1,5 +1,4 @@
-#ifndef WINDOW_WINDOW_HPP
-#define WINDOW_WINDOW_HPP
+#pragma once
 
 #include <string>
 
@@ -34,5 +33,3 @@ private:
 };
 
 } // namespace engine
-
-#endif // WINDOW_WINDOW_HPP

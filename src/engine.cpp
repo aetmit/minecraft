@@ -27,8 +27,10 @@ Engine::Engine(EngineConfig& config): window(config.windowWidth, config.windowHe
 }
 
 void Engine::run() {
+
+    renderer->clearScreen();    
+
     while (!window.shouldClose()) {
-        renderer->clearScreen();    
 
         renderer->drawTriangle();
 
