@@ -1,4 +1,6 @@
-#include "engine.hpp"
+#include <engine.hpp>
+
+#include "render/opengl/renderer.hpp"
 
 #include "render/opengl/renderer.hpp"
 
@@ -31,6 +33,8 @@ void Engine::run() {
         renderer->drawTriangle();
 
         window.swapBuffers();
+
+        renderer->drawTriangle();
 
         window.pollEvents();
     }
