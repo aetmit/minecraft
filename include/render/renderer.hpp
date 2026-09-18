@@ -10,10 +10,12 @@ class Renderer {
 public:
     virtual ~Renderer() = default;
 
+    explicit Renderer();
+
     // temporary function to test rnedering
     virtual void drawTriangle() = 0;
 protected:
-    Window window;
+    Window *window;
 };
 
 } // namespace engine
