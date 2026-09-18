@@ -1,5 +1,7 @@
 #pragma once
 
+namespace engine {
+
 enum class Key {
     A,
     B,
@@ -67,3 +69,15 @@ enum class Key {
     F11,
     F12, 
 };
+
+class Input {
+
+public: 
+    bool isKeyDown(Key key) const;
+    bool isKeyUp(Key key) const;
+
+    bool wasKeyPressed(Key key) const;
+    bool wasKeyReleased(Key key) const;
+};
+
+} // namespace engine
