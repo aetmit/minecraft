@@ -9,6 +9,8 @@ public:
 
     void drawTriangle() override;
 
+    void clearScreen() override;
+
     ~OpenGLRenderer() override;
 };
 

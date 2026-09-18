@@ -26,10 +26,11 @@ Engine::Engine(EngineConfig& config): window(config.windowWidth, config.windowHe
 
 void Engine::run() {
     while (!window.shouldClose()) {
-        
-        window.swapBuffers();
+        renderer->clearScreen();    
 
         renderer->drawTriangle();
+
+        window.swapBuffers();
 
         window.pollEvents();
     }
