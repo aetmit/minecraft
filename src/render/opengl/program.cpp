@@ -5,6 +5,10 @@
 #include <fstream>
 #include <format>
 #include <sstream>
+#include <string>
+#include <stdexcept>
+#include <optional>
+#include <filesystem>
 
 namespace engine {
 
@@ -26,7 +30,11 @@ OpenGLShaderProgram::operator GLuint() const {
 }
 
 void OpenGLShaderProgram::loadShader(const std::filesystem::path& file, OpenGLShaderType shaderType) {
-    shaders.push_back(compileShader(loadShader(file).c_str(), static_cast<GLuint>(shaderType)));
+    auto shader = loadShader(file);
+    if (!shader) {
+        throw std::runtime_error("faield to load shader") ;
+    }
+    shaders.push_back(compileShader(shader->c_str(), static_cast<GLuint>(shaderType)));
 }
 
 int OpenGLShaderProgram::link() {
@@ -37,7 +45,9 @@ int OpenGLShaderProgram::link() {
     glLinkProgram(program);
     int status;
     glGetProgramiv(program, GL_LINK_STATUS, &status);
-    if (!status) { return status; }
+    if (!status) { 
+        return status; 
+    }
 
     for (const auto& shader : shaders) {
         glDeleteShader(shader);
@@ -51,17 +61,17 @@ void OpenGLShaderProgram::use() const {
 }
 
 
-std::string OpenGLShaderProgram::loadShader(const std::filesystem::path& file) const {
+std::optional<std::string> OpenGLShaderProgram::loadShader(const std::filesystem::path& file) const {
     std::ifstream shaderFile(file);
     if (!shaderFile.is_open()) {
-        return "";
+        return std::nullopt; 
     }
     std::stringstream shaderStream;
     shaderStream << shaderFile.rdbuf();
     return shaderStream.str();
 }
 
-GLuint OpenGLShaderProgram::compileShader(const char * shaderSource, GLuint type) const {
+GLuint OpenGLShaderProgram::compileShader(const char *shaderSource, GLuint type) const {
     GLuint shader;
     int status;
     shader = glCreateShader(type);

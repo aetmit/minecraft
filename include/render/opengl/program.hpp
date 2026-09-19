@@ -32,9 +32,11 @@ protected:
     GLuint program;
     std::vector<GLuint> shaders;
 
-    [[nodiscard]] std::string loadShader(const std::filesystem::path& file) const;
+    [[nodiscard]] 
+    std::optional<std::string> loadShader(const std::filesystem::path& file) const;
 
-    [[nodiscard]] GLuint compileShader(const char * shaderSource, GLuint type) const;
+    [[nodiscard]] 
+    GLuint compileShader(const char *shaderSource, GLuint type) const;
 };
 
 } // namespace engine
