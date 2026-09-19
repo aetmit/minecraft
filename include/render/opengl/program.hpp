@@ -9,6 +9,11 @@
 
 namespace engine {
 
+enum class OpenGLShaderType : GLuint {
+    Vertex   = GL_VERTEX_SHADER,
+    Fragment = GL_FRAGMENT_SHADER  
+};
+
 class OpenGLShaderProgram {
 public:
     OpenGLShaderProgram(Window* window);
@@ -17,7 +22,7 @@ public:
 
     operator GLuint() const;
 
-    void loadShader(const std::filesystem::path& file, GLuint shaderType);
+    void loadShader(const std::filesystem::path& file, OpenGLShaderType shaderType);
 
     int link();
 

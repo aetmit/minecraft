@@ -23,8 +23,8 @@ OpenGLShaderProgram::operator GLuint() const {
     return program;
 }
 
-void OpenGLShaderProgram::loadShader(const std::filesystem::path& file, GLuint shaderType) {
-    shaders.push_back(compileShader(loadShader(file).c_str(), shaderType));
+void OpenGLShaderProgram::loadShader(const std::filesystem::path& file, OpenGLShaderType shaderType) {
+    shaders.push_back(compileShader(loadShader(file).c_str(), static_cast<GLuint>(shaderType)));
 }
 
 int OpenGLShaderProgram::link() {
