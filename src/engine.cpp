@@ -1,5 +1,7 @@
 #include <engine.hpp>
 
+#include <iostream>
+
 #include "render/opengl/renderer.hpp"
 
 #include "render/opengl/renderer.hpp"
@@ -10,7 +12,8 @@ EngineConfig::EngineConfig(int windowWidth, int windowHeight, std::string window
     :windowWidth(windowWidth), windowHeight(windowHeight), windowName(windowName), backend(backend)
 {}
 
-Engine::Engine(EngineConfig& config): window(config.windowWidth, config.windowHeight, config.windowName) {
+Engine::Engine(EngineConfig& config, Input &input)
+        : window(config.windowWidth, config.windowHeight, config.windowName, input), previousTime(0), input(input) {
 
     switch (config.backend) {
         case GraphicsBackend::OpenGL:
@@ -20,14 +23,24 @@ Engine::Engine(EngineConfig& config): window(config.windowWidth, config.windowHe
 }
 
 void Engine::run() {
+
     while (!window.shouldClose()) {
+        double currentTime = window.getTime();
+        double deltaTime = currentTime - previousTime;
+        previousTime = currentTime;
+
+        // update key state for new frame
+        input.update();
 
         window.pollEvents();
 
         renderer->clearScreen();    
+
+
         renderer->drawTriangle();
 
-        window.swapBuffers();
+        window.pollEvents();
+
     }
 }    
 

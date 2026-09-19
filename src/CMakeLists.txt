@@ -7,7 +7,11 @@ set(SOURCES
     window/window.cpp
 
     engine.cpp
+
+    application.cpp
 )
+
+add_subdirectory(input)
 
 set(HEADERS ${CMAKE_SOURCE_DIR}/include)
 
