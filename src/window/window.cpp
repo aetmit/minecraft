@@ -18,11 +18,38 @@ Window::Window(int width, int height, std::string name, Input &input): input(inp
 
     glfwSetWindowUserPointer(window, this);
     glfwSetKeyCallback(window, keyCallback);
+    glfwSetMouseButtonCallback(window, mouseCallback);
 }
 
 Window::~Window() {
     glfwDestroyWindow(window);
     glfwTerminate();
+}
+
+void Window::mouseCallback(GLFWwindow* window, int button, int action, int mods) {
+    Window *self = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
+    auto mouseButton = self->translateMouseButton(button);
+
+    if (!mouseButton) {
+        return;
+    }
+
+    if (action == GLFW_PRESS) {
+        self->input.setMouseButtonDown(*mouseButton);
+    } else if (action == GLFW_RELEASE) {
+        self->input.setMouseButtonUp(*mouseButton);
+    }
+}
+
+std::optional<MouseButton> Window::translateMouseButton(int glfwButton) {
+    switch (glfwButton) {
+        case GLFW_MOUSE_BUTTON_LEFT: return MouseButton::Left;
+        case GLFW_MOUSE_BUTTON_MIDDLE: return MouseButton::Middle;
+        case GLFW_MOUSE_BUTTON_RIGHT: return MouseButton::Right;
+
+        default: return std::nullopt;
+    }
 }
 
 void Window::keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
