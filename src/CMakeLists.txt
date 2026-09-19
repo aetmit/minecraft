@@ -8,6 +8,8 @@ set(SOURCES
     engine.cpp
 )
 
+add_subdirectory(input)
+
 set(HEADERS ${CMAKE_SOURCE_DIR}/include)
 
 add_library(

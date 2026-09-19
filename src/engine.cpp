@@ -1,5 +1,7 @@
 #include <engine.hpp>
 
+#include <iostream>
+
 #include "render/opengl/renderer.hpp"
 
 #include "render/opengl/renderer.hpp"
@@ -38,6 +40,10 @@ void Engine::run() {
         input.update();
 
         window.pollEvents();
+
+        if (input.isKeyDown(Key::W)) {
+            std::cout << "w pressed\n";
+        }
 
         renderer->clearScreen();    
 
