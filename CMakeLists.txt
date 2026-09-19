@@ -8,6 +8,40 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(PROGRAM_NAME minecraft)
 
+# Set the assets to be copied into the build folder
+set(RUNTIME_ASSETS
+    assets
+)
+
+# Function for copying assets into build directory
+function(copyAssets)
+    foreach(ASSET IN LISTS RUNTIME_ASSETS)
+        set(SOURCE_ASSET ${CMAKE_SOURCE_DIR}/${ASSET})
+        set(TARGET_ASSET $<TARGET_FILE_DIR:${PROGRAM_NAME}>/${ASSET})
+
+        # Check if source asset exists
+        if(NOT EXISTS ${SOURCE_ASSET})
+            message(WARNING "Ignoring invalid asset: ${SOURCE_ASSET}")
+            continue()
+        endif()
+
+        if(IS_DIRECTORY "${SOURCE_ASSET}")
+            set(COPY_CMD "copy_directory")
+        else()
+            set(COPY_CMD "copy")
+        endif()
+
+        add_custom_command(
+            TARGET ${PROGRAM_NAME}
+            POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E ${COPY_CMD}
+            "${SOURCE_ASSET}"
+            "${TARGET_ASSET}"
+        )
+        message(VERBOSE "Copying: ${SOURCE_ASSET} -> ${TARGET_ASSET}")
+    endforeach()
+endfunction(copyAssets)
+
 # Link GLAD Library as a static library
 add_library(glad STATIC "deps/glad/src/glad.c")
 target_include_directories(glad PUBLIC "deps/glad/include")
@@ -50,3 +84,5 @@ target_link_libraries(${PROGRAM_NAME} PRIVATE
 
     core
 )
+
+copyAssets()
