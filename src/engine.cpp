@@ -39,7 +39,6 @@ void Engine::run() {
 
         renderer->drawTriangle();
 
-        window.pollEvents();
 
         window.swapBuffers();
     }
