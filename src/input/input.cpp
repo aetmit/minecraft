@@ -34,4 +34,43 @@ void Input::setKeyUp(Key key) {
     keys[static_cast<std::size_t>(key)].current = false;
 }
 
+bool Input::isMouseButtonDown(MouseButton button) const {
+
+}
+
+bool Input::isMouseButtonUp(MouseButton button) const {
+
+}
+
+bool Input::wasMouseButtonPressed(MouseButton button) const {
+
+}
+
+bool Input::wasMouseButtonReleased(MouseButton button) const {
+
+}
+
+void Input::setMouseButtonDown(MouseButton button) {
+
+}
+ 
+void Input::setMouseButtonUp(MouseButton button) {
+
+}
+
+double Input::mouseX() const {
+
+}
+double Input::mouseY() const  {
+
+}
+
+double Input::mouseDeltaX() {
+
+}
+
+double Input::mouseDeltaY() {
+
+}
+
 } // namespace engine

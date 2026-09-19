@@ -79,9 +79,20 @@ enum class Key {
     Count,
 };
 
+enum class MouseButton {
+    Left,
+    Middle,
+    Right,
+};
+
+struct ButtonState {
+    bool current{false};
+    bool previous{false};
+};
+
 struct KeyState {
-    bool current;
-    bool previous;
+    bool current{false};
+    bool previous{false};
 };
 
 class Input {
@@ -101,10 +112,32 @@ public:
 
     void setKeyDown(Key key);
 
+    bool isMouseButtonDown(MouseButton button) const;
+    bool isMouseButtonUp(MouseButton button) const;
+
+    bool wasMouseButtonPressed(MouseButton button) const;
+    bool wasMouseButtonReleased(MouseButton button) const;
+
+    void setMouseButtonDown(MouseButton button);
+    void setMouseButtonUp(MouseButton button);
+
+    double mouseX() const;
+    double mouseY() const;
+
+    double mouseDeltaX();
+    double mouseDeltaY();
+
     void update();
 
 private:
     std::array<KeyState, static_cast<std::size_t>(Key::Count)> keys;
+
+    std::array<ButtonState, 3> mouseButtons;
+
+    double mouseX_;
+    double mouseY_;
+    double mouseDeltaX_;
+    double mouseDeltaY_;
 };
 
 } // namespace engine
