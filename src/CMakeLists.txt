@@ -1,6 +1,7 @@
 set(SOURCES
     render/renderer.cpp
 
+    render/opengl/program.cpp
     render/opengl/renderer.cpp
 
     window/window.cpp
