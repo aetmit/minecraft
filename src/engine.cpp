@@ -41,6 +41,7 @@ void Engine::run() {
 
         window.pollEvents();
 
+        window.swapBuffers();
     }
 }    
 
