@@ -31,6 +31,9 @@ OpenGLRenderer::OpenGLRenderer(Window *window): Renderer(window) {
         throw std::runtime_error("failed to load glad");
     }
 
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
     glGenBuffers(1, &vbo);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
