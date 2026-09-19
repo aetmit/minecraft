@@ -28,7 +28,7 @@ private:
 
     unsigned int vao;
 
-    OpenGLShaderProgram shaderProgram{window};
+    OpenGLShaderProgram shaderProgram;
 };
 
 } // namespace engine

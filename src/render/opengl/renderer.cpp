@@ -24,7 +24,7 @@ void OpenGLRenderer::clearScreen() {
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-OpenGLRenderer::OpenGLRenderer(Window *window): Renderer(window) {
+OpenGLRenderer::OpenGLRenderer(Window *window): Renderer(window), shaderProgram(window) {
     window->makeContextCurrent();
 
     if (!gladLoadGL()) {
