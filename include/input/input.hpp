@@ -121,6 +121,8 @@ public:
     void setMouseButtonDown(MouseButton button);
     void setMouseButtonUp(MouseButton button);
 
+    void setMousePosition(double mouseX, double mouseY);
+
     double mouseX() const;
     double mouseY() const;
 

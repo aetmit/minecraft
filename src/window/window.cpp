@@ -19,6 +19,7 @@ Window::Window(int width, int height, std::string name, Input &input): input(inp
     glfwSetWindowUserPointer(window, this);
     glfwSetKeyCallback(window, keyCallback);
     glfwSetMouseButtonCallback(window, mouseCallback);
+    glfwSetCursorPosCallback(window, mousePositionCallback);
 }
 
 Window::~Window() {
@@ -50,6 +51,12 @@ std::optional<MouseButton> Window::translateMouseButton(int glfwButton) {
 
         default: return std::nullopt;
     }
+}
+
+void Window::mousePositionCallback(GLFWwindow *window, double x, double y) {
+    Window *self = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
+    self->input.setMousePosition(x, y);
 }
 
 void Window::keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {

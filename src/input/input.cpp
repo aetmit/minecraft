@@ -58,6 +58,10 @@ void Input::setMouseButtonUp(MouseButton button) {
 
 }
 
+void Input::setMousePosition(double mouseX, double mouseY) {
+
+}
+
 double Input::mouseX() const {
 
 }
