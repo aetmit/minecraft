@@ -21,15 +21,13 @@ Engine::Engine(EngineConfig& config): window(config.windowWidth, config.windowHe
 
 void Engine::run() {
     while (!window.shouldClose()) {
-        renderer->clearScreen();    
 
+        window.pollEvents();
+
+        renderer->clearScreen();    
         renderer->drawTriangle();
 
         window.swapBuffers();
-
-        renderer->drawTriangle();
-
-        window.pollEvents();
     }
 }    
 
