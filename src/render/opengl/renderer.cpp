@@ -6,7 +6,14 @@
 namespace engine {
 
 void OpenGLRenderer::drawTriangle() {
-    // TODO: draw a triangle
+
+    // Use shader program
+    shaderProgram.use();
+
+    glBindVertexArray(vao);
+
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    
 }
 
 OpenGLRenderer::~OpenGLRenderer() {
@@ -23,6 +30,20 @@ OpenGLRenderer::OpenGLRenderer(Window *window): Renderer(window) {
     if (!gladLoadGL()) {
         throw std::runtime_error("failed to load glad");
     }
+
+    glGenBuffers(1, &vbo);
+
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(triangleVertices), triangleVertices, GL_STATIC_DRAW);
+
+    // Specifies how OpenGL interprets vertex data
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    shaderProgram.loadShader("assets/shaders/triangle.vert", GL_VERTEX_SHADER);
+    shaderProgram.loadShader("assets/shaders/triangle.frag", GL_FRAGMENT_SHADER);
+
+    shaderProgram.link();
 }
 
 } // namespace engine
