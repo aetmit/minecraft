@@ -20,7 +20,7 @@ public:
 
     ~OpenGLShaderProgram();
 
-    operator GLuint() const;
+    explicit operator GLuint() const;
 
     void loadShader(const std::filesystem::path& file, OpenGLShaderType shaderType);
 
