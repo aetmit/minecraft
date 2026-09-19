@@ -80,7 +80,6 @@ enum class Key {
 };
 
 struct KeyState {
-    bool down;
     bool current;
     bool previous;
 };
