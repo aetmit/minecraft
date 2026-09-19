@@ -37,15 +37,15 @@ void Engine::run() {
         // update key state for new frame
         input.update();
 
-        renderer->drawTriangle();
+        window.pollEvents();
 
         renderer->clearScreen();    
 
-        window.swapBuffers();
 
         renderer->drawTriangle();
 
-        window.pollEvents();
+        window.swapBuffers();
+
     }
 }    
 
