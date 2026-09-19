@@ -27,7 +27,7 @@ Window::~Window() {
     glfwTerminate();
 }
 
-void Window::mouseCallback(GLFWwindow* window, int button, int action, int mods) {
+void Window::mouseCallback(GLFWwindow* window, int button, int action, int) {
     Window *self = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
     auto mouseButton = self->translateMouseButton(button);
@@ -59,7 +59,7 @@ void Window::mousePositionCallback(GLFWwindow *window, double x, double y) {
     self->input.setMousePosition(x, y);
 }
 
-void Window::keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+void Window::keyCallback(GLFWwindow *window, int key, int scancode, int action, int) {
     Window *self = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
     auto engineKey = self->translateKey(key);

@@ -44,31 +44,34 @@ void Input::setKeyUp(Key key) {
 }
 
 bool Input::isMouseButtonDown(MouseButton button) const {
-
+    return mouseButtons[static_cast<std::size_t>(button)].current;
 }
 
 bool Input::isMouseButtonUp(MouseButton button) const {
-
+    return !mouseButtons[static_cast<std::size_t>(button)].current;
 }
 
 bool Input::wasMouseButtonPressed(MouseButton button) const {
-
+    const auto &state = mouseButtons[static_cast<std::size_t>(button)];
+    return !state.previous && state.current;
 }
 
 bool Input::wasMouseButtonReleased(MouseButton button) const {
-
+    const auto &state = mouseButtons[static_cast<std::size_t>(button)];
+    return state.previous && !state.current;
 }
 
 void Input::setMouseButtonDown(MouseButton button) {
-
+    mouseButtons[static_cast<std::size_t>(button)].current = true;
 }
  
 void Input::setMouseButtonUp(MouseButton button) {
-
+    mouseButtons[static_cast<std::size_t>(button)].current = false;
 }
 
 void Input::setMousePosition(double mouseX, double mouseY) {
-
+    this->mouseX = mouseX;
+    this->mouseY = mouseY;
 }
 
 double Input::mouseDeltaX() const {
