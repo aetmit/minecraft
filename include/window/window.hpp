@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-
+#include <optional>
 
 #include <glad/glad.h>
 // tell glfw not to include system opengl headers
@@ -35,6 +35,8 @@ private:
     GLFWwindow *window;
 
     static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
+
+    std::optional<Key> translateKey(int glfwKey);
     Input &input;
 };
 
