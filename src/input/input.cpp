@@ -24,4 +24,12 @@ void Input::update() {
     }
 }
 
+void Input::setKeyDown(Key key) {
+    keys[static_cast<std::size_t>(key)].current = true;
+}
+
+void Input::setKeyUp(Key key) {
+    keys[static_cast<std::size_t>(key)].current = false;
+}
+
 } // namespace engine

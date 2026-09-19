@@ -98,6 +98,10 @@ public:
     // key went from down to up this frame
     bool wasKeyReleased(Key key) const;
 
+    void setKeyUp(Key key);
+
+    void setKeyDown(Key key);
+
     void update();
 
 private:

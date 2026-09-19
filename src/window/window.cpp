@@ -26,7 +26,13 @@ Window::~Window() {
 }
 
 void Window::keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+    Window *self = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
+    if (action == GLFW_PRESS) {
+        self->input.setKeyDown(static_cast<Key>(key));
+    } else if (action == GLFW_RELEASE) {
+        self->input.setKeyUp(static_cast<Key>(key));
+    }
 }
 
 void Window::pollEvents() {
