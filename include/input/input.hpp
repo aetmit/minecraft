@@ -133,14 +133,14 @@ private:
 
     std::array<ButtonState, 3> mouseButtons;
 
-    double previousMouseX;
-    double previousMouseY;
-    double mouseX;
-    double mouseY;
+    double previousMouseX{0.0};
+    double previousMouseY{0.0};
+    double mouseX{0.0};
+    double mouseY{0.0};
     // we postfix each of these fields with _ to avoid name conflict with the getter methods as well as
     // avoiding conflict with the std lib by not prefixing with _
-    double mouseDeltaX_;
-    double mouseDeltaY_;
+    double mouseDeltaX_{0.0};
+    double mouseDeltaY_{0.0};
 
 };
 
