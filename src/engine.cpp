@@ -41,10 +41,6 @@ void Engine::run() {
 
         window.pollEvents();
 
-        if (input.isKeyDown(Key::W)) {
-            std::cout << "w pressed\n";
-        }
-
         renderer->clearScreen();    
 
 
