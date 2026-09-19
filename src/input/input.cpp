@@ -24,6 +24,15 @@ void Input::update() {
     for (auto &key : keys) {
         key.previous = key.current;
     }
+
+    for (auto &button : mouseButtons) {
+        button.previous = button.current;
+    }
+
+    mouseDeltaX_ = mouseX - previousMouseX;
+    mouseDeltaY_ = mouseY - previousMouseY;
+    previousMouseX = mouseX;
+    previousMouseY = mouseY;
 }
 
 void Input::setKeyDown(Key key) {
@@ -62,19 +71,12 @@ void Input::setMousePosition(double mouseX, double mouseY) {
 
 }
 
-double Input::mouseX() const {
-
-}
-double Input::mouseY() const  {
-
+double Input::mouseDeltaX() const {
+    return mouseDeltaX_;
 }
 
-double Input::mouseDeltaX() {
-
-}
-
-double Input::mouseDeltaY() {
-
+double Input::mouseDeltaY() const {
+    return mouseDeltaY_;
 }
 
 } // namespace engine

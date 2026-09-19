@@ -123,11 +123,8 @@ public:
 
     void setMousePosition(double mouseX, double mouseY);
 
-    double mouseX() const;
-    double mouseY() const;
-
-    double mouseDeltaX();
-    double mouseDeltaY();
+    double mouseDeltaX() const;
+    double mouseDeltaY() const;
 
     void update();
 
@@ -136,10 +133,15 @@ private:
 
     std::array<ButtonState, 3> mouseButtons;
 
-    double mouseX_;
-    double mouseY_;
+    double previousMouseX;
+    double previousMouseY;
+    double mouseX;
+    double mouseY;
+    // we postfix each of these fields with _ to avoid name conflict with the getter methods as well as
+    // avoiding conflict with the std lib by not prefixing with _
     double mouseDeltaX_;
     double mouseDeltaY_;
+
 };
 
 } // namespace engine
