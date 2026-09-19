@@ -25,11 +25,6 @@ void OpenGLRenderer::clearScreen() {
 }
 
 OpenGLRenderer::OpenGLRenderer(Window *window): Renderer(window), shaderProgram(window) {
-    window->makeContextCurrent();
-
-    if (!gladLoadGL()) {
-        throw std::runtime_error("failed to load glad");
-    }
 
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
