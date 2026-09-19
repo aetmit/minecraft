@@ -37,7 +37,7 @@ void Window::keyCallback(GLFWwindow *window, int key, int scancode, int action, 
     if (action == GLFW_PRESS) {
         self->input.setKeyDown(*engineKey);
     } else if (action == GLFW_RELEASE) {
-        self->input.setKeyUp(translateKey(key));
+        self->input.setKeyUp(*engineKey);
     }
 }
 
