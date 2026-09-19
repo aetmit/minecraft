@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glad/glad.h>
 #include <render/renderer.hpp>
 #include <render/opengl/program.hpp>
 #include <window/window.hpp>
@@ -24,9 +25,9 @@ private:
         0.0f, 0.5f, 0.0f
     };
 
-    unsigned int vbo;
+    GLuint vbo;
 
-    unsigned int vao;
+    GLuint vao;
 
     OpenGLShaderProgram shaderProgram;
 };
