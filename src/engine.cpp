@@ -36,10 +36,10 @@ void Engine::run() {
         double deltaTime = currentTime - previousTime;
         previousTime = currentTime;
 
-        window.pollEvents();
-
         // update key state for new frame
         input.update();
+
+        window.pollEvents();
 
         if (input.isKeyDown(Key::W)) {
             std::cout << "w pressed\n";
