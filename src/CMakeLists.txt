@@ -1,4 +1,6 @@
 set(SOURCES
+    input/input.cpp
+
     render/renderer.cpp
 
     render/opengl/program.cpp
@@ -6,12 +8,10 @@ set(SOURCES
 
     window/window.cpp
 
+    clock.cpp
     engine.cpp
-
     application.cpp
 )
-
-add_subdirectory(input)
 
 set(HEADERS ${CMAKE_SOURCE_DIR}/include)
 

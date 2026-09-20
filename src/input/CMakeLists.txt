@@ -1,8 +1,0 @@
-set(DIR ${CMAKE_CURRENT_SOURCE_DIR})
-
-list(APPEND SOURCES
-    ${DIR}/input.cpp
-)
-
-
-set(SOURCES ${SOURCES} PARENT_SCOPE)
