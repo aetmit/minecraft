@@ -1,6 +1,7 @@
 #include <render/opengl/renderer.hpp>
 
 #include <stdexcept>
+#include <sstream>
 #include <glad/glad.h>
 
 namespace engine {
@@ -12,7 +13,9 @@ void OpenGLRenderer::drawSquare() {
 
     glBindVertexArray(vao);
 
+    clearErrors();
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+    checkErrors();
 }
 
 OpenGLRenderer::~OpenGLRenderer() {
@@ -73,6 +76,18 @@ OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window,
     shaderProgram.link();
 
     logger.info("Initialised OpenGL renderer successfully");
+}
+
+void OpenGLRenderer::clearErrors() {
+    while (glGetError() != GL_NO_ERROR);
+}
+
+void OpenGLRenderer::checkErrors() {
+    while (GLenum error = glGetError()) {
+        std::stringstream ss;
+        ss << "[OpenGL error] (" << error << ")";
+        logger.error(ss.str().c_str());
+    }
 }
 
 } // namespace engine

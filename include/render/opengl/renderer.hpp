@@ -20,6 +20,10 @@ public:
     explicit OpenGLRenderer(Window *window, Logger &logger);
 
 private:
+
+    void clearErrors();
+    void checkErrors();
+
     float squareVertices[12] = {
         -0.5f, -0.5f, 0.0f,
         0.5f, -0.5f, 0.0f,
