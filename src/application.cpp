@@ -1,5 +1,8 @@
 #include <application.hpp>
 
+#include <exception>
+#include <iostream>
+
 #include <input/input.hpp>
 
 int Application::run() {
@@ -7,7 +10,12 @@ int Application::run() {
     engine::EngineConfig config(800, 600, "Minecraft", backend);
 
     engine::Engine engine(config, input);
-    engine.run();
+    try {
+        engine.run();
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << "\n";
+        return 1;
+    }
     return 0;
 }
 
