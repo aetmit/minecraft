@@ -27,7 +27,7 @@ struct EngineConfig {
 class Engine {
 
 public:
-    explicit Engine(EngineConfig& config, Input &input);
+    explicit Engine(EngineConfig& config, Input &input, Logger &logger);
 
     void run();
 
@@ -40,7 +40,7 @@ private:
 
     Clock clock;
 
-    Logger logger;
+    Logger &logger;
 
     Input &input;
 };

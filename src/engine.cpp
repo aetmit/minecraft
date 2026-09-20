@@ -12,11 +12,11 @@ EngineConfig::EngineConfig(int windowWidth, int windowHeight, std::string window
     :windowWidth(windowWidth), windowHeight(windowHeight), windowName(windowName), backend(backend)
 {}
 
-Engine::Engine(EngineConfig& config, Input &input) :
+Engine::Engine(EngineConfig& config, Input &input, Logger &logger) :
     window(config.windowWidth, config.windowHeight, config.windowName, input),
     previousTime(0),
     clock(window),
-    input(input) {
+    input(input), logger(logger) {
     
     logger.info("Initialised window");
     logger.info("Initialised clock");
