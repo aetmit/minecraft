@@ -26,6 +26,7 @@ void OpenGLRenderer::clearScreen() {
 }
 
 OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window, logger), shaderProgram(window) {
+    logger.info("Initalising OpenGL renderer");
 
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
@@ -48,6 +49,8 @@ OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window,
     shaderProgram.compileShader("assets/shaders/basic.frag", OpenGLShaderType::Fragment);
 
     shaderProgram.link();
+
+    logger.info("Initialised OpenGL renderer successfully");
 }
 
 } // namespace engine
