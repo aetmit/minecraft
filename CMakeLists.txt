@@ -78,11 +78,12 @@ find_package(OpenGL REQUIRED)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/src)
 
-add_executable(${PROGRAM_NAME} src/main.cpp "deps/glad/src/glad.c")
+add_executable(${PROGRAM_NAME} src/main.cpp) 
 
 target_link_libraries(${PROGRAM_NAME} PRIVATE
     glfw
     glad
+    stbi
     OpenGL::GL
 
     core
