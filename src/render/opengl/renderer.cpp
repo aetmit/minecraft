@@ -16,7 +16,9 @@ void OpenGLRenderer::drawSquare() {
 }
 
 OpenGLRenderer::~OpenGLRenderer() {
-    // delete resources that were acquired in the constructor
+    glDeleteBuffers(1, &vbo);
+    glDeleteBuffers(1, &ebo);
+    glDeleteVertexArrays(1, &vao);
 }
 
 void OpenGLRenderer::clearScreen() {
