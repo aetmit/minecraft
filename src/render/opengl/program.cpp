@@ -56,6 +56,10 @@ int OpenGLShaderProgram::link() {
     return status;
 }
 
+GLuint OpenGLShaderProgram::getProgram() const {
+    return program;
+}
+
 void OpenGLShaderProgram::use() const {
     glUseProgram(program);
 }

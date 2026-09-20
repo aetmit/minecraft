@@ -8,8 +8,13 @@ namespace engine {
 
 void OpenGLRenderer::drawSquare() {
 
-    // Use shader program
     shaderProgram.use();
+
+    int location = glGetUniformLocation(shaderProgram.getProgram(), "uColour");
+    if (location == -1) {
+        logger.error("Failed to find shader uniform");
+    }
+    glUniform4f(location, 0.2f, 0.3f, 0.8f, 1.0f);
 
     glBindVertexArray(vao);
 

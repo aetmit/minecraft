@@ -22,6 +22,8 @@ public:
 
     explicit operator GLuint() const;
 
+    GLuint getProgram() const;
+
     void compileShader(const std::filesystem::path& file, OpenGLShaderType shaderType);
 
     int link();
