@@ -5,15 +5,14 @@
 
 namespace engine {
 
-void OpenGLRenderer::drawTriangle() {
+void OpenGLRenderer::drawSquare() {
 
     // Use shader program
     shaderProgram.use();
 
     glBindVertexArray(vao);
 
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-    
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 
 OpenGLRenderer::~OpenGLRenderer() {
@@ -32,7 +31,12 @@ OpenGLRenderer::OpenGLRenderer(Window *window): Renderer(window), shaderProgram(
     glGenBuffers(1, &vbo);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(triangleVertices), triangleVertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(squareVertices), squareVertices, GL_STATIC_DRAW);
+
+    glGenBuffers(1, &ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // Specifies how OpenGL interprets vertex data
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);

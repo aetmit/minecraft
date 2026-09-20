@@ -10,7 +10,7 @@ namespace engine {
 class OpenGLRenderer : public Renderer {
 public:
 
-    void drawTriangle() override;
+    void drawSquare() override;
 
     void clearScreen() override;
 
@@ -19,15 +19,22 @@ public:
     explicit OpenGLRenderer(Window *window);
 
 private:
-    float triangleVertices[9] = {
+    float squareVertices[12] = {
         -0.5f, -0.5f, 0.0f,
         0.5f, -0.5f, 0.0f,
-        0.0f, 0.5f, 0.0f
+        0.5f,  0.5f, 0.0f,
+        -0.5f,  0.5f, 0.0f
+    };
+
+    GLuint indices[6] = {
+        0, 1, 2,
+        2, 3, 0
     };
 
     GLuint vbo;
-
     GLuint vao;
+
+    GLuint ebo;
 
     OpenGLShaderProgram shaderProgram;
 };

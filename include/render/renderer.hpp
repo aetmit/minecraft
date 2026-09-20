@@ -12,7 +12,7 @@ public:
 
 
     // temporary function to test rnedering
-    virtual void drawTriangle() = 0;
+    virtual void drawSquare() = 0;
 
     // abstration over screen clearing
     virtual void clearScreen() = 0;
