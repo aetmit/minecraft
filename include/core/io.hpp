@@ -26,7 +26,6 @@ constexpr const char* brightCyan    = "\033[96m";
 constexpr const char* brightWhite   = "\033[97m";
 
 // text styles
-constexpr const char* reset      = "\033[0m";
 constexpr const char* bold       = "\033[1m";
 constexpr const char* dim        = "\033[2m";
 constexpr const char* italic     = "\033[3m";
