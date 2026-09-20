@@ -37,7 +37,7 @@ void Engine::run() {
         renderer->clearScreen();    
 
 
-        renderer->drawTriangle();
+        renderer->drawSquare();
 
 
         window.swapBuffers();
