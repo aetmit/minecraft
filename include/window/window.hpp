@@ -1,9 +1,14 @@
-#ifndef WINDOW_WINDOW_HPP
-#define WINDOW_WINDOW_HPP
+#pragma once
 
 #include <string>
+#include <optional>
 
+#include <glad/glad.h>
+// tell glfw not to include system opengl headers
+#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
+
+#include <input/input.hpp>
 
 namespace engine {
 
@@ -12,7 +17,7 @@ class Window {
 public:
     ~Window();
 
-    Window(int width, int height, std::string name);
+    Window(int width, int height, std::string name, Input &input);
 
     void pollEvents();
 
@@ -20,13 +25,22 @@ public:
 
     bool shouldClose() const;
 
+    void makeContextCurrent();
+
+    double getTime();
+
 private:
     GLFWwindow *getWindow() const;
 
     GLFWwindow *window;
 
+    static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
+    static void mouseCallback(GLFWwindow *window, int button, int action, int mods);
+    static void mousePositionCallback(GLFWwindow *window, double x, double y);
+
+    std::optional<MouseButton> translateMouseButton(int glfwButton);
+    std::optional<Key> translateKey(int glfwKey);
+    Input &input;
 };
 
 } // namespace engine
-
-#endif // WINDOW_WINDOW_HPP

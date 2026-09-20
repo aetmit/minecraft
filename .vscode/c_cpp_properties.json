@@ -1,6 +1,16 @@
 {
     "configurations": [
         {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [],
+            "cStandard": "c17",
+            "cppStandard": "c++23",
+            "configurationProvider": "ms-vscode.cmake-tools"
+        },
+        {
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
@@ -10,7 +20,7 @@
             "defines": [],
             "compilerPath": "/usr/bin/clang++",
             "cStandard": "c17",
-            "cppStandard": "c++26",
+            "cppStandard": "c++23",
             "intelliSenseMode": "macos-clang-arm64"
         }
     ],
