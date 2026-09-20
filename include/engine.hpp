@@ -3,6 +3,7 @@
 #include <string>
 #include <memory>
 
+#include <clock.hpp>
 #include <window/window.hpp>
 #include <render/renderer.hpp>
 #include <input/input.hpp>
@@ -35,6 +36,8 @@ private:
     std::unique_ptr<Renderer> renderer;
 
     double previousTime;
+
+    Clock clock;
 
 
     Input &input;

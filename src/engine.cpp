@@ -12,8 +12,11 @@ EngineConfig::EngineConfig(int windowWidth, int windowHeight, std::string window
     :windowWidth(windowWidth), windowHeight(windowHeight), windowName(windowName), backend(backend)
 {}
 
-Engine::Engine(EngineConfig& config, Input &input)
-        : window(config.windowWidth, config.windowHeight, config.windowName, input), previousTime(0), input(input) {
+Engine::Engine(EngineConfig& config, Input &input) :
+    window(config.windowWidth, config.windowHeight, config.windowName, input),
+    previousTime(0),
+    clock(window),
+    input(input) {
 
     switch (config.backend) {
         case GraphicsBackend::OpenGL:
@@ -25,9 +28,7 @@ Engine::Engine(EngineConfig& config, Input &input)
 void Engine::run() {
 
     while (!window.shouldClose()) {
-        double currentTime = window.getTime();
-        double deltaTime = currentTime - previousTime;
-        previousTime = currentTime;
+        clock.updateTime();
 
         // update key state for new frame
         input.update();
