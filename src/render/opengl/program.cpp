@@ -3,10 +3,10 @@
 #include <glad/glad.h>
 
 #include <fstream>
-#include <format>
 #include <sstream>
 #include <string>
 #include <stdexcept>
+#include <memory>
 #include <optional>
 #include <filesystem>
 
@@ -79,9 +79,16 @@ GLuint OpenGLShaderProgram::compileShader(const char *shaderSource, GLuint type)
 
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
     if (status == GL_FALSE) {
-        char infoLog[512];
-        glGetShaderInfoLog(shader, 512, nullptr, infoLog);
-        throw std::runtime_error(std::format("Failed to compile shader: {}", infoLog));
+        int length;
+        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
+        // use a unique ptr here because we do not know the length of the log message
+        // ahead of time so we must allocate on the heap and unique_ptr
+        // provides us with automatic cleanup once we throw
+        auto infoLog = std::make_unique<char[]>(length);
+        glGetShaderInfoLog(shader, 512, nullptr, infoLog.get());
+        // prevent resource leak by deleting shader before we throw
+        glDeleteShader(shader);
+        throw std::runtime_error(std::string("Failed to compile shader: ") + infoLog.get());
     }
     return shader;
 }
