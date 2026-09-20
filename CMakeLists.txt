@@ -43,11 +43,11 @@ function(copyAssets)
 endfunction(copyAssets)
 
 # Link GLAD Library as a static library
-add_library(glad STATIC "deps/glad/src/glad.c")
-target_include_directories(glad PUBLIC "deps/glad/include")
+add_library(glad STATIC "vendor/glad/src/glad.c")
+target_include_directories(glad PUBLIC "vendor/glad/include")
 
-add_library(stbi STATIC "deps/stbi/src/stb_image.cpp")
-target_include_directories(stbi PUBLIC "deps/stbi/include")
+add_library(stbi STATIC "vendor/stbi/src/stb_image.cpp")
+target_include_directories(stbi PUBLIC "vendor/stbi/include")
 
 # Linux: GLAD requires dynamic loader library to fetch OpenGL pointers
 if(NOT WIN32 AND NOT APPLE)
