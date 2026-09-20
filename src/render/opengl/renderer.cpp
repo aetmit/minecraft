@@ -19,6 +19,7 @@ OpenGLRenderer::~OpenGLRenderer() {
     glDeleteBuffers(1, &vbo);
     glDeleteBuffers(1, &ebo);
     glDeleteVertexArrays(1, &vao);
+    logger.info("Shutdown OpenGL renderer successfully");
 }
 
 void OpenGLRenderer::clearScreen() {

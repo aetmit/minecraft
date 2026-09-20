@@ -36,6 +36,7 @@ Window::Window(int width, int height, std::string name, Input &input, Logger &lo
 Window::~Window() {
     glfwDestroyWindow(window);
     glfwTerminate();
+    logger.info("Shut down window");
 }
 
 void Window::mouseCallback(GLFWwindow* window, int button, int action, int) {
