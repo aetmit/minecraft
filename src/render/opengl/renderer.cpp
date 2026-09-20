@@ -27,6 +27,27 @@ void OpenGLRenderer::clearScreen() {
 
 OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window, logger), shaderProgram(window) {
     logger.info("Initalising OpenGL renderer");
+    
+    const std::string vendor =
+        std::string("Vendor:   ") +
+        reinterpret_cast<const char*>(glGetString(GL_VENDOR));
+
+    const std::string renderer =
+        std::string("Renderer: ") +
+        reinterpret_cast<const char*>(glGetString(GL_RENDERER));
+
+    const std::string version =
+        std::string("Version:  ") +
+        reinterpret_cast<const char*>(glGetString(GL_VERSION));
+
+    const std::string glsl =
+        std::string("GLSL:     ") +
+        reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+    logger.info(vendor.c_str());
+    logger.info(renderer.c_str());
+    logger.info(version.c_str());
+    logger.info(glsl.c_str());
 
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
