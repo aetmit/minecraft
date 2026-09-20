@@ -29,7 +29,7 @@ OpenGLShaderProgram::operator GLuint() const {
     return program;
 }
 
-void OpenGLShaderProgram::loadShader(const std::filesystem::path& file, OpenGLShaderType shaderType) {
+void OpenGLShaderProgram::compileShader(const std::filesystem::path& file, OpenGLShaderType shaderType) {
     auto shader = loadShader(file);
     if (!shader) {
         throw std::runtime_error("faield to load shader") ;
@@ -72,14 +72,13 @@ std::optional<std::string> OpenGLShaderProgram::loadShader(const std::filesystem
 }
 
 GLuint OpenGLShaderProgram::compileShader(const char *shaderSource, GLuint type) const {
-    GLuint shader;
     int status;
-    shader = glCreateShader(type);
+    GLuint shader = glCreateShader(type);
     glShaderSource(shader, 1, &shaderSource, nullptr);
     glCompileShader(shader);
 
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-    if (!status) {
+    if (status == GL_FALSE) {
         char infoLog[512];
         glGetShaderInfoLog(shader, 512, nullptr, infoLog);
         throw std::runtime_error(std::format("Failed to compile shader: {}", infoLog));

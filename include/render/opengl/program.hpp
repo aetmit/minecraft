@@ -22,7 +22,7 @@ public:
 
     explicit operator GLuint() const;
 
-    void loadShader(const std::filesystem::path& file, OpenGLShaderType shaderType);
+    void compileShader(const std::filesystem::path& file, OpenGLShaderType shaderType);
 
     int link();
 

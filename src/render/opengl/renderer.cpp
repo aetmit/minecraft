@@ -44,8 +44,8 @@ OpenGLRenderer::OpenGLRenderer(Window *window): Renderer(window), shaderProgram(
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    shaderProgram.loadShader("assets/shaders/triangle.vert", OpenGLShaderType::Vertex);
-    shaderProgram.loadShader("assets/shaders/triangle.frag", OpenGLShaderType::Fragment);
+    shaderProgram.compileShader("assets/shaders/triangle.vert", OpenGLShaderType::Vertex);
+    shaderProgram.compileShader("assets/shaders/triangle.frag", OpenGLShaderType::Fragment);
 
     shaderProgram.link();
 }
