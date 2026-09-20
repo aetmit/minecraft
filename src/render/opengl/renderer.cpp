@@ -85,7 +85,7 @@ void OpenGLRenderer::clearErrors() {
 void OpenGLRenderer::checkErrors() {
     while (GLenum error = glGetError()) {
         std::stringstream ss;
-        ss << "[OpenGL error] (" << error << ")";
+        ss << "OpenGL internal error (code = " << error << ")";
         logger.error(ss.str().c_str());
     }
 }
