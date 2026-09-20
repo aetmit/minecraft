@@ -25,7 +25,7 @@ void OpenGLRenderer::clearScreen() {
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-OpenGLRenderer::OpenGLRenderer(Window *window): Renderer(window), shaderProgram(window) {
+OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window, logger), shaderProgram(window) {
 
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);

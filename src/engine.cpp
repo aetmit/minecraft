@@ -17,6 +17,10 @@ Engine::Engine(EngineConfig& config, Input &input) :
     previousTime(0),
     clock(window),
     input(input) {
+    
+    logger.info("Initialised window");
+    logger.info("Initialised clock");
+    logger.info("Initialised input system");
 
     switch (config.backend) {
         case GraphicsBackend::OpenGL:
@@ -24,6 +28,8 @@ Engine::Engine(EngineConfig& config, Input &input) :
             renderer = std::make_unique<OpenGLRenderer>(&window);
             break;
     }
+
+    logger.info("Engine initialised");
 }
 
 void Engine::run() {

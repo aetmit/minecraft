@@ -4,6 +4,7 @@
 #include <render/renderer.hpp>
 #include <render/opengl/program.hpp>
 #include <window/window.hpp>
+#include <core/logger.hpp>
 
 namespace engine {
 
@@ -16,7 +17,7 @@ public:
 
     ~OpenGLRenderer() override;
 
-    explicit OpenGLRenderer(Window *window);
+    explicit OpenGLRenderer(Window *window, Logger &logger);
 
 private:
     float squareVertices[12] = {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <window/window.hpp>
+#include <core/logger.hpp>
 namespace engine {
 
 // acts as an abstraction over the rendering backend so calling code does not need to
@@ -17,9 +18,11 @@ public:
     // abstration over screen clearing
     virtual void clearScreen() = 0;
 
-    Renderer(Window *window);
+    Renderer(Window *window, Logger &logger);
 protected:
     Window *window;
+
+    Logger &logger;
 };
 
 } // namespace engine
