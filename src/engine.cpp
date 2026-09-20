@@ -13,7 +13,7 @@ EngineConfig::EngineConfig(int windowWidth, int windowHeight, std::string window
 {}
 
 Engine::Engine(EngineConfig& config, Input &input, Logger &logger) :
-    window(config.windowWidth, config.windowHeight, config.windowName, input),
+    window(config.windowWidth, config.windowHeight, config.windowName, input, logger),
     previousTime(0),
     clock(window),
     input(input), logger(logger) {

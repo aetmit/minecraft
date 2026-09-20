@@ -29,7 +29,7 @@ OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window,
     logger.info("Initalising OpenGL renderer");
     
     const std::string vendor =
-        std::string("Vendor:   ") +
+        std::string("Vendor: ") +
         reinterpret_cast<const char*>(glGetString(GL_VENDOR));
 
     const std::string renderer =
@@ -41,7 +41,7 @@ OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window,
         reinterpret_cast<const char*>(glGetString(GL_VERSION));
 
     const std::string glsl =
-        std::string("GLSL:     ") +
+        std::string("GLSL: ") +
         reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
 
     logger.info(vendor.c_str());
