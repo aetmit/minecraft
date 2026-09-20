@@ -8,6 +8,8 @@ set(SOURCES
 
     window/window.cpp
 
+    core/logger.cpp
+
     clock.cpp
     engine.cpp
     application.cpp
