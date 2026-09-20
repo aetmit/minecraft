@@ -18,4 +18,8 @@ void Logger::info(const char *msg) {
     std::cerr << io::reset << io::bold << "[INFO] " << io::reset << msg << "\n" << io::reset;
 }
 
+void Logger::debug(const char *msg) {
+    std::cerr << io::reset << io::bold << "[DEBUG]" << io::reset << msg << "\n" << io::reset;
+}
+
 } // namespace engine
