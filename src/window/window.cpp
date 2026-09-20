@@ -1,7 +1,7 @@
 #include <window/window.hpp>
 
 #include <stdexcept>
-
+#include <sstream>
 namespace engine {
 
 Window::Window(int width, int height, std::string name, Input &input, Logger &logger): input(input), logger(logger) {
@@ -17,6 +17,10 @@ Window::Window(int width, int height, std::string name, Input &input, Logger &lo
 
 
     window = glfwCreateWindow(width, height, name.c_str(), nullptr, nullptr);
+    
+    std::stringstream ss;
+    ss << "Initalised window with " << width << "x" << height << " with name " << name;
+    logger.info(ss.str().c_str());
 
     if (!window) {
         glfwTerminate();
