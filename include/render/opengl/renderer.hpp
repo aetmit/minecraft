@@ -11,6 +11,8 @@ namespace engine {
 
 class OpenGLRenderer : public Renderer {
 public:
+    // must be called before creating first instance of OPengL rendere
+    static void loadOpenGL(Logger &logger);
 
     void drawSquare() override;
 

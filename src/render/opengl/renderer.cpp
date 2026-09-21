@@ -33,15 +33,19 @@ void OpenGLRenderer::clearScreen() {
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window, logger), shaderProgram(window) {
-    logger.info("Initalising OpenGL renderer");
-
-    window->makeContextCurrent();
+void OpenGLRenderer::loadOpenGL(Logger &logger) {
     logger.info("Loading OpenGL via GLAD");
     if (!gladLoadGL()) {
         throw std::runtime_error("Failed to load GLAD");
     }
-    logger.info("Successfully loaded OpenGL");
+ 
+   logger.info("Successfully loaded OpenGL");
+}
+
+OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window, logger), shaderProgram(window) {
+    logger.info("Initalising OpenGL renderer");
+
+    window->makeContextCurrent();
     
     const std::string vendor =
         std::string("Vendor: ") +
