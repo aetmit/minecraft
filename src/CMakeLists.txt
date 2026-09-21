@@ -5,6 +5,7 @@ set(SOURCES
 
     render/opengl/program.cpp
     render/opengl/renderer.cpp
+    render/opengl/vertex_buffer.cpp
 
     window/window.cpp
 
