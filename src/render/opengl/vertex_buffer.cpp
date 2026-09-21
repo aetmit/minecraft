@@ -1,5 +1,7 @@
 #include <render/opengl/vertex_buffer.hpp>
 
+#include <glad/glad.h>
+
 namespace engine {
 
 VertexBuffer::VertexBuffer() {

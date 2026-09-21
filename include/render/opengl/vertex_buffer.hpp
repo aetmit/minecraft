@@ -2,8 +2,6 @@
 
 #include <cstddef>
 
-#include <glad/glad.h>
-
 #include <render/opengl/buffer.hpp>
 
 namespace engine {
@@ -16,9 +14,6 @@ public:
     void setData(const void *data, std::size_t size) const override;
     void bind() const override;
     void unbind() const override;
-
-private:
-    GLuint buffer;
 
 };
 
