@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 #include <render/renderer.hpp>
 #include <render/opengl/program.hpp>
+#include <render/opengl/vertex_buffer.hpp>
 #include <window/window.hpp>
 #include <core/logger.hpp>
 
@@ -36,7 +37,7 @@ private:
         2, 3, 0
     };
 
-    GLuint vbo;
+    VertexBuffer vbo;
     GLuint vao;
 
     GLuint ebo;

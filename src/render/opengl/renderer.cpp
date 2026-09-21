@@ -24,7 +24,6 @@ void OpenGLRenderer::drawSquare() {
 }
 
 OpenGLRenderer::~OpenGLRenderer() {
-    glDeleteBuffers(1, &vbo);
     glDeleteBuffers(1, &ebo);
     glDeleteVertexArrays(1, &vao);
     logger.info("Shutdown OpenGL renderer successfully");
@@ -61,10 +60,8 @@ OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window,
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
-    glGenBuffers(1, &vbo);
-
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(squareVertices), squareVertices, GL_STATIC_DRAW);
+    vbo.setData(squareVertices, sizeof(squareVertices));
+    vbo.bind();
 
     glGenBuffers(1, &ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);

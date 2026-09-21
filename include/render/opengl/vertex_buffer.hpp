@@ -10,17 +10,16 @@ namespace engine {
 
 class VertexBuffer : public Buffer {
 public:
-    VertexBuffer(const void *data, std::size_t size);
+    VertexBuffer();
     ~VertexBuffer() override;
 
+    void setData(const void *data, std::size_t size) const override;
     void bind() const override;
     void unbind() const override;
 
 private:
     GLuint buffer;
 
-    const void *data;
-    std::size_t size;
 };
 
 } // namespace engine
