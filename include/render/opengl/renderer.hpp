@@ -1,6 +1,9 @@
 #pragma once
 
+#include <memory>
+
 #include <glad/glad.h>
+
 #include <render/renderer.hpp>
 #include <render/opengl/program.hpp>
 #include <render/opengl/vertex_buffer.hpp>
@@ -11,9 +14,6 @@ namespace engine {
 
 class OpenGLRenderer : public Renderer {
 public:
-    // must be called before creating first instance of OPengL rendere
-    static void loadOpenGL(Logger &logger);
-
     void drawSquare() override;
 
     void clearScreen() override;
@@ -39,12 +39,13 @@ private:
         2, 3, 0
     };
 
-    VertexBuffer vbo;
+    // we have to use a pointer here because we need to ininitialise glad before constructing vbo
+    std::unique_ptr<VertexBuffer> vbo;
     GLuint vao;
 
     GLuint ebo;
 
-    OpenGLShaderProgram shaderProgram;
+    std::unique_ptr<OpenGLShaderProgram> shaderProgram;
 };
 
 } // namespace engine

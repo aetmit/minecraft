@@ -8,9 +8,9 @@ namespace engine {
 
 void OpenGLRenderer::drawSquare() {
 
-    shaderProgram.use();
+    shaderProgram->use();
 
-    int location = glGetUniformLocation(shaderProgram.getProgram(), "uColour");
+    int location = glGetUniformLocation(shaderProgram->getProgram(), "uColour");
     if (location == -1) {
         logger.error("Failed to find shader uniform");
     }
@@ -33,19 +33,18 @@ void OpenGLRenderer::clearScreen() {
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void OpenGLRenderer::loadOpenGL(Logger &logger) {
-    logger.info("Loading OpenGL via GLAD");
-    if (!gladLoadGL()) {
-        throw std::runtime_error("Failed to load GLAD");
-    }
- 
-   logger.info("Successfully loaded OpenGL");
-}
-
-OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window, logger), shaderProgram(window) {
+OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window, logger) {
     logger.info("Initalising OpenGL renderer");
 
     window->makeContextCurrent();
+
+    logger.info("Loading OpenGL via GLAD");
+    if (!gladLoadGL()) {
+        throw std::runtime_error("failed to load GLAD");
+    }
+    logger.info("Sucessfully loaded OpenGL");
+
+    shaderProgram = std::make_unique<OpenGLShaderProgram>(window);
     
     const std::string vendor =
         std::string("Vendor: ") +
@@ -71,8 +70,10 @@ OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window,
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
-    vbo.setData(squareVertices, sizeof(squareVertices));
-    vbo.bind();
+    vbo = std::make_unique<VertexBuffer>();
+
+    vbo->bind();
+    vbo->setData(squareVertices, sizeof(squareVertices));
 
     glGenBuffers(1, &ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
@@ -83,10 +84,10 @@ OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window,
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    shaderProgram.compileShader("assets/shaders/basic.vert", OpenGLShaderType::Vertex);
-    shaderProgram.compileShader("assets/shaders/basic.frag", OpenGLShaderType::Fragment);
+    shaderProgram->compileShader("assets/shaders/basic.vert", OpenGLShaderType::Vertex);
+    shaderProgram->compileShader("assets/shaders/basic.frag", OpenGLShaderType::Fragment);
 
-    shaderProgram.link();
+    shaderProgram->link();
 
     logger.info("Initialised OpenGL renderer successfully");
 }
