@@ -13,10 +13,6 @@
 namespace engine {
 
 OpenGLShaderProgram::OpenGLShaderProgram(Window* window) {
-    window->makeContextCurrent();
-    if (!gladLoadGL()) {
-        throw std::runtime_error("Failed to load GLAD");
-    }
     program = glCreateProgram();
 }
 
