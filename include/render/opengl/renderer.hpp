@@ -7,6 +7,7 @@
 #include <render/renderer.hpp>
 #include <render/opengl/program.hpp>
 #include <render/opengl/vertex_buffer.hpp>
+#include <render/opengl/index_buffer.hpp>
 #include <window/window.hpp>
 #include <core/logger.hpp>
 
@@ -43,7 +44,7 @@ private:
     std::unique_ptr<VertexBuffer> vbo;
     GLuint vao;
 
-    GLuint ebo;
+    std::unique_ptr<IndexBuffer> ibo;
 
     std::unique_ptr<OpenGLShaderProgram> shaderProgram;
 };

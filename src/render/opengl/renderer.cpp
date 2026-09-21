@@ -24,7 +24,6 @@ void OpenGLRenderer::drawSquare() {
 }
 
 OpenGLRenderer::~OpenGLRenderer() {
-    glDeleteBuffers(1, &ebo);
     glDeleteVertexArrays(1, &vao);
     logger.info("Shutdown OpenGL renderer successfully");
 }
@@ -75,10 +74,10 @@ OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window,
     vbo->bind();
     vbo->setData(squareVertices, sizeof(squareVertices));
 
-    glGenBuffers(1, &ebo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    ibo = std::make_unique<IndexBuffer>();
 
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    ibo->bind();
+    ibo->setData(indices, sizeof(indices));
 
     // Specifies how OpenGL interprets vertex data
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
