@@ -9,6 +9,7 @@
 #include <GLFW/glfw3.h>
 
 #include <input/input.hpp>
+#include <core/logger.hpp>
 
 namespace engine {
 
@@ -17,7 +18,7 @@ class Window {
 public:
     ~Window();
 
-    Window(int width, int height, std::string name, Input &input);
+    Window(int width, int height, std::string name, Input &input, Logger &logger);
 
     void pollEvents();
 
@@ -41,6 +42,7 @@ private:
     std::optional<MouseButton> translateMouseButton(int glfwButton);
     std::optional<Key> translateKey(int glfwKey);
     Input &input;
+    Logger &logger;
 };
 
 } // namespace engine

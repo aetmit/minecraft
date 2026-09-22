@@ -4,6 +4,7 @@
 #include <memory>
 
 #include <clock.hpp>
+#include <core/logger.hpp>
 #include <window/window.hpp>
 #include <render/renderer.hpp>
 #include <input/input.hpp>
@@ -26,7 +27,7 @@ struct EngineConfig {
 class Engine {
 
 public:
-    explicit Engine(EngineConfig& config, Input &input);
+    explicit Engine(EngineConfig& config, Input &input, Logger &logger);
 
     void run();
 
@@ -39,6 +40,7 @@ private:
 
     Clock clock;
 
+    Logger &logger;
 
     Input &input;
 };

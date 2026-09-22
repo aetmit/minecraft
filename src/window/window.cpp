@@ -1,10 +1,10 @@
 #include <window/window.hpp>
 
 #include <stdexcept>
-
+#include <sstream>
 namespace engine {
 
-Window::Window(int width, int height, std::string name, Input &input): input(input) {
+Window::Window(int width, int height, std::string name, Input &input, Logger &logger): input(input), logger(logger) {
     if (!glfwInit()) {
         throw std::runtime_error("failed to initialize GLFW");
     }
@@ -17,6 +17,10 @@ Window::Window(int width, int height, std::string name, Input &input): input(inp
 
 
     window = glfwCreateWindow(width, height, name.c_str(), nullptr, nullptr);
+    
+    std::stringstream ss;
+    ss << "Initalised window " << width << "x" << height << " with name " << name;
+    logger.info(ss.str().c_str());
 
     if (!window) {
         glfwTerminate();
@@ -32,6 +36,7 @@ Window::Window(int width, int height, std::string name, Input &input): input(inp
 Window::~Window() {
     glfwDestroyWindow(window);
     glfwTerminate();
+    logger.info("Shut down window successsfully");
 }
 
 void Window::mouseCallback(GLFWwindow* window, int button, int action, int) {

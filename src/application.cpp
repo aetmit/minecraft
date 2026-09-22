@@ -4,16 +4,17 @@
 #include <iostream>
 
 #include <input/input.hpp>
+#include <core/logger.hpp>
 
 int Application::run() {
-    engine::Input input;
-    engine::EngineConfig config(800, 600, "Minecraft", backend);
-
-    engine::Engine engine(config, input);
+    engine::Logger logger; 
     try {
+        engine::Input input;
+        engine::EngineConfig config(800, 600, "Minecraft", backend);
+        engine::Engine engine(config, input, logger);
         engine.run();
     } catch (const std::exception &e) {
-        std::cerr << e.what() << "\n";
+        logger.error(e.what());
         return 1;
     }
     return 0;

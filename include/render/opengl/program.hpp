@@ -22,13 +22,15 @@ public:
 
     explicit operator GLuint() const;
 
-    void loadShader(const std::filesystem::path& file, OpenGLShaderType shaderType);
+    GLuint getProgram() const;
+
+    void compileShader(const std::filesystem::path& file, OpenGLShaderType shaderType);
 
     int link();
 
-    void use() const;
+    void bind() const;
 
-protected:
+private:
     GLuint program;
     std::vector<GLuint> shaders;
 

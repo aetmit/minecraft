@@ -12,17 +12,24 @@ EngineConfig::EngineConfig(int windowWidth, int windowHeight, std::string window
     :windowWidth(windowWidth), windowHeight(windowHeight), windowName(windowName), backend(backend)
 {}
 
-Engine::Engine(EngineConfig& config, Input &input) :
-    window(config.windowWidth, config.windowHeight, config.windowName, input),
+Engine::Engine(EngineConfig& config, Input &input, Logger &logger) :
+    window(config.windowWidth, config.windowHeight, config.windowName, input, logger),
     previousTime(0),
     clock(window),
-    input(input) {
+    input(input), logger(logger) {
+    
+    logger.info("Initialised window");
+    logger.info("Initialised clock");
+    logger.info("Initialised input system");
 
     switch (config.backend) {
         case GraphicsBackend::OpenGL:
-            renderer = std::make_unique<OpenGLRenderer>(&window);
+            logger.info("Using backend OpenGL");
+            renderer = std::make_unique<OpenGLRenderer>(&window, logger);
             break;
     }
+
+    logger.info("Engine initialised");
 }
 
 void Engine::run() {
