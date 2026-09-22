@@ -4,13 +4,13 @@ namespace engine {
 
 class Logger {
 public:
+    /// @brief Default logger constructor
     Logger() = default;
 
-    // use const char * here because i cant be bothered withj std::string
+    void debug(const char *msg);
     void info(const char *msg);
     void warn(const char *msg);
     void error(const char *msg);
-    void debug(const char *msg);
 };
 
 } // namespace engine
