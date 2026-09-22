@@ -81,7 +81,8 @@ OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window,
     ibo->setData(indices, sizeof(indices));
 
     // Specifies how OpenGL interprets vertex data
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    VertexLayout layout(0, 3, VertexElementType::Float, false, 3 * sizeof(float), static_cast<const void*>(0));
+    vao->setLayout(layout);
     vao->enableSlot(0);
 
     shaderProgram->compileShader("assets/shaders/basic.vert", OpenGLShaderType::Vertex);

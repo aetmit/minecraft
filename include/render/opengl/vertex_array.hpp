@@ -1,13 +1,33 @@
 #pragma once
 
+#include <cstdint>
+
 #include <glad/glad.h>
 
 #include <render/opengl/vertex_buffer.hpp>
 
 namespace engine {
 
-struct VertexLayout {
+enum class VertexElementType : GLenum {
+    Float = GL_FLOAT,
+};
 
+struct VertexLayout {
+    GLuint index;
+    GLuint elementCount;
+    VertexElementType type;
+    bool normalised;
+    std::int32_t stride;
+    const void *offset;
+
+    VertexLayout(
+        GLuint index,
+        GLuint elementCount,
+        VertexElementType type,
+        bool normalised,
+        std::int32_t stride,
+        const void *offset
+    );
 };
 
 class VertexArray {
@@ -19,9 +39,9 @@ public:
     void bind() const;
     void unbind() const;
 
-    void setLayout(const VertexBuffer &buffer);
+    void setLayout(const VertexLayout &layout);
 
-    void enableSlot(GLuint slot);
+    void enableSlot(GLuint index);
 
 private:
     GLuint vao;
