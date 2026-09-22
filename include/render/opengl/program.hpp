@@ -28,9 +28,9 @@ public:
 
     int link();
 
-    void use() const;
+    void bind() const;
 
-protected:
+private:
     GLuint program;
     std::vector<GLuint> shaders;
 

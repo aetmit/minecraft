@@ -10,7 +10,7 @@ namespace engine {
 
 void OpenGLRenderer::drawSquare() {
 
-    shaderProgram->use();
+    shaderProgram->bind();
 
     int location = glGetUniformLocation(shaderProgram->getProgram(), "uColour");
     if (location == -1) {

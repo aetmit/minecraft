@@ -56,7 +56,7 @@ GLuint OpenGLShaderProgram::getProgram() const {
     return program;
 }
 
-void OpenGLShaderProgram::use() const {
+void OpenGLShaderProgram::bind() const {
     glUseProgram(program);
 }
 
