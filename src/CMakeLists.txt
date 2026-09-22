@@ -6,6 +6,8 @@ set(SOURCES
     render/opengl/program.cpp
     render/opengl/renderer.cpp
     render/opengl/vertex_buffer.cpp
+    render/opengl/index_buffer.cpp 
+    render/opengl/vertex.cpp
 
     window/window.cpp
 

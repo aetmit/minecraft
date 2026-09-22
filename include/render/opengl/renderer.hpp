@@ -29,11 +29,11 @@ private:
     void clearErrors();
     void checkErrors();
 
-    float squareVertices[12] = {
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        0.5f,  0.5f, 0.0f,
-        -0.5f,  0.5f, 0.0f
+    Vertex squareVertices[4] = {
+        Vertex(-0.5f, -0.5f, 0.0f),
+        Vertex(0.5f, -0.5f, 0.0f),
+        Vertex(0.5f,  0.5f, 0.0f),
+        Vertex(-0.5f,  0.5f, 0.0f)
     };
 
     GLuint indices[6] = {
