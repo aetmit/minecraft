@@ -18,7 +18,7 @@ void OpenGLRenderer::drawSquare() {
     }
     glUniform4f(location, 0.2f, 0.3f, 0.8f, 1.0f);
 
-    glBindVertexArray(vao);
+    vao->bind();
 
     clearErrors();
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
@@ -26,7 +26,6 @@ void OpenGLRenderer::drawSquare() {
 }
 
 OpenGLRenderer::~OpenGLRenderer() {
-    glDeleteVertexArrays(1, &vao);
     logger.info("Shutdown OpenGL renderer successfully");
 }
 
@@ -68,22 +67,22 @@ OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window,
     logger.info(version.c_str());
     logger.info(glsl.c_str());
 
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-
+    vao = std::make_unique<VertexArray>();
     vbo = std::make_unique<VertexBuffer>();
+    ibo = std::make_unique<IndexBuffer>();
+
+    vao->bind();
 
     vbo->bind();
     vbo->setData(squareVertices, sizeof(squareVertices));
 
-    ibo = std::make_unique<IndexBuffer>();
 
     ibo->bind();
     ibo->setData(indices, sizeof(indices));
 
     // Specifies how OpenGL interprets vertex data
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+    vao->enableSlot(0);
 
     shaderProgram->compileShader("assets/shaders/basic.vert", OpenGLShaderType::Vertex);
     shaderProgram->compileShader("assets/shaders/basic.frag", OpenGLShaderType::Fragment);

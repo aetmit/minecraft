@@ -8,6 +8,7 @@
 #include <render/opengl/program.hpp>
 #include <render/opengl/vertex_buffer.hpp>
 #include <render/opengl/index_buffer.hpp>
+#include <render/opengl/vertex_array.hpp>
 #include <render/opengl/vertex.hpp>
 #include <window/window.hpp>
 #include <core/logger.hpp>
@@ -43,7 +44,7 @@ private:
 
     // we have to use a pointer here because we need to ininitialise glad before constructing vbo
     std::unique_ptr<VertexBuffer> vbo;
-    GLuint vao;
+    std::unique_ptr<VertexArray> vao;
 
     std::unique_ptr<IndexBuffer> ibo;
 
