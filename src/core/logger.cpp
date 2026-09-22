@@ -6,15 +6,19 @@
 
 namespace engine {
 
+// We just use clog so it does not flushes buffer after every insertion,
+// but we use cerr for critical logs.
+// We use clog instead of cout so clog sends data to the error stream.
+
+void Logger::verbose(const char *msg) {
+    std::clog << io::reset << io::bold << "[VERBOSE]" << io::reset << msg << "\n" << io::reset;
+}
+
 void Logger::debug(const char *msg) {
-    // We just use clog so it does not flushes buffer after every insertion.
-    // We use clog instead of cout so clog sends data to the error stream.
     std::clog << io::reset << io::bold << "[DEBUG]" << io::reset << msg << "\n" << io::reset;
 }
 
 void Logger::info(const char *msg) {
-    // We just use clog so it does not flushes buffer after every insertion.
-    // We use clog instead of cout so clog sends data to the error stream.
     std::clog << io::reset << io::bold << "[INFO] " << io::reset << msg << "\n" << io::reset;
 }
 
