@@ -8,6 +8,7 @@ set(SOURCES
     render/opengl/vertex_array.cpp
     render/opengl/vertex_buffer.cpp
     render/opengl/index_buffer.cpp 
+    render/opengl/texture.cpp
     render/opengl/vertex.cpp
 
     window/window.cpp
