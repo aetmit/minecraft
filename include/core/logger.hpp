@@ -5,13 +5,14 @@
 
 namespace engine {
 
+/// @brief Log Levels
 enum class LogLevel {
-    Verbose,
-    Debug,
-    Info,
-    Warn,
-    Error,
-    Off
+    Verbose,  //!< Verbose log
+    Debug,    //!< Debug log
+    Info,     //!< Info log 
+    Warn,     //!< Warning log
+    Error,    //!< Error log
+    Off       //!< Logging off
 };
 
 class Logger {
