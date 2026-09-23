@@ -1,48 +1,57 @@
 #pragma once
 
-#include <format>
+#include <atomic>
 #include <string_view>
-#include <utility>
 
 namespace engine {
+
+enum class LogLevel {
+    Verbose,
+    Debug,
+    Info,
+    Warn,
+    Error,
+    Off
+};
 
 class Logger {
 public:
     /// @brief Default logger constructor
-    Logger() = default;
+    Logger();
+
+    void setLogLevel(LogLevel level);
 
     void verbose(const std::string_view& msg);
-    void debug(const std::string_view&);
+
+    void debug(const std::string_view& msg);
+    
     void info(const std::string_view& msg);
+
     void warn(const std::string_view& msg);
+
     void error(const std::string_view& msg);
 
     // Template functions
 
     template <typename... Args>
-    void verbose(const std::string_view& msg, Args&&... args) {
-        verbose(std::vformat(msg, std::make_format_args(args...)));
-    }
+    void verbose(const std::string_view& msg, Args&&... args);
 
     template <typename... Args>
-    void debug(const std::string_view& msg, Args&&... args) {
-        debug(std::vformat(msg, std::make_format_args(args...)));
-    }
+    void debug(const std::string_view& msg, Args&&... args);
 
     template <typename... Args>
-    void info(const std::string_view& msg, Args&&... args) {
-        info(std::vformat(msg, std::make_format_args(args...)));
-    }
+    void info(const std::string_view& msg, Args&&... args);
 
     template <typename... Args>
-    void warn(const std::string_view& msg, Args&&... args) {
-        warn(std::vformat(msg, std::make_format_args(args...)));
-    }
+    void warn(const std::string_view& msg, Args&&... args);
 
     template <typename... Args>
-    void error(const std::string_view& msg, Args&&... args) {
-        error(std::vformat(msg, std::make_format_args(args...)));
-    }
+    void error(const std::string_view& msg, Args&&... args);
+
+private:
+    std::atomic<LogLevel> logLevel;
 };
 
 } // namespace engine
+
+#include <core/logger.inl>
