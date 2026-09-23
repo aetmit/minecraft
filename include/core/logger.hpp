@@ -20,6 +20,12 @@ public:
     /// @brief Default logger constructor
     Logger();
 
+    /// @brief Sets the logging level threshold for logs
+    ///
+    /// Only logs that have a level at or above the threshold will display,
+    /// any logs that have a level below the threshold will not display.
+    ///
+    /// @param level Logging level threshold
     void setLogLevel(LogLevel level);
 
     void verbose(const std::string_view& msg);
