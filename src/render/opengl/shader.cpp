@@ -14,16 +14,16 @@ namespace engine {
 
 namespace opengl {
 
-ShaderProgram::ShaderProgram(Window* window) {
+Shader::Shader(Window* window, Logger &logger): logger(logger) {
     program = glCreateProgram();
 }
 
-ShaderProgram::~ShaderProgram() {
+Shader::~Shader() {
     glDeleteProgram(program);
 }
 
 
-void ShaderProgram::compileShader(const std::filesystem::path& file, ShaderType shaderType) {
+void Shader::compileShader(const std::filesystem::path& file, ShaderType shaderType) {
     auto shader = loadShader(file);
     if (!shader) {
         throw std::runtime_error("faield to load shader") ;
@@ -31,7 +31,7 @@ void ShaderProgram::compileShader(const std::filesystem::path& file, ShaderType 
     shaders.push_back(compileShader(shader->c_str(), static_cast<GLuint>(shaderType)));
 }
 
-int ShaderProgram::link() {
+int Shader::link() {
     for (const auto& shader : shaders) {
         glAttachShader(program, shader);
     }
@@ -50,19 +50,39 @@ int ShaderProgram::link() {
     return status;
 }
 
-GLuint ShaderProgram::getProgram() const {
+GLuint Shader::getProgram() const {
     return program;
 }
 
-void ShaderProgram::bind() const {
+void Shader::bind() const {
     glUseProgram(program);
 }
 
-GLint ShaderProgram::getUniformLocation(const std::string &name) {
+GLint Shader::getUniformLocation(const std::string &name) {
     return glGetUniformLocation(getProgram(), name.c_str());
 }
 
-std::optional<std::string> ShaderProgram::loadShader(const std::filesystem::path& file) const {
+void Shader::setUniform1i(const std::string &name, int i1) {
+    int location = getUniformLocation(name);
+    if (location == -1) {
+        logger.error(std::string("failed to locate uniform with name", name.c_str()).c_str());
+        logger.warn("uniform not set");
+        return;
+    }
+    glUniform1i(location, i1);
+}
+
+void Shader::setUniform4f(const std::string &name, float f1, float f2, float f3, float f4) {
+    int location = getUniformLocation(name);
+    if (location == -1) {
+        logger.error(std::string("failed to locate uniform with name", name.c_str()).c_str());
+        logger.warn("uniform not set");
+        return;
+    }
+    glUniform4f(location, f1, f2, f3, f4);
+}
+
+std::optional<std::string> Shader::loadShader(const std::filesystem::path& file) const {
     std::ifstream shaderFile(file);
     if (!shaderFile.is_open()) {
         return std::nullopt; 
@@ -72,7 +92,7 @@ std::optional<std::string> ShaderProgram::loadShader(const std::filesystem::path
     return shaderStream.str();
 }
 
-GLuint ShaderProgram::compileShader(const char *shaderSource, GLuint type) const {
+GLuint Shader::compileShader(const char *shaderSource, GLuint type) const {
     int status;
     GLuint shader = glCreateShader(type);
     glShaderSource(shader, 1, &shaderSource, nullptr);

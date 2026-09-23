@@ -16,11 +16,7 @@ void Renderer::drawSquare() {
 
     shaderProgram->bind();
 
-    int location = shaderProgram->getUniformLocation("uColour");
-    if (location == -1) {
-        logger.error("Failed to find shader uniform");
-    }
-    glUniform4f(location, 0.2f, 0.3f, 0.8f, 1.0f);
+    shaderProgram->setUniform4f("uColour", 0.2f, 0.3f, 0.8f, 1.0f);
 
     vao->bind();
 
@@ -48,7 +44,7 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     }
     logger.info("Sucessfully loaded OpenGL");
 
-    shaderProgram = std::make_unique<ShaderProgram>(window);
+    shaderProgram = std::make_unique<Shader>(window, logger);
     
     const std::string vendor =
         std::string("Vendor: ") +

@@ -49,7 +49,7 @@ private:
 
     std::unique_ptr<IndexBuffer> ibo;
 
-    std::unique_ptr<ShaderProgram> shaderProgram;
+    std::unique_ptr<Shader> shaderProgram;
 };
 
 } // namespace opengl

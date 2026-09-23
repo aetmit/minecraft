@@ -1,13 +1,14 @@
 #pragma once
 
-#include <window/window.hpp>
-
-#include <glad/glad.h>
 
 #include <filesystem>
 #include <string>
 #include <vector>
 
+#include <glad/glad.h>
+
+#include <window/window.hpp>
+#include <core/logger.hpp>
 namespace engine {
 
 namespace opengl { 
@@ -17,17 +18,20 @@ enum class ShaderType : GLuint {
     Fragment = GL_FRAGMENT_SHADER  
 };
 
-class ShaderProgram {
+class Shader {
 public:
-    ShaderProgram(Window* window);
+    Shader(Window* window, Logger &logger);
 
-    ~ShaderProgram();
+    ~Shader();
 
     GLuint getProgram() const;
 
     void compileShader(const std::filesystem::path& file, ShaderType shaderType);
 
     GLint getUniformLocation(const std::string &name);
+
+    void setUniform4f(const std::string &name, float f1, float f2, float f3, float f4);
+    void setUniform1i(const std::string &name, int i1);
 
     int link();
 
@@ -36,6 +40,8 @@ public:
 private:
     GLuint program;
     std::vector<GLuint> shaders;
+
+    Logger &logger;
 
     [[nodiscard]] 
     std::optional<std::string> loadShader(const std::filesystem::path& file) const;
