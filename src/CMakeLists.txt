@@ -3,7 +3,7 @@ set(SOURCES
 
     render/renderer.cpp
 
-    render/opengl/program.cpp
+    render/opengl/shader.cpp
     render/opengl/renderer.cpp
     render/opengl/vertex_array.cpp
     render/opengl/vertex_buffer.cpp

@@ -5,7 +5,7 @@
 #include <glad/glad.h>
 
 #include <render/renderer.hpp>
-#include <render/opengl/program.hpp>
+#include <render/opengl/shader.hpp>
 #include <render/opengl/vertex_buffer.hpp>
 #include <render/opengl/index_buffer.hpp>
 #include <render/opengl/vertex_array.hpp>
