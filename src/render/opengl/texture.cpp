@@ -3,6 +3,8 @@
 
 namespace engine {
 
+namespace opengl {
+
 Texture::Texture(const std::filesystem::path &path): path(path) {
 
     imgBuffer = stbi_load(path.c_str(), &width, &height, &bpp, 4);
@@ -39,5 +41,7 @@ void Texture::bind(GLuint slot) const {
 void Texture::unbind() {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
+
+} // namespace opengl
 
 } // namespace engine

@@ -25,7 +25,7 @@ Engine::Engine(EngineConfig& config, Input &input, Logger &logger) :
     switch (config.backend) {
         case GraphicsBackend::OpenGL:
             logger.info("Using backend OpenGL");
-            renderer = std::make_unique<OpenGLRenderer>(&window, logger);
+            renderer = std::make_unique<opengl::Renderer>(&window, logger);
             break;
     }
 

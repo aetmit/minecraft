@@ -6,6 +6,8 @@
 
 namespace engine {
 
+namespace opengl {
+
 class IndexBuffer : public Buffer {
 public:
     IndexBuffer();
@@ -15,5 +17,7 @@ public:
     void bind() const override;
     void unbind() const override;
 };
+
+} // namespace opengl
 
 } // namespace engine

@@ -9,22 +9,22 @@
 
 namespace engine {
 
-enum class OpenGLShaderType : GLuint {
+namespace opengl { 
+
+enum class ShaderType : GLuint {
     Vertex   = GL_VERTEX_SHADER,
     Fragment = GL_FRAGMENT_SHADER  
 };
 
-class OpenGLShaderProgram {
+class ShaderProgram {
 public:
-    OpenGLShaderProgram(Window* window);
+    ShaderProgram(Window* window);
 
-    ~OpenGLShaderProgram();
-
-    explicit operator GLuint() const;
+    ~ShaderProgram();
 
     GLuint getProgram() const;
 
-    void compileShader(const std::filesystem::path& file, OpenGLShaderType shaderType);
+    void compileShader(const std::filesystem::path& file, ShaderType shaderType);
 
     int link();
 
@@ -40,5 +40,7 @@ private:
     [[nodiscard]] 
     GLuint compileShader(const char *shaderSource, GLuint type) const;
 };
+
+}
 
 } // namespace engine

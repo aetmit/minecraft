@@ -15,15 +15,16 @@
 
 namespace engine {
 
-class OpenGLRenderer : public Renderer {
+namespace opengl {
+class Renderer : public engine::Renderer {
 public:
     void drawSquare() override;
 
     void clearScreen() override;
 
-    ~OpenGLRenderer() override;
+    ~Renderer() override;
 
-    explicit OpenGLRenderer(Window *window, Logger &logger);
+    Renderer(Window *window, Logger &logger);
 
 private:
 
@@ -48,7 +49,9 @@ private:
 
     std::unique_ptr<IndexBuffer> ibo;
 
-    std::unique_ptr<OpenGLShaderProgram> shaderProgram;
+    std::unique_ptr<ShaderProgram> shaderProgram;
 };
+
+} // namespace opengl
 
 } // namespace engine

@@ -4,6 +4,8 @@
 
 namespace engine {
 
+namespace opengl {
+
 IndexBuffer::IndexBuffer() {
     glGenBuffers(1, &buffer);
 }
@@ -23,5 +25,7 @@ void IndexBuffer::unbind() const {
 void IndexBuffer::setData(const void *data, std::size_t size) const {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 }
+
+} // namespace opengl
 
 } // namespace engine

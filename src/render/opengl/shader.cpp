@@ -12,20 +12,18 @@
 
 namespace engine {
 
-OpenGLShaderProgram::OpenGLShaderProgram(Window* window) {
+namespace opengl {
+
+ShaderProgram::ShaderProgram(Window* window) {
     program = glCreateProgram();
 }
 
-OpenGLShaderProgram::~OpenGLShaderProgram() {
+ShaderProgram::~ShaderProgram() {
     glDeleteProgram(program);
 }
 
 
-OpenGLShaderProgram::operator GLuint() const {
-    return program;
-}
-
-void OpenGLShaderProgram::compileShader(const std::filesystem::path& file, OpenGLShaderType shaderType) {
+void ShaderProgram::compileShader(const std::filesystem::path& file, ShaderType shaderType) {
     auto shader = loadShader(file);
     if (!shader) {
         throw std::runtime_error("faield to load shader") ;
@@ -33,7 +31,7 @@ void OpenGLShaderProgram::compileShader(const std::filesystem::path& file, OpenG
     shaders.push_back(compileShader(shader->c_str(), static_cast<GLuint>(shaderType)));
 }
 
-int OpenGLShaderProgram::link() {
+int ShaderProgram::link() {
     for (const auto& shader : shaders) {
         glAttachShader(program, shader);
     }
@@ -52,16 +50,16 @@ int OpenGLShaderProgram::link() {
     return status;
 }
 
-GLuint OpenGLShaderProgram::getProgram() const {
+GLuint ShaderProgram::getProgram() const {
     return program;
 }
 
-void OpenGLShaderProgram::bind() const {
+void ShaderProgram::bind() const {
     glUseProgram(program);
 }
 
 
-std::optional<std::string> OpenGLShaderProgram::loadShader(const std::filesystem::path& file) const {
+std::optional<std::string> ShaderProgram::loadShader(const std::filesystem::path& file) const {
     std::ifstream shaderFile(file);
     if (!shaderFile.is_open()) {
         return std::nullopt; 
@@ -71,7 +69,7 @@ std::optional<std::string> OpenGLShaderProgram::loadShader(const std::filesystem
     return shaderStream.str();
 }
 
-GLuint OpenGLShaderProgram::compileShader(const char *shaderSource, GLuint type) const {
+GLuint ShaderProgram::compileShader(const char *shaderSource, GLuint type) const {
     int status;
     GLuint shader = glCreateShader(type);
     glShaderSource(shader, 1, &shaderSource, nullptr);
@@ -92,5 +90,7 @@ GLuint OpenGLShaderProgram::compileShader(const char *shaderSource, GLuint type)
     }
     return shader;
 }
+
+} // namespace opengl
 
 }  // namespace engine

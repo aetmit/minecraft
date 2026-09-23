@@ -4,6 +4,8 @@
 #include <cassert>
 namespace engine {
 
+namespace opengl {
+
 Vertex::Vertex(float x, float y, float z): x(x), y(y), z(z) {}
 
 std::size_t Vertex::offsetX() const {
@@ -29,5 +31,7 @@ std::size_t Vertex::offsetZ() const {
 
     return static_cast<std::size_t>(offset);   
 }
+
+} // namespace opengl
 
 } // namespace engine

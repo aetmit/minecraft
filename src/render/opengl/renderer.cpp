@@ -10,7 +10,9 @@
 
 namespace engine {
 
-void OpenGLRenderer::drawSquare() {
+namespace opengl {
+
+void Renderer::drawSquare() {
 
     shaderProgram->bind();
 
@@ -27,15 +29,15 @@ void OpenGLRenderer::drawSquare() {
     checkErrors();
 }
 
-OpenGLRenderer::~OpenGLRenderer() {
+Renderer::~Renderer() {
     logger.info("Shutdown OpenGL renderer successfully");
 }
 
-void OpenGLRenderer::clearScreen() {
+void Renderer::clearScreen() {
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window, logger) {
+Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, logger) {
     logger.info("Initalising OpenGL renderer");
 
     window->makeContextCurrent();
@@ -46,7 +48,7 @@ OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window,
     }
     logger.info("Sucessfully loaded OpenGL");
 
-    shaderProgram = std::make_unique<OpenGLShaderProgram>(window);
+    shaderProgram = std::make_unique<ShaderProgram>(window);
     
     const std::string vendor =
         std::string("Vendor: ") +
@@ -90,24 +92,26 @@ OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window,
     vao->setLayout(layout);
     vao->enableSlot(0);
 
-    shaderProgram->compileShader("assets/shaders/basic.vert", OpenGLShaderType::Vertex);
-    shaderProgram->compileShader("assets/shaders/basic.frag", OpenGLShaderType::Fragment);
+    shaderProgram->compileShader("assets/shaders/basic.vert", ShaderType::Vertex);
+    shaderProgram->compileShader("assets/shaders/basic.frag", ShaderType::Fragment);
 
     shaderProgram->link();
 
     logger.info("Initialised OpenGL renderer successfully");
 }
 
-void OpenGLRenderer::clearErrors() {
+void Renderer::clearErrors() {
     while (glGetError() != GL_NO_ERROR);
 }
 
-void OpenGLRenderer::checkErrors() {
+void Renderer::checkErrors() {
     while (GLenum error = glGetError()) {
         std::stringstream ss;
         ss << "OpenGL internal error (code = " << error << ")";
         logger.error(ss.str().c_str());
     }
 }
+
+} // namespace opengl
 
 } // namespace engine

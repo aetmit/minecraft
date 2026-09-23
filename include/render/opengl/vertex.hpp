@@ -4,6 +4,8 @@
 
 namespace engine {
 
+namespace opengl {
+
 struct Vertex {
 
 public:
@@ -18,5 +20,7 @@ public:
     float z;
 
 };
+
+} // namespace opengl
 
 } // namespace engine

@@ -7,6 +7,8 @@
 
 namespace engine {
 
+namespace opengl {
+
 class Texture {
 
 public:
@@ -28,5 +30,7 @@ private:
 
     std::filesystem::path path;
 };
+
+} // namespace engine
 
 } // namespace engine

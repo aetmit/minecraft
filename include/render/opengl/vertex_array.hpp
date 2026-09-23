@@ -8,6 +8,8 @@
 
 namespace engine {
 
+namespace opengl {
+
 enum class VertexElementType : GLenum {
     Float = GL_FLOAT,
 };
@@ -46,5 +48,7 @@ public:
 private:
     GLuint vao;
 };
+
+} // namespace opengl
 
 } // namespace engine
