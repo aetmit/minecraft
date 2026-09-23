@@ -34,6 +34,7 @@ target_include_directories(
 
 target_link_libraries(
     core PUBLIC
+    stbi
     glfw
     glad
     OpenGL::GL

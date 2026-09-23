@@ -5,6 +5,8 @@
 
 #include <glad/glad.h>
 
+#include <render/opengl/texture.hpp>
+
 
 namespace engine {
 
@@ -70,6 +72,9 @@ OpenGLRenderer::OpenGLRenderer(Window *window, Logger &logger): Renderer(window,
     vao = std::make_unique<VertexArray>();
     vbo = std::make_unique<VertexBuffer>();
     ibo = std::make_unique<IndexBuffer>();
+
+    Texture texture("assets/textures/dirt.png");
+    texture.bind();
 
     vao->bind();
 
