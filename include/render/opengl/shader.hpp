@@ -5,6 +5,7 @@
 #include <glad/glad.h>
 
 #include <filesystem>
+#include <string>
 #include <vector>
 
 namespace engine {
@@ -25,6 +26,8 @@ public:
     GLuint getProgram() const;
 
     void compileShader(const std::filesystem::path& file, ShaderType shaderType);
+
+    GLint getUniformLocation(const std::string &name);
 
     int link();
 

@@ -16,7 +16,7 @@ void Renderer::drawSquare() {
 
     shaderProgram->bind();
 
-    int location = glGetUniformLocation(shaderProgram->getProgram(), "uColour");
+    int location = shaderProgram->getUniformLocation("uColour");
     if (location == -1) {
         logger.error("Failed to find shader uniform");
     }

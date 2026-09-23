@@ -58,6 +58,9 @@ void ShaderProgram::bind() const {
     glUseProgram(program);
 }
 
+GLint ShaderProgram::getUniformLocation(const std::string &name) {
+    return glGetUniformLocation(getProgram(), name.c_str());
+}
 
 std::optional<std::string> ShaderProgram::loadShader(const std::filesystem::path& file) const {
     std::ifstream shaderFile(file);
