@@ -1,6 +1,8 @@
 #pragma once
 
 #include <atomic>
+#include <filesystem>
+#include <fstream>
 #include <string_view>
 
 namespace engine {
@@ -19,6 +21,10 @@ class Logger {
 public:
     /// @brief Default logger constructor
     Logger();
+
+    Logger(const std::filesystem::path& file);
+
+    ~Logger();
 
     /// @brief Sets the logging level threshold for logs
     ///
@@ -57,6 +63,8 @@ public:
 
 private:
     std::atomic<LogLevel> logLevel;
+
+    std::ofstream fileStream;
 };
 
 } // namespace engine
