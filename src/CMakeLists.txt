@@ -1,4 +1,6 @@
 set(SOURCES
+    core/logger.cpp
+
     input/input.cpp
 
     render/renderer.cpp

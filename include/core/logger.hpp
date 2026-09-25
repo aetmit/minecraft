@@ -1,9 +1,12 @@
 #pragma once
 
+#include <core/io.hpp>
+
 #include <atomic>
 #include <condition_variable>
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 #include <mutex>
 #include <queue>
 #include <string>
@@ -59,19 +62,44 @@ public:
     // Template functions
 
     template <typename... Args>
-    void verbose(const std::string_view& msg, Args&&... args);
+    void verbose(const std::string_view& msg, Args&&... args) {
+        if (logLevel.load(std::memory_order_relaxed) <= LogLevel::Verbose) {
+            std::clog << io::reset << io::bold << "[VERBOSE] " << io::reset
+            << std::vformat(msg, std::make_format_args(args...)) << io::reset;
+        }
+    }
 
     template <typename... Args>
-    void debug(const std::string_view& msg, Args&&... args);
+    void debug(const std::string_view& msg, Args&&... args) {
+        if (logLevel.load(std::memory_order_relaxed) <= LogLevel::Debug) {
+            std::clog << io::reset << io::bold << "[DEBUG] " << io::reset
+            << std::vformat(msg, std::make_format_args(args...)) << io::reset;
+        }
+    }
 
     template <typename... Args>
-    void info(const std::string_view& msg, Args&&... args);
+    void info(const std::string_view& msg, Args&&... args) {
+        if (logLevel.load(std::memory_order_relaxed) <= LogLevel::Info) {
+            std::clog << io::reset << io::bold << "[INFO] " << io::reset
+            << std::vformat(msg, std::make_format_args(args...)) << io::reset;
+        }
+    }
 
     template <typename... Args>
-    void warn(const std::string_view& msg, Args&&... args);
+    void warn(const std::string_view& msg, Args&&... args) {
+        if (logLevel.load(std::memory_order_relaxed) <= LogLevel::Warn) {
+            std::cerr << io::reset << io::brightYellow << io::bold << "[WARN] " << io::reset
+            << std::vformat(msg, std::make_format_args(args...)) << io::reset;
+        }
+    }
 
     template <typename... Args>
-    void error(const std::string_view& msg, Args&&... args);
+    void error(const std::string_view& msg, Args&&... args) {
+        if (logLevel.load(std::memory_order_relaxed) <= LogLevel::Error) {
+            std::cerr << io::reset << io::brightRed << io::bold << "[ERROR] " << io::reset
+            << std::vformat(msg, std::make_format_args(args...)) << io::reset;
+        }
+    }
 
 private:
     std::atomic<LogLevel> logLevel;
@@ -89,5 +117,3 @@ private:
 };
 
 } // namespace engine
-
-#include <core/logger.inl>
