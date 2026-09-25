@@ -12,6 +12,7 @@
 #include <render/opengl/texture.hpp>
 #include <render/opengl/vertex_array.hpp>
 #include <render/opengl/vertex.hpp>
+#include <camera/camera.hpp>
 #include <window/window.hpp>
 #include <core/logger.hpp>
 
@@ -49,8 +50,8 @@ private:
         2, 3, 0
     };
 
-    glm::mat4 projection;
-    glm::mat4 view;
+    std::unique_ptr<Camera> camera;
+    
     glm::mat4 model;
 
     // we use pointers here because we need runtime initalisation

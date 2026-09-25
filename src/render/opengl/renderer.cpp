@@ -79,6 +79,8 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
 
     texture = std::make_unique<Texture>("assets/textures/dirt.png");
 
+    camera = std::make_unique<Camera>(70, window->aspectRatio(), 0.1f, 1000.0f);
+
     shaderProgram->bind();
 
     texture->bind();
@@ -86,15 +88,19 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     shaderProgram->setUniform1i("uTexture", 0);
     checkErrors();
 
-    projection = glm::perspective(glm::radians(70.0f), window->aspectRatio(), 0.1f, 1000.0f);
-    view = glm::mat4(1.0f);
-    model = glm::mat4(1.0f);
+    model = glm::translate(
+        glm::mat4(1.0f),
+        glm::vec3(0.0f, 0.0f, -5.0f)
+    );
+
+    glm::mat4 projectionMatrix = camera->projectionMatrix();
+    glm::mat4 viewMatrix = camera->viewMatrix();
 
     clearErrors();
-    shaderProgram->setUniformMat4("uProjection", projection);
+    shaderProgram->setUniformMat4("uProjection", projectionMatrix);
     checkErrors();
     clearErrors();
-    shaderProgram->setUniformMat4("uView", view);
+    shaderProgram->setUniformMat4("uView", viewMatrix);
     checkErrors();
     clearErrors();
     shaderProgram->setUniformMat4("uModel", model);
@@ -135,12 +141,7 @@ void Renderer::checkErrors() {
 }
 
 void Renderer::updateProjection() {
-    projection = glm::perspective(
-        glm::radians(70.0f),
-        window->aspectRatio(),
-        0.1f,
-        1000.0f
-    );
+    auto projection = camera->projectionMatrix();
 
     shaderProgram->bind();
     shaderProgram->setUniformMat4("uProjection", projection);

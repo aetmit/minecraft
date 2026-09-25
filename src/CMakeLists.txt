@@ -11,6 +11,8 @@ set(SOURCES
     render/opengl/texture.cpp
     render/opengl/vertex.cpp
 
+    camera/camera.cpp
+
     window/window.cpp
 
     core/logger.cpp
