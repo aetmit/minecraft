@@ -6,12 +6,15 @@
 #include <condition_variable>
 #include <filesystem>
 #include <fstream>
+#include <initializer_list>
 #include <iostream>
 #include <mutex>
 #include <queue>
 #include <string>
 #include <string_view>
 #include <thread>
+#include <tuple>
+#include <vector>
 
 namespace engine {
 
@@ -25,17 +28,35 @@ enum class LogLevel {
     Off       //!< Logging off
 };
 
-// TODO: Worker thread to handle I/O operations
-
 struct LogMsg {
     LogLevel level;
     std::string msg;
+};
+
+struct LogFile {
+public:
+    std::filesystem::path file;
+    LogLevel level;
+
+    friend class Logger;
+
+    LogFile(const std::string_view& file, LogLevel level);
+
+    LogFile(const LogFile&);
+    LogFile& operator=(const LogFile&);
+
+protected:
+    std::ofstream outStream;
 };
 
 class Logger {
 public:
     /// @brief Default logger constructor
     Logger();
+
+    Logger(const std::vector<LogFile>& files);
+
+    Logger(const std::initializer_list<LogFile>& files);
 
     ~Logger();
 
@@ -61,46 +82,33 @@ public:
 
     template <typename... Args>
     void verbose(const std::string_view& msg, Args&&... args) {
-        if (logLevel.load(std::memory_order_relaxed) <= LogLevel::Verbose) {
-            std::clog << io::reset << io::bold << "[VERBOSE] " << io::reset
-            << std::vformat(msg, std::make_format_args(args...)) << io::reset;
-        }
+        log(LogLevel::Verbose, std::vformat(msg, std::make_format_args(args...)));
     }
 
     template <typename... Args>
     void debug(const std::string_view& msg, Args&&... args) {
-        if (logLevel.load(std::memory_order_relaxed) <= LogLevel::Debug) {
-            std::clog << io::reset << io::bold << "[DEBUG] " << io::reset
-            << std::vformat(msg, std::make_format_args(args...)) << io::reset;
-        }
+        log(LogLevel::Debug, std::vformat(msg, std::make_format_args(args...)));
     }
 
     template <typename... Args>
     void info(const std::string_view& msg, Args&&... args) {
-        if (logLevel.load(std::memory_order_relaxed) <= LogLevel::Info) {
-            std::clog << io::reset << io::bold << "[INFO] " << io::reset
-            << std::vformat(msg, std::make_format_args(args...)) << io::reset;
-        }
+        log(LogLevel::Info, std::vformat(msg, std::make_format_args(args...)));
     }
 
     template <typename... Args>
     void warn(const std::string_view& msg, Args&&... args) {
-        if (logLevel.load(std::memory_order_relaxed) <= LogLevel::Warn) {
-            std::cerr << io::reset << io::brightYellow << io::bold << "[WARN] " << io::reset
-            << std::vformat(msg, std::make_format_args(args...)) << io::reset;
-        }
+        log(LogLevel::Warn, std::vformat(msg, std::make_format_args(args...)));
     }
 
     template <typename... Args>
     void error(const std::string_view& msg, Args&&... args) {
-        if (logLevel.load(std::memory_order_relaxed) <= LogLevel::Error) {
-            std::cerr << io::reset << io::brightRed << io::bold << "[ERROR] " << io::reset
-            << std::vformat(msg, std::make_format_args(args...)) << io::reset;
-        }
+        log(LogLevel::Error, std::vformat(msg, std::make_format_args(args...)));
     }
 
 private:
     std::atomic<LogLevel> logLevel;
+
+    std::vector<LogFile> logFiles;
 
     std::queue<LogMsg> logQueue;
     std::condition_variable condition;
@@ -112,6 +120,8 @@ private:
     void log(LogLevel level, const std::string_view& msg);
 
     void terminalOutput(const LogMsg& msg);
+
+    std::string formatOutput(const LogMsg& msg);
 
     void ioHandle();
 };

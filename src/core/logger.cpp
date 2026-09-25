@@ -2,6 +2,7 @@
 
 #include <atomic>
 #include <filesystem>
+#include <fstream>
 #include <ios>
 #include <iostream>
 #include <mutex>
@@ -11,11 +12,58 @@
 
 namespace engine {
 
+LogFile::LogFile(const std::string_view& file, LogLevel level) :
+    file(file),
+    level(level)
+{
+}
+
+LogFile::LogFile(const LogFile& other) :
+    file(other.file),
+    level(other.level)
+{
+}
+
+LogFile& LogFile::operator=(const LogFile& other) {
+    if (this != &other) {
+        if (outStream.is_open()) {
+            outStream.close();
+        }
+
+        file = other.file;
+        level = other.level;
+    }
+
+    return *this;
+}
+
 Logger::Logger() :
     logLevel(LogLevel::Debug),
     ioThread(&Logger::ioHandle, this),
     endProcess{false}
 {
+}
+
+Logger::Logger(const std::vector<LogFile>& files) :
+    logLevel(LogLevel::Debug),
+    ioThread(&Logger::ioHandle, this),
+    endProcess{false},
+    logFiles(files)
+{
+    for (LogFile& file : logFiles) {
+        file.outStream = std::ofstream(file.file);
+    }
+}
+
+Logger::Logger(const std::initializer_list<LogFile>& files) :
+    logLevel(LogLevel::Debug),
+    ioThread(&Logger::ioHandle, this),
+    endProcess{false},
+    logFiles(files)
+{
+    for (LogFile& file : logFiles) {
+        file.outStream = std::ofstream(file.file);
+    }
 }
 
 Logger::~Logger() {
@@ -28,6 +76,10 @@ Logger::~Logger() {
 
     if (ioThread.joinable()) {
         ioThread.join();
+    }
+
+    for (LogFile& file : logFiles) {
+        file.outStream.close();
     }
 }
 
@@ -84,6 +136,17 @@ void Logger::terminalOutput(const LogMsg& msg) {
     }
 }
 
+std::string Logger::formatOutput(const LogMsg& msg) {
+    switch (msg.level) {
+        case LogLevel::Verbose: return "[VERBOSE] " + msg.msg + "\n";
+        case LogLevel::Debug:   return "[DEBUG] " + msg.msg + "\n";
+        case LogLevel::Info:    return "[INFO] " + msg.msg + "\n";
+        case LogLevel::Warn:    return "[WARN] " + msg.msg + "\n";
+        case LogLevel::Error:   return "[ERROR] " + msg.msg + "\n";
+    }
+    return "";
+}
+
 void Logger::ioHandle() {
     while (true) {
         LogMsg message;
@@ -103,8 +166,14 @@ void Logger::ioHandle() {
         }
 
         if (logLevel.load(std::memory_order_relaxed) <= message.level) {
-            
             terminalOutput(message);
+        }
+
+        for (LogFile& file : logFiles) {
+            const auto logMsg = formatOutput(message);
+            if (file.level <= message.level) {
+                file.outStream << logMsg;
+            }
         }
     }
 }
