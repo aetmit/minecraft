@@ -50,6 +50,7 @@ Logger::Logger(const std::vector<LogFile>& files) :
     endProcess{false},
     logFiles(files)
 {
+    // Create stream for each file
     for (LogFile& file : logFiles) {
         file.outStream = std::ofstream(file.file);
     }
@@ -61,6 +62,7 @@ Logger::Logger(const std::initializer_list<LogFile>& files) :
     endProcess{false},
     logFiles(files)
 {
+    // Create stream for each file
     for (LogFile& file : logFiles) {
         file.outStream = std::ofstream(file.file);
     }
@@ -112,7 +114,7 @@ void Logger::log(LogLevel level, const std::string_view& msg) {
         std::lock_guard<std::mutex> lock(mutex);
 
         logQueue.push(LogMsg{level, std::string(msg)});
-    }
+    }  // lock
     condition.notify_one();
 }
 
@@ -157,22 +159,29 @@ void Logger::ioHandle() {
                 return endProcess || !logQueue.empty();
             });
 
+            // End thread only if command is sent and nothing to do
             if (endProcess && logQueue.empty()) {
                 return;
             }
 
             message = std::move(logQueue.front());
             logQueue.pop();
-        }
+        }  // lock
 
+        // Terminal I/O
         if (logLevel.load(std::memory_order_relaxed) <= message.level) {
             terminalOutput(message);
         }
 
+        // File I/O
         for (LogFile& file : logFiles) {
             const auto logMsg = formatOutput(message);
             if (file.level <= message.level) {
                 file.outStream << logMsg;
+                if (file.level <= LogLevel::Warn) {
+                    // Flush important logs so we don't lose it
+                    file.outStream.flush();
+                }
             }
         }
     }
