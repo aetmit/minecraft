@@ -5,8 +5,6 @@
 
 #include <glad/glad.h>
 
-#include <render/opengl/texture.hpp>
-
 
 namespace engine {
 
@@ -17,6 +15,7 @@ void Renderer::drawSquare() {
     shaderProgram->bind();
 
     vao->bind();
+    texture->bind();
 
     clearErrors();
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
@@ -73,8 +72,9 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     vbo = std::make_unique<VertexBuffer>();
     ibo = std::make_unique<IndexBuffer>();
 
-    Texture texture("assets/textures/dirt.png");
-    texture.bind();
+    texture = std::make_unique<Texture>("assets/textures/dirt.png");
+
+    texture->bind();
     shaderProgram->setUniform1i("uTexture", 0);
 
     vao->bind();
@@ -87,10 +87,10 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     ibo->setData(indices, sizeof(indices));
 
     // Specifies how OpenGL interprets vertex data
-    VertexLayout layout(0, 3, VertexElementType::Float, false, 3 * sizeof(float), static_cast<const void*>(0));
+    VertexLayout layout(0, 3, VertexElementType::Float, false, sizeof(Vertex), static_cast<const void*>(0));
     vao->setLayout(layout);
     vao->enableSlot(0);
-    VertexLayout uvlayout(1, 2, VertexElementType::Float, false, 2 * sizeof(float), reinterpret_cast<const void*>(squareVertices[0].offsetU()));
+    VertexLayout uvlayout(1, 2, VertexElementType::Float, false, 2 * sizeof(Vertex), reinterpret_cast<const void*>(squareVertices[0].offsetU()));
     vao->setLayout(uvlayout);
     vao->enableSlot(1);
 

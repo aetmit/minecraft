@@ -8,6 +8,7 @@
 #include <render/opengl/shader.hpp>
 #include <render/opengl/vertex_buffer.hpp>
 #include <render/opengl/index_buffer.hpp>
+#include <render/opengl/texture.hpp>
 #include <render/opengl/vertex_array.hpp>
 #include <render/opengl/vertex.hpp>
 #include <window/window.hpp>
@@ -43,13 +44,15 @@ private:
         2, 3, 0
     };
 
-    // we have to use a pointer here because we need to ininitialise glad before constructing vbo
+    // we use pointers here because we need runtime initalisation
     std::unique_ptr<VertexBuffer> vbo;
     std::unique_ptr<VertexArray> vao;
 
     std::unique_ptr<IndexBuffer> ibo;
 
     std::unique_ptr<Shader> shaderProgram;
+
+    std::unique_ptr<Texture> texture;
 };
 
 } // namespace opengl
