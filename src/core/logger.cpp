@@ -1,5 +1,6 @@
 #include <core/logger.hpp>
 
+#include <algorithm>
 #include <atomic>
 #include <filesystem>
 #include <fstream>
@@ -80,7 +81,14 @@ Logger::~Logger() {
         ioThread.join();
     }
 
+    // Flush terminal buffers
+
+    // cerr is not required because it flushes buffers after every insert
+    // operation
+    std::clog.flush();
+
     for (LogFile& file : logFiles) {
+        file.outStream.flush();  // Flush buffers
         file.outStream.close();
     }
 }
