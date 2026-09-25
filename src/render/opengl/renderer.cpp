@@ -16,8 +16,6 @@ void Renderer::drawSquare() {
 
     shaderProgram->bind();
 
-    shaderProgram->setUniform4f("uColour", 0.2f, 0.3f, 0.8f, 1.0f);
-
     vao->bind();
 
     clearErrors();
@@ -45,6 +43,10 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     logger.info("Sucessfully loaded OpenGL");
 
     shaderProgram = std::make_unique<Shader>(window, logger);
+    shaderProgram->compileShader("assets/shaders/basic.vert", ShaderType::Vertex);
+    shaderProgram->compileShader("assets/shaders/basic.frag", ShaderType::Fragment);
+
+    shaderProgram->link();
     
     const std::string vendor =
         std::string("Vendor: ") +
@@ -73,7 +75,7 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
 
     Texture texture("assets/textures/dirt.png");
     texture.bind();
-    shaderProgram->setUniform1i("u_Texture", 0);
+    shaderProgram->setUniform1i("uTexture", 0);
 
     vao->bind();
 
@@ -92,10 +94,7 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     vao->setLayout(uvlayout);
     vao->enableSlot(1);
 
-    shaderProgram->compileShader("assets/shaders/basic.vert", ShaderType::Vertex);
-    shaderProgram->compileShader("assets/shaders/basic.frag", ShaderType::Fragment);
-
-    shaderProgram->link();
+    
 
     logger.info("Initialised OpenGL renderer successfully");
 }
