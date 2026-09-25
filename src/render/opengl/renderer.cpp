@@ -73,6 +73,7 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
 
     Texture texture("assets/textures/dirt.png");
     texture.bind();
+    shaderProgram->setUniform1i("u_Texture", 0);
 
     vao->bind();
 
@@ -87,6 +88,9 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     VertexLayout layout(0, 3, VertexElementType::Float, false, 3 * sizeof(float), static_cast<const void*>(0));
     vao->setLayout(layout);
     vao->enableSlot(0);
+    VertexLayout uvlayout(1, 2, VertexElementType::Float, false, 2 * sizeof(float), reinterpret_cast<const void*>(squareVertices[0].offsetU()));
+    vao->setLayout(uvlayout);
+    vao->enableSlot(1);
 
     shaderProgram->compileShader("assets/shaders/basic.vert", ShaderType::Vertex);
     shaderProgram->compileShader("assets/shaders/basic.frag", ShaderType::Fragment);
