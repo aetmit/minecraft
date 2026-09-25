@@ -45,7 +45,7 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
 
-    glm::mat4 projection = glm::perspective(glm::radians(70.0f), window->aspectRatio(), 0.1f, 1000.0f);
+    projection = glm::perspective(glm::radians(70.0f), window->aspectRatio(), 0.1f, 1000.0f);
 
     shaderProgram = std::make_unique<Shader>(window, logger);
     shaderProgram->compileShader("assets/shaders/basic.vert", ShaderType::Vertex);
@@ -121,6 +121,18 @@ void Renderer::checkErrors() {
         ss << "OpenGL internal error (code = " << error << ")";
         logger.error(ss.str().c_str());
     }
+}
+
+void Renderer::updateProjection() {
+    projection = glm::perspective(
+        glm::radians(70.0f),
+        window->aspectRatio(),
+        0.1f,
+        1000.0f
+    );
+
+    shaderProgram->bind();
+    shaderProgram->setUniformMat4("uProjection", projection);
 }
 
 } // namespace opengl

@@ -3,6 +3,7 @@
 #include <memory>
 
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 
 #include <render/renderer.hpp>
 #include <render/opengl/shader.hpp>
@@ -27,10 +28,14 @@ public:
 
     Renderer(Window *window, Logger &logger);
 
+
+    void updateProjection() override;
+
 private:
 
     void clearErrors();
     void checkErrors();
+
 
     Vertex squareVertices[4] = {
         Vertex(-0.5f, -0.5f, -5.0f, 0.0f, 0.0f),
@@ -43,6 +48,8 @@ private:
         0, 1, 2,
         2, 3, 0
     };
+
+    glm::mat4 projection;
 
     // we use pointers here because we need runtime initalisation
     std::unique_ptr<VertexBuffer> vbo;

@@ -32,6 +32,9 @@ public:
 
     float aspectRatio() const;
 
+    void resetResizedFlag();
+    bool wasResized() const;
+
 private:
     GLFWwindow *getWindow() const;
 
@@ -40,6 +43,7 @@ private:
     static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
     static void mouseCallback(GLFWwindow *window, int button, int action, int mods);
     static void mousePositionCallback(GLFWwindow *window, double x, double y);
+    static void framebufferResizeCallback(GLFWwindow* window, int width, int height);
 
     std::optional<MouseButton> translateMouseButton(int glfwButton);
     std::optional<Key> translateKey(int glfwKey);
@@ -48,6 +52,8 @@ private:
 
     int width;
     int height;
+
+    bool resized{false};
 };
 
 } // namespace engine

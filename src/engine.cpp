@@ -42,6 +42,12 @@ void Engine::run() {
 
         window.pollEvents();
 
+        if (window.wasResized()) {
+            renderer->updateProjection();
+
+            window.resetResizedFlag();
+        }
+
         renderer->clearScreen();    
 
 
