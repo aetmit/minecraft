@@ -20,12 +20,12 @@ namespace engine {
 
 /// @brief Log Levels
 enum class LogLevel {
-    Verbose,  //!< Verbose log
-    Debug,    //!< Debug log
-    Info,     //!< Info log 
-    Warn,     //!< Warning log
-    Error,    //!< Error log
-    Off       //!< Logging off
+    Trace,  //!< Trace log
+    Debug,  //!< Debug log
+    Info,   //!< Info log 
+    Warn,   //!< Warning log
+    Error,  //!< Error log
+    Off     //!< Logging off
 };
 
 struct LogMsg {
@@ -68,7 +68,7 @@ public:
     /// @param level Logging level threshold
     void setLogLevel(LogLevel level);
 
-    void verbose(const std::string_view& msg);
+    void trace(const std::string_view& msg);
 
     void debug(const std::string_view& msg);
     
@@ -81,8 +81,8 @@ public:
     // Template functions
 
     template <typename... Args>
-    void verbose(const std::string_view& msg, Args&&... args) {
-        log(LogLevel::Verbose, std::vformat(msg, std::make_format_args(args...)));
+    void trace(const std::string_view& msg, Args&&... args) {
+        log(LogLevel::Trace, std::vformat(msg, std::make_format_args(args...)));
     }
 
     template <typename... Args>

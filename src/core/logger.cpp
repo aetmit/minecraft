@@ -87,8 +87,8 @@ void Logger::setLogLevel(LogLevel level) {
     logLevel = level;
 }
 
-void Logger::verbose(const std::string_view& msg) {
-    log(LogLevel::Verbose, msg);
+void Logger::trace(const std::string_view& msg) {
+    log(LogLevel::Trace, msg);
 }
 
 void Logger::debug(const std::string_view& msg) {
@@ -118,8 +118,8 @@ void Logger::log(LogLevel level, const std::string_view& msg) {
 
 void Logger::terminalOutput(const LogMsg& msg) {
     switch (msg.level) {
-        case LogLevel::Verbose:
-            std::clog << io::reset << io::bold << "[VERBOSE] " << io::reset << msg.msg << "\n" << io::reset;
+        case LogLevel::Trace:
+            std::clog << io::reset << io::bold << "[TRACE] " << io::reset << msg.msg << "\n" << io::reset;
             break;
         case LogLevel::Debug:
             std::clog << io::reset << io::bold << "[DEBUG] " << io::reset << msg.msg << "\n" << io::reset;
@@ -138,11 +138,11 @@ void Logger::terminalOutput(const LogMsg& msg) {
 
 std::string Logger::formatOutput(const LogMsg& msg) {
     switch (msg.level) {
-        case LogLevel::Verbose: return "[VERBOSE] " + msg.msg + "\n";
-        case LogLevel::Debug:   return "[DEBUG] " + msg.msg + "\n";
-        case LogLevel::Info:    return "[INFO] " + msg.msg + "\n";
-        case LogLevel::Warn:    return "[WARN] " + msg.msg + "\n";
-        case LogLevel::Error:   return "[ERROR] " + msg.msg + "\n";
+        case LogLevel::Trace: return "[TRACE] " + msg.msg + "\n";
+        case LogLevel::Debug: return "[DEBUG] " + msg.msg + "\n";
+        case LogLevel::Info:  return "[INFO] " + msg.msg + "\n";
+        case LogLevel::Warn:  return "[WARN] " + msg.msg + "\n";
+        case LogLevel::Error: return "[ERROR] " + msg.msg + "\n";
     }
     return "";
 }
