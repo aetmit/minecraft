@@ -28,7 +28,7 @@ Renderer::~Renderer() {
 }
 
 void Renderer::clearScreen() {
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, logger) {
@@ -45,6 +45,7 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
 
+    glEnable(GL_DEPTH_TEST);
 
     shaderProgram = std::make_unique<Shader>(window, logger);
     shaderProgram->compileShader("assets/shaders/basic.vert", ShaderType::Vertex);
