@@ -45,7 +45,6 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
 
-    projection = glm::perspective(glm::radians(70.0f), window->aspectRatio(), 0.1f, 1000.0f);
 
     shaderProgram = std::make_unique<Shader>(window, logger);
     shaderProgram->compileShader("assets/shaders/basic.vert", ShaderType::Vertex);
@@ -83,10 +82,22 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     shaderProgram->bind();
 
     texture->bind();
+    clearErrors();
     shaderProgram->setUniform1i("uTexture", 0);
+    checkErrors();
+
+    projection = glm::perspective(glm::radians(70.0f), window->aspectRatio(), 0.1f, 1000.0f);
+    view = glm::mat4(1.0f);
+    model = glm::mat4(1.0f);
 
     clearErrors();
     shaderProgram->setUniformMat4("uProjection", projection);
+    checkErrors();
+    clearErrors();
+    shaderProgram->setUniformMat4("uView", view);
+    checkErrors();
+    clearErrors();
+    shaderProgram->setUniformMat4("uModel", model);
     checkErrors();
 
     vao->bind();

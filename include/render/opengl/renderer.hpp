@@ -38,10 +38,10 @@ private:
 
 
     Vertex squareVertices[4] = {
-        Vertex(-0.5f, -0.5f, -5.0f, 0.0f, 0.0f),
-        Vertex(0.5f, -0.5f, -5.0f, 1.0f, 0.0f),
-        Vertex(0.5f,  0.5f, -5.0f, 1.0f, 1.0f),
-        Vertex(-0.5f,  0.5f, -5.0f, 0.0f, 1.0f),
+        Vertex(-0.5f, -0.5f, 0.0f, 0.0f, 0.0f),
+        Vertex(0.5f, -0.5f, 0.0f, 1.0f, 0.0f),
+        Vertex(0.5f,  0.5f, 0.0f, 1.0f, 1.0f),
+        Vertex(-0.5f,  0.5f, 0.0f, 0.0f, 1.0f),
     };
 
     GLuint indices[6] = {
@@ -50,6 +50,8 @@ private:
     };
 
     glm::mat4 projection;
+    glm::mat4 view;
+    glm::mat4 model;
 
     // we use pointers here because we need runtime initalisation
     std::unique_ptr<VertexBuffer> vbo;
