@@ -46,8 +46,13 @@ endfunction(copyAssets)
 add_library(glad STATIC "vendor/glad/src/glad.c")
 target_include_directories(glad PUBLIC "vendor/glad/include")
 
+# Link stb_image as a static library
 add_library(stbi STATIC "vendor/stbi/src/stb_image.cpp")
 target_include_directories(stbi PUBLIC "vendor/")
+
+add_library(glm INTERFACE)
+target_include_directories(glm INTERFACE "vendor/glm")
+
 
 # Linux: GLAD requires dynamic loader library to fetch OpenGL pointers
 if(NOT WIN32 AND NOT APPLE)
@@ -77,6 +82,8 @@ find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/src)
+
+target_link_libraries(core PUBLIC glm)
 
 add_executable(${PROGRAM_NAME} src/main.cpp) 
 
