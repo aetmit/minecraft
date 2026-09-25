@@ -93,7 +93,7 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     VertexLayout layout(0, 3, VertexElementType::Float, false, sizeof(Vertex), static_cast<const void*>(0));
     vao->setLayout(layout);
     vao->enableSlot(0);
-    VertexLayout uvlayout(1, 2, VertexElementType::Float, false, 2 * sizeof(Vertex), reinterpret_cast<const void*>(squareVertices[0].offsetU()));
+    VertexLayout uvlayout(1, 2, VertexElementType::Float, false, sizeof(Vertex), reinterpret_cast<const void*>(squareVertices[0].offsetU()));
     vao->setLayout(uvlayout);
     vao->enableSlot(1);
 
