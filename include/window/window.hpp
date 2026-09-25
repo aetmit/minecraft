@@ -30,6 +30,8 @@ public:
 
     double getTime();
 
+    float aspectRatio() const;
+
 private:
     GLFWwindow *getWindow() const;
 
@@ -43,6 +45,9 @@ private:
     std::optional<Key> translateKey(int glfwKey);
     Input &input;
     Logger &logger;
+
+    int width;
+    int height;
 };
 
 } // namespace engine

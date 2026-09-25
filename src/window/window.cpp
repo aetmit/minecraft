@@ -4,7 +4,7 @@
 #include <sstream>
 namespace engine {
 
-Window::Window(int width, int height, std::string name, Input &input, Logger &logger): input(input), logger(logger) {
+Window::Window(int width, int height, std::string name, Input &input, Logger &logger): input(input), logger(logger), width(width), height(height) {
     if (!glfwInit()) {
         throw std::runtime_error("failed to initialize GLFW");
     }
@@ -184,5 +184,9 @@ bool Window::shouldClose() const {
 
 double Window::getTime() {
     return glfwGetTime();
+}
+
+float Window::aspectRatio() const {
+    return static_cast<float>(width) / static_cast<float>(height);
 }
 } // namespace engine
