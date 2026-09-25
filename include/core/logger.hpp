@@ -37,8 +37,6 @@ public:
     /// @brief Default logger constructor
     Logger();
 
-    Logger(const std::filesystem::path& file);
-
     ~Logger();
 
     /// @brief Sets the logging level threshold for logs
@@ -104,8 +102,6 @@ public:
 private:
     std::atomic<LogLevel> logLevel;
 
-    std::ofstream fileStream;
-
     std::queue<LogMsg> logQueue;
     std::condition_variable condition;
     std::mutex mutex;
@@ -114,6 +110,10 @@ private:
     std::thread ioThread;
 
     void log(LogLevel level, const std::string_view& msg);
+
+    void terminalOutput(const LogMsg& msg);
+
+    void ioHandle();
 };
 
 } // namespace engine

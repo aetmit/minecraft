@@ -12,20 +12,22 @@
 namespace engine {
 
 Logger::Logger() :
-    logLevel(LogLevel::Debug)
-{
-}
-
-Logger::Logger(const std::filesystem::path& file) :
     logLevel(LogLevel::Debug),
-    fileStream(file, std::ios::app)
+    ioThread(&Logger::ioHandle, this),
+    endProcess{false}
 {
 }
 
 Logger::~Logger() {
-    if (fileStream.is_open()) {
-        fileStream.flush();
-        fileStream.close();
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+        endProcess = true;
+    }
+
+    condition.notify_one();
+
+    if (ioThread.joinable()) {
+        ioThread.join();
     }
 }
 
@@ -34,48 +36,77 @@ void Logger::setLogLevel(LogLevel level) {
 }
 
 void Logger::verbose(const std::string_view& msg) {
-    if (logLevel.load(std::memory_order_relaxed) <= LogLevel::Verbose) {
-        std::clog << io::reset << io::bold << "[VERBOSE] " << io::reset << msg << "\n" << io::reset;
-    }
-    fileStream << "[VERBOSE] " << msg << "\n";
+    log(LogLevel::Verbose, msg);
 }
 
 void Logger::debug(const std::string_view& msg) {
-    if (logLevel.load(std::memory_order_relaxed) <= LogLevel::Debug) {
-        std::clog << io::reset << io::bold << "[DEBUG] " << io::reset << msg << "\n" << io::reset;
-    }
-    fileStream << "[DEBUG] " << msg << "\n";
+    log(LogLevel::Debug, msg);
 }
 
 void Logger::info(const std::string_view& msg) {
-    if (logLevel.load(std::memory_order_relaxed) <= LogLevel::Info) {
-        std::clog << io::reset << io::bold << "[INFO] " << io::reset << msg << "\n" << io::reset;
-    }
-    fileStream << "[INFO] " << msg << "\n";
+    log(LogLevel::Info, msg);
 }
 
 void Logger::warn(const std::string_view& msg) {
-    if (logLevel.load(std::memory_order_relaxed) <= LogLevel::Warn) {
-        std::cerr << io::reset << io::brightYellow << io::bold << "[WARN] " << io::reset << msg << "\n" << io::reset;
-    }
-    fileStream << "[WARN] " << msg << "\n";
-    fileStream.flush();  // Flush so we don't lose critical logs
+    log(LogLevel::Warn, msg);
 }
 
 void Logger::error(const std::string_view& msg) {
-    if (logLevel.load(std::memory_order_relaxed) <= LogLevel::Error) {
-        std::cerr << io::reset << io::brightRed << io::bold << "[ERROR] " << io::reset << msg << "\n" << io::reset;
-    }
-    fileStream << "[ERROR] " << msg << "\n";
-    fileStream.flush();  // Flush so we don't lose critical logs
+    log(LogLevel::Error, msg);
 }
 
 void Logger::log(LogLevel level, const std::string_view& msg) {
-    std::lock_guard<std::mutex> lock(mutex);
+    {
+        std::lock_guard<std::mutex> lock(mutex);
 
-    logQueue.push(LogMsg{level, std::string(msg)});
+        logQueue.push(LogMsg{level, std::string(msg)});
+    }
+    condition.notify_one();
+}
 
-    mutex.unlock();
+void Logger::terminalOutput(const LogMsg& msg) {
+    switch (msg.level) {
+        case LogLevel::Verbose:
+            std::clog << io::reset << io::bold << "[VERBOSE] " << io::reset << msg.msg << "\n" << io::reset;
+            break;
+        case LogLevel::Debug:
+            std::clog << io::reset << io::bold << "[DEBUG] " << io::reset << msg.msg << "\n" << io::reset;
+            break;
+        case LogLevel::Info:
+            std::clog << io::reset << io::bold << "[INFO] " << io::reset << msg.msg << "\n" << io::reset;
+            break;
+        case LogLevel::Warn:
+            std::cerr << io::reset << io::brightYellow << io::bold << "[WARN] " << io::reset << msg.msg << "\n" << io::reset;
+            break;
+        case LogLevel::Error:
+            std::cerr << io::reset << io::brightRed << io::bold << "[ERROR] " << io::reset << msg.msg << "\n" << io::reset;
+            break;
+    }
+}
+
+void Logger::ioHandle() {
+    while (true) {
+        LogMsg message;
+        {
+            std::unique_lock<std::mutex> lock(mutex);
+
+            condition.wait(lock, [this] {
+                return endProcess || !logQueue.empty();
+            });
+
+            if (endProcess && logQueue.empty()) {
+                return;
+            }
+
+            message = std::move(logQueue.front());
+            logQueue.pop();
+        }
+
+        if (logLevel.load(std::memory_order_relaxed) <= message.level) {
+            
+            terminalOutput(message);
+        }
+    }
 }
 
 }  // namespace engine
