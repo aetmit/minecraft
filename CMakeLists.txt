@@ -47,7 +47,7 @@ add_library(glad STATIC "vendor/glad/src/glad.c")
 target_include_directories(glad PUBLIC "vendor/glad/include")
 
 add_library(stbi STATIC "vendor/stbi/src/stb_image.cpp")
-target_include_directories(stbi PUBLIC "vendor/stbi/include")
+target_include_directories(stbi PUBLIC "vendor/")
 
 # Linux: GLAD requires dynamic loader library to fetch OpenGL pointers
 if(NOT WIN32 AND NOT APPLE)
