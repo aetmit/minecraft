@@ -6,6 +6,7 @@
 #include <vector>
 
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 
 #include <window/window.hpp>
 #include <core/logger.hpp>
@@ -32,6 +33,7 @@ public:
 
     void setUniform4f(const std::string &name, float f1, float f2, float f3, float f4);
     void setUniform1i(const std::string &name, int i1);
+    void setUniformMat4(const std::string &name, glm::mat4 &mat4);
 
     int link();
 

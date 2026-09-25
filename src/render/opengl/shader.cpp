@@ -10,6 +10,8 @@
 #include <optional>
 #include <filesystem>
 
+#include <glm/gtc/type_ptr.hpp>
+
 namespace engine {
 
 namespace opengl {
@@ -80,6 +82,17 @@ void Shader::setUniform4f(const std::string &name, float f1, float f2, float f3,
         return;
     }
     glUniform4f(location, f1, f2, f3, f4);
+}
+
+void Shader::setUniformMat4(const std::string &name, glm::mat4 &mat4) {
+    int location = getUniformLocation(name);
+    if (location == -1) {
+        logger.error(("failed to locate uniform with name: " + name).c_str());
+        logger.warn("uniform not set");
+        return;
+    }
+
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat4));
 }
 
 std::optional<std::string> Shader::loadShader(const std::filesystem::path& file) const {
