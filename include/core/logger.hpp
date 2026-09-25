@@ -1,9 +1,14 @@
 #pragma once
 
 #include <atomic>
+#include <condition_variable>
 #include <filesystem>
 #include <fstream>
+#include <mutex>
+#include <queue>
+#include <string>
 #include <string_view>
+#include <thread>
 
 namespace engine {
 
@@ -15,6 +20,13 @@ enum class LogLevel {
     Warn,     //!< Warning log
     Error,    //!< Error log
     Off       //!< Logging off
+};
+
+// TODO: Worker thread to handle I/O operations
+
+struct LogMsg {
+    LogLevel level;
+    std::string msg;
 };
 
 class Logger {
@@ -65,6 +77,15 @@ private:
     std::atomic<LogLevel> logLevel;
 
     std::ofstream fileStream;
+
+    std::queue<LogMsg> logQueue;
+    std::condition_variable condition;
+    std::mutex mutex;
+
+    bool endProcess;
+    std::thread ioThread;
+
+    void log(LogLevel level, const std::string_view& msg);
 };
 
 } // namespace engine

@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <ios>
 #include <iostream>
+#include <mutex>
 #include <string_view>
 
 #include <core/io.hpp>
@@ -74,36 +75,49 @@ inline void Logger::error(const std::string_view& msg) {
 template <typename... Args>
 inline void Logger::verbose(const std::string_view& msg, Args&&... args) {
     if (logLevel.load(std::memory_order_relaxed) <= LogLevel::Verbose) {
-        verbose(std::vformat(msg, std::make_format_args(args...)));
+        std::clog << io::reset << io::bold << "[VERBOSE] " << io::reset
+        << std::vformat(msg, std::make_format_args(args...)) << io::reset;
     }
 }
 
 template <typename... Args>
 inline void Logger::debug(const std::string_view& msg, Args&&... args) {
     if (logLevel.load(std::memory_order_relaxed) <= LogLevel::Debug) {
-        debug(std::vformat(msg, std::make_format_args(args...)));
+        std::clog << io::reset << io::bold << "[DEBUG] " << io::reset
+        << std::vformat(msg, std::make_format_args(args...)) << io::reset;
     }
 }
 
 template <typename... Args>
 inline void Logger::info(const std::string_view& msg, Args&&... args) {
     if (logLevel.load(std::memory_order_relaxed) <= LogLevel::Info) {
-        info(std::vformat(msg, std::make_format_args(args...)));
+        std::clog << io::reset << io::bold << "[INFO] " << io::reset
+        << std::vformat(msg, std::make_format_args(args...)) << io::reset;
     }
 }
 
 template <typename... Args>
 inline void Logger::warn(const std::string_view& msg, Args&&... args) {
     if (logLevel.load(std::memory_order_relaxed) <= LogLevel::Warn) {
-        warn(std::vformat(msg, std::make_format_args(args...)));
+        std::cerr << io::reset << io::brightYellow << io::bold << "[WARN] " << io::reset
+        << std::vformat(msg, std::make_format_args(args...)) << io::reset;
     }
 }
 
 template <typename... Args>
 inline void Logger::error(const std::string_view& msg, Args&&... args) {
     if (logLevel.load(std::memory_order_relaxed) <= LogLevel::Error) {
-        error(std::vformat(msg, std::make_format_args(args...)));
+        std::cerr << io::reset << io::brightRed << io::bold << "[ERROR] " << io::reset
+        << std::vformat(msg, std::make_format_args(args...)) << io::reset;
     }
+}
+
+void Logger::log(LogLevel level, const std::string_view& msg) {
+    std::lock_guard<std::mutex> lock(mutex);
+
+    logQueue.push(LogMsg{level, std::string(msg)});
+
+    mutex.unlock();
 }
 
 }  // namespace engine
