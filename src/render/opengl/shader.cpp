@@ -65,7 +65,7 @@ GLint Shader::getUniformLocation(const std::string &name) {
 void Shader::setUniform1i(const std::string &name, int i1) {
     int location = getUniformLocation(name);
     if (location == -1) {
-        logger.error(std::string("failed to locate uniform with name", name.c_str()).c_str());
+        logger.error(("failed to locate uniform with name: " + name).c_str());
         logger.warn("uniform not set");
         return;
     }
@@ -75,7 +75,7 @@ void Shader::setUniform1i(const std::string &name, int i1) {
 void Shader::setUniform4f(const std::string &name, float f1, float f2, float f3, float f4) {
     int location = getUniformLocation(name);
     if (location == -1) {
-        logger.error(std::string("failed to locate uniform with name", name.c_str()).c_str());
+        logger.error(("failed to locate uniform with name: " + name).c_str());
         logger.warn("uniform not set");
         return;
     }
