@@ -35,7 +35,7 @@ Texture::~Texture() {
 
 void Texture::bind(GLuint slot) const {
     glActiveTexture(GL_TEXTURE0 + slot);
-    glBindTexture(1, textureId);
+    glBindTexture(GL_TEXTURE_2D, textureId);
 }
 
 void Texture::unbind() {
