@@ -83,7 +83,10 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     texture->bind();
     shaderProgram->setUniform1i("uTexture", 0);
 
+    shaderProgram->bind();
+    clearErrors();
     shaderProgram->setUniformMat4("uProjection", projection);
+    checkErrors();
 
     vao->bind();
 
