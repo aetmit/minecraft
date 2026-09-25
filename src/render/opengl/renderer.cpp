@@ -41,6 +41,9 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     }
     logger.info("Sucessfully loaded OpenGL");
 
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+
     shaderProgram = std::make_unique<Shader>(window, logger);
     shaderProgram->compileShader("assets/shaders/basic.vert", ShaderType::Vertex);
     shaderProgram->compileShader("assets/shaders/basic.frag", ShaderType::Fragment);
