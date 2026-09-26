@@ -38,17 +38,71 @@ private:
     void checkErrors();
 
 
-    Vertex squareVertices[4] = {
-        Vertex(-0.5f, -0.5f, 0.0f, 0.0f, 0.0f),
-        Vertex(0.5f, -0.5f, 0.0f, 1.0f, 0.0f),
-        Vertex(0.5f,  0.5f, 0.0f, 1.0f, 1.0f),
-        Vertex(-0.5f,  0.5f, 0.0f, 0.0f, 1.0f),
+
+    GLuint cubeIndices[36] = {
+        // Front
+        0, 1, 2,
+        2, 3, 0,
+
+        // Back
+        4, 5, 6,
+        6, 7, 4,
+
+        // Left
+        8, 9, 10,
+        10, 11, 8,
+
+        // Right
+        12, 13, 14,
+        14, 15, 12,
+
+        // Top
+        16, 17, 18,
+        18, 19, 16,
+
+        // Bottom
+        20, 21, 22,
+        22, 23, 20
     };
 
-    GLuint indices[6] = {
-        0, 1, 2,
-        2, 3, 0
+    Vertex cubeVertices[24] = {
+        // Front (+Z)
+        Vertex(-0.5f, -0.5f,  0.5f, 0.0f, 0.0f),
+        Vertex( 0.5f, -0.5f,  0.5f, 1.0f, 0.0f),
+        Vertex( 0.5f,  0.5f,  0.5f, 1.0f, 1.0f),
+        Vertex(-0.5f,  0.5f,  0.5f, 0.0f, 1.0f),
+
+        // Back (-Z)
+        Vertex( 0.5f, -0.5f, -0.5f, 0.0f, 0.0f),
+        Vertex(-0.5f, -0.5f, -0.5f, 1.0f, 0.0f),
+        Vertex(-0.5f,  0.5f, -0.5f, 1.0f, 1.0f),
+        Vertex( 0.5f,  0.5f, -0.5f, 0.0f, 1.0f),
+
+        // Left (-X)
+        Vertex(-0.5f, -0.5f, -0.5f, 0.0f, 0.0f),
+        Vertex(-0.5f, -0.5f,  0.5f, 1.0f, 0.0f),
+        Vertex(-0.5f,  0.5f,  0.5f, 1.0f, 1.0f),
+        Vertex(-0.5f,  0.5f, -0.5f, 0.0f, 1.0f),
+
+        // Right (+X)
+        Vertex(0.5f, -0.5f,  0.5f, 0.0f, 0.0f),
+        Vertex(0.5f, -0.5f, -0.5f, 1.0f, 0.0f),
+        Vertex(0.5f,  0.5f, -0.5f, 1.0f, 1.0f),
+        Vertex(0.5f,  0.5f,  0.5f, 0.0f, 1.0f),
+
+        // Top (+Y)
+        Vertex(-0.5f, 0.5f,  0.5f, 0.0f, 0.0f),
+        Vertex( 0.5f, 0.5f,  0.5f, 1.0f, 0.0f),
+        Vertex( 0.5f, 0.5f, -0.5f, 1.0f, 1.0f),
+        Vertex(-0.5f, 0.5f, -0.5f, 0.0f, 1.0f),
+
+        // Bottom (-Y)
+        Vertex(-0.5f, -0.5f, -0.5f, 0.0f, 0.0f),
+        Vertex( 0.5f, -0.5f, -0.5f, 1.0f, 0.0f),
+        Vertex( 0.5f, -0.5f,  0.5f, 1.0f, 1.0f),
+        Vertex(-0.5f, -0.5f,  0.5f, 0.0f, 1.0f),
     };
+
 
     std::unique_ptr<Camera> camera;
     
