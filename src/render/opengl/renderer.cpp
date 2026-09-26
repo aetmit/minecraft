@@ -144,6 +144,7 @@ void Renderer::checkErrors() {
 }
 
 void Renderer::updateProjection() {
+    camera->setAspectRatio(window->aspectRatio());
     auto projection = camera->projectionMatrix();
 
     shaderProgram->bind();
