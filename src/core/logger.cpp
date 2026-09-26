@@ -2,6 +2,8 @@
 
 #include <algorithm>
 #include <atomic>
+#include <chrono>
+#include <cstddef>
 #include <filesystem>
 #include <fstream>
 #include <ios>
@@ -41,19 +43,28 @@ LogFile& LogFile::operator=(const LogFile& other) {
 Logger::Logger() :
     logLevel(LogLevel::Debug),
     ioThread(&Logger::ioHandle, this),
-    endProcess{false}
+    endProcess{false},
+    timeFormat{"{:%Y-%m-%d %H:%M:%S}"}
 {
+    if (!timeFormat.empty()) {
+        timeFormat += " ";
+    }
 }
 
 Logger::Logger(const std::vector<LogFile>& files) :
     logLevel(LogLevel::Debug),
     ioThread(&Logger::ioHandle, this),
     endProcess{false},
-    logFiles(files)
+    logFiles(files),
+    timeFormat{"{:%Y-%m-%d %H:%M:%S}"}
 {
     // Create stream for each file
     for (LogFile& file : logFiles) {
         file.outStream = std::ofstream(file.file);
+    }
+
+    if (!timeFormat.empty()) {
+        timeFormat += " ";
     }
 }
 
@@ -61,11 +72,16 @@ Logger::Logger(const std::initializer_list<LogFile>& files) :
     logLevel(LogLevel::Debug),
     ioThread(&Logger::ioHandle, this),
     endProcess{false},
-    logFiles(files)
+    logFiles(files),
+    timeFormat{"{:%Y-%m-%d %H:%M:%S}"}
 {
     // Create stream for each file
     for (LogFile& file : logFiles) {
         file.outStream = std::ofstream(file.file);
+    }
+
+    if (!timeFormat.empty()) {
+        timeFormat += " ";
     }
 }
 
@@ -93,55 +109,71 @@ Logger::~Logger() {
     }
 }
 
+void Logger::setTimeFormat(const std::string_view& format) {
+    timeFormat = format;
+}
+
 void Logger::setLogLevel(LogLevel level) {
     logLevel = level;
 }
 
 void Logger::trace(const std::string_view& msg) {
-    log(LogLevel::Trace, msg);
+    std::uint64_t zulu_nanoseconds = currentTimestamp(); 
+
+    log(LogLevel::Trace, msg, currentTimestamp());
 }
 
 void Logger::debug(const std::string_view& msg) {
-    log(LogLevel::Debug, msg);
+    log(LogLevel::Debug, msg, currentTimestamp());
 }
 
 void Logger::info(const std::string_view& msg) {
-    log(LogLevel::Info, msg);
+    log(LogLevel::Info, msg, currentTimestamp());
 }
 
 void Logger::warn(const std::string_view& msg) {
-    log(LogLevel::Warn, msg);
+    log(LogLevel::Warn, msg, currentTimestamp());
 }
 
 void Logger::error(const std::string_view& msg) {
-    log(LogLevel::Error, msg);
+    log(LogLevel::Error, msg, currentTimestamp());
 }
 
-void Logger::log(LogLevel level, const std::string_view& msg) {
+std::uint64_t Logger::currentTimestamp() {
+    const auto now = std::chrono::system_clock::now();
+    const auto duration = now.time_since_epoch();
+    return std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+}
+
+void Logger::log(LogLevel level, const std::string_view& msg, std::uint64_t timestamp) {
     {
         std::lock_guard<std::mutex> lock(mutex);
 
-        logQueue.push(LogMsg{level, std::string(msg)});
+        logQueue.push(LogMsg{level, std::string(msg), timestamp});
     }  // lock
     condition.notify_one();
 }
 
 void Logger::terminalOutput(const LogMsg& msg) {
+    std::chrono::milliseconds ns(msg.timestamp);
+    auto tp = std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds>(ns);
+
+    std::string formattedTime = std::vformat(timeFormat, std::make_format_args(tp));
     switch (msg.level) {
         case LogLevel::Trace:
-            std::clog << io::reset << io::bold << "[TRACE] " << io::reset << msg.msg << "\n" << io::reset;
+            std::clog << formattedTime << io::reset << io::bold << "[TRACE] " << io::reset << msg.msg << "\n" << io::reset;
             break;
         case LogLevel::Debug:
-            std::clog << io::reset << io::bold << "[DEBUG] " << io::reset << msg.msg << "\n" << io::reset;
+            std::clog << formattedTime << io::reset << io::bold << "[DEBUG] " << io::reset << msg.msg << "\n" << io::reset;
             break;
         case LogLevel::Info:
-            std::clog << io::reset << io::bold << "[INFO] " << io::reset << msg.msg << "\n" << io::reset;
+            std::clog << formattedTime << io::reset << io::bold << "[INFO] " << io::reset << msg.msg << "\n" << io::reset;
             break;
         case LogLevel::Warn:
-            std::cerr << io::reset << io::brightYellow << io::bold << "[WARN] " << io::reset << msg.msg << "\n" << io::reset;
+            std::cerr << formattedTime << io::reset << io::brightYellow << io::bold << "[WARN] " << io::reset << msg.msg << "\n" << io::reset;
             break;
         case LogLevel::Error:
-            std::cerr << io::reset << io::brightRed << io::bold << "[ERROR] " << io::reset << msg.msg << "\n" << io::reset;
+            std::cerr << formattedTime << io::reset << io::brightRed << io::bold << "[ERROR] " << io::reset << msg.msg << "\n" << io::reset;
             break;
     }
 }

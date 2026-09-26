@@ -4,6 +4,7 @@
 
 #include <atomic>
 #include <condition_variable>
+#include <cstddef>
 #include <filesystem>
 #include <fstream>
 #include <initializer_list>
@@ -31,6 +32,7 @@ enum class LogLevel {
 struct LogMsg {
     LogLevel level;
     std::string msg;
+    std::uint64_t timestamp;
 };
 
 struct LogFile {
@@ -60,6 +62,8 @@ public:
 
     ~Logger();
 
+    void setTimeFormat(const std::string_view& format);
+
     /// @brief Sets the logging level threshold for logs
     ///
     /// Only logs that have a level at or above the threshold will display,
@@ -82,27 +86,27 @@ public:
 
     template <typename... Args>
     void trace(const std::string_view& msg, Args&&... args) {
-        log(LogLevel::Trace, std::vformat(msg, std::make_format_args(args...)));
+        log(LogLevel::Trace, std::vformat(msg, std::make_format_args(args...)), currentTimestamp());
     }
 
     template <typename... Args>
     void debug(const std::string_view& msg, Args&&... args) {
-        log(LogLevel::Debug, std::vformat(msg, std::make_format_args(args...)));
+        log(LogLevel::Debug, std::vformat(msg, std::make_format_args(args...)), currentTimestamp());
     }
 
     template <typename... Args>
     void info(const std::string_view& msg, Args&&... args) {
-        log(LogLevel::Info, std::vformat(msg, std::make_format_args(args...)));
+        log(LogLevel::Info, std::vformat(msg, std::make_format_args(args...)), currentTimestamp());
     }
 
     template <typename... Args>
     void warn(const std::string_view& msg, Args&&... args) {
-        log(LogLevel::Warn, std::vformat(msg, std::make_format_args(args...)));
+        log(LogLevel::Warn, std::vformat(msg, std::make_format_args(args...)), currentTimestamp());
     }
 
     template <typename... Args>
     void error(const std::string_view& msg, Args&&... args) {
-        log(LogLevel::Error, std::vformat(msg, std::make_format_args(args...)));
+        log(LogLevel::Error, std::vformat(msg, std::make_format_args(args...)), currentTimestamp());
     }
 
 private:
@@ -117,7 +121,11 @@ private:
     bool endProcess;
     std::thread ioThread;
 
-    void log(LogLevel level, const std::string_view& msg);
+    std::string timeFormat;
+
+    std::uint64_t currentTimestamp();
+
+    void log(LogLevel level, const std::string_view& msg, std::uint64_t timestamp);
 
     void terminalOutput(const LogMsg& msg);
 
