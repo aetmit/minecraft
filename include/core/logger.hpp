@@ -42,8 +42,15 @@ public:
 
     friend class Logger;
 
+    /// @brief LogFile constructor
+    ///
+    /// @param file File name
+    /// @param level Lowest log level the file records
     LogFile(const std::string_view& file, LogLevel level);
 
+    /// @brief LogFile constructor
+    ///
+    /// @param LogFile Construct from another LogFile
     LogFile(const LogFile&);
     LogFile& operator=(const LogFile&);
 
