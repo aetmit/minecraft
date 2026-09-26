@@ -8,6 +8,7 @@
 
 int Application::run() {
     engine::Logger logger; 
+
     try {
         engine::Input input;
         engine::EngineConfig config(800, 600, "Minecraft", backend);

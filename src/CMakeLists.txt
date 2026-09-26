@@ -1,4 +1,6 @@
 set(SOURCES
+    core/logger.cpp
+
     input/input.cpp
 
     render/renderer.cpp
@@ -14,8 +16,6 @@ set(SOURCES
     camera/camera.cpp
 
     window/window.cpp
-
-    core/logger.cpp
 
     clock.cpp
     engine.cpp
