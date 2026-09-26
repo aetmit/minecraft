@@ -175,6 +175,7 @@ void Logger::terminalOutput(const LogMsg& msg) {
         case LogLevel::Error:
             std::cerr << formattedTime << io::reset << io::brightRed << io::bold << "[ERROR] " << io::reset << msg.msg << "\n" << io::reset;
             break;
+        default: // do nothing
     }
 }
 
@@ -185,6 +186,7 @@ std::string Logger::formatOutput(const LogMsg& msg) {
         case LogLevel::Info:  return "[INFO] " + msg.msg + "\n";
         case LogLevel::Warn:  return "[WARN] " + msg.msg + "\n";
         case LogLevel::Error: return "[ERROR] " + msg.msg + "\n";
+        default: // do nothing
     }
     return "";
 }
