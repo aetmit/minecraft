@@ -89,6 +89,8 @@ public:
     /// %M - Minute
     /// %S - Second
     ///
+    /// Set formatter to "" to disable timestamp
+    ///
     /// @param format Formatter to format time
     void setTimeFormat(const std::string_view& format);
 
