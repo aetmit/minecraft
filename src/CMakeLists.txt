@@ -1,18 +1,21 @@
 set(SOURCES
+    core/logger.cpp
+
     input/input.cpp
 
     render/renderer.cpp
 
-    render/opengl/program.cpp
+    render/opengl/shader.cpp
     render/opengl/renderer.cpp
     render/opengl/vertex_array.cpp
     render/opengl/vertex_buffer.cpp
     render/opengl/index_buffer.cpp 
+    render/opengl/texture.cpp
     render/opengl/vertex.cpp
 
-    window/window.cpp
+    camera/camera.cpp
 
-    core/logger.cpp
+    window/window.cpp
 
     clock.cpp
     engine.cpp
@@ -33,6 +36,7 @@ target_include_directories(
 
 target_link_libraries(
     core PUBLIC
+    stbi
     glfw
     glad
     OpenGL::GL

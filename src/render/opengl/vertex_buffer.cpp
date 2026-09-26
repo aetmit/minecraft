@@ -4,6 +4,8 @@
 
 namespace engine {
 
+namespace opengl {
+
 VertexBuffer::VertexBuffer() {
     glGenBuffers(1, &buffer);
 }
@@ -24,5 +26,7 @@ void VertexBuffer::unbind() const {
 void VertexBuffer::setData(const void *data, std::size_t size) const {
     glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 }
+
+} // namespace opengl
 
 } // namespace engine

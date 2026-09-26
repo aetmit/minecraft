@@ -2,6 +2,7 @@
 
 #include <window/window.hpp>
 #include <core/logger.hpp>
+
 namespace engine {
 
 // acts as an abstraction over the rendering backend so calling code does not need to
@@ -17,6 +18,9 @@ public:
 
     // abstration over screen clearing
     virtual void clearScreen() = 0;
+
+    // abstraction for updating the projection matrix
+    virtual void updateProjection() = 0;
 
     Renderer(Window *window, Logger &logger);
 protected:

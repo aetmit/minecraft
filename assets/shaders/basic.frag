@@ -1,9 +1,12 @@
 #version 410 core
 layout (location = 0) out vec4 colour;
 
-uniform vec4 uColour;
+uniform sampler2D uTexture;
+
+in vec2 vTexCoord;
 
 void main()
 {
-    colour = uColour;
+    vec4 texColour = texture(uTexture, vTexCoord);
+    colour = texColour;
 } 

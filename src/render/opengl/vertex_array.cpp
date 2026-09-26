@@ -2,6 +2,8 @@
 
 namespace engine {
 
+namespace opengl {
+
 VertexLayout::VertexLayout(
     GLuint index,
     GLuint elementCount,
@@ -42,5 +44,7 @@ void VertexArray::setLayout(const VertexLayout &layout) {
         layout.offset
     );
 }
+
+} // namespace opengl
 
 } // namespac engine

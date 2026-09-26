@@ -4,7 +4,7 @@
 #include <sstream>
 namespace engine {
 
-Window::Window(int width, int height, std::string name, Input &input, Logger &logger): input(input), logger(logger) {
+Window::Window(int width, int height, std::string name, Input &input, Logger &logger): input(input), logger(logger), width(width), height(height) {
     if (!glfwInit()) {
         throw std::runtime_error("failed to initialize GLFW");
     }
@@ -31,6 +31,7 @@ Window::Window(int width, int height, std::string name, Input &input, Logger &lo
     glfwSetKeyCallback(window, keyCallback);
     glfwSetMouseButtonCallback(window, mouseCallback);
     glfwSetCursorPosCallback(window, mousePositionCallback);
+    glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
 }
 
 Window::~Window() {
@@ -85,6 +86,25 @@ void Window::keyCallback(GLFWwindow *window, int key, int scancode, int action, 
     } else if (action == GLFW_RELEASE) {
         self->input.setKeyUp(*engineKey);
     }
+}
+
+void Window::framebufferResizeCallback(GLFWwindow* window, int width, int height) {
+    Window *self = static_cast<Window*>(glfwGetWindowUserPointer(window));
+    
+    self->width = width;
+    self->height = height;
+
+    self->resized = true;
+
+    glViewport(0, 0, width, height);
+}
+
+void Window::resetResizedFlag() {
+    resized = false;
+}
+
+bool Window::wasResized() const {
+    return resized;
 }
 
 std::optional<Key> Window::translateKey(int glfwKey) {
@@ -184,5 +204,9 @@ bool Window::shouldClose() const {
 
 double Window::getTime() {
     return glfwGetTime();
+}
+
+float Window::aspectRatio() const {
+    return static_cast<float>(width) / static_cast<float>(height);
 }
 } // namespace engine

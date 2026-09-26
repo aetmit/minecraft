@@ -7,6 +7,8 @@
 
 namespace engine {
 
+namespace opengl {
+
 class Buffer {
 
 public:
@@ -22,5 +24,7 @@ protected:
     GLuint buffer;
 
 };
+
+} // namespace opengl
 
 } // namespace engine

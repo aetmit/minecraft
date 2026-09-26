@@ -6,6 +6,8 @@
 
 namespace engine {
 
+namespace opengl {
+
 class VertexBuffer : public Buffer {
 public:
     VertexBuffer();
@@ -16,5 +18,7 @@ public:
     void unbind() const override;
 
 };
+
+} // namespace opengl
 
 } // namespace engine
