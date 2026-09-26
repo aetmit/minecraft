@@ -81,6 +81,8 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     texture = std::make_unique<Texture>("assets/textures/dirt.png");
 
     camera = std::make_unique<Camera>(70, window->aspectRatio(), 0.1f, 1000.0f);
+    camera->position = glm::vec3(0.0f, 0.0f, 0.0f);
+    camera->rotation = glm::vec3(0.0f, 0.0f, 0.0f);
 
     shaderProgram->bind();
 
@@ -89,10 +91,10 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     shaderProgram->setUniform1i("uTexture", 0);
     checkErrors();
 
-    model = glm::translate(
-        glm::mat4(1.0f),
-        glm::vec3(0.0f, 0.0f, -5.0f)
-    );
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f));
+    model = glm::rotate(model, glm::radians(25.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(-35.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
     glm::mat4 projectionMatrix = camera->projectionMatrix();
     glm::mat4 viewMatrix = camera->viewMatrix();
@@ -120,7 +122,7 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     VertexLayout layout(0, 3, VertexElementType::Float, false, sizeof(Vertex), static_cast<const void*>(0));
     vao->setLayout(layout);
     vao->enableSlot(0);
-    VertexLayout uvlayout(1, 2, VertexElementType::Float, false, sizeof(Vertex), reinterpret_cast<const void*>(cubeVertices[0].offsetU()));
+    VertexLayout uvlayout(1, 2, VertexElementType::Float, false, sizeof(Vertex), reinterpret_cast<const void*>(offsetof(Vertex, u)));
     vao->setLayout(uvlayout);
     vao->enableSlot(1);
 

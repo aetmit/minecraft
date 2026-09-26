@@ -16,10 +16,15 @@ void Camera::setAspectRatio(float aspectRatio) {
 }
 
 glm::mat4 Camera::viewMatrix() const {
-    return glm::translate(
-        glm::mat4(1.0f),
-        -position
-    );
+
+    glm::mat4 view(1.0);
+
+    view = glm::translate(view, -position);
+    view = glm::rotate(view, -rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+    view = glm::rotate(view, -rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+
+
+    return view;
 }
 
 } // namespace engine
