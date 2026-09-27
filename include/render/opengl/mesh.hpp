@@ -7,7 +7,7 @@ namespace engine {
 
 namespace opengl {
 
-class Mesh : public engine::Mesh {
+class Mesh final : public engine::Mesh {
 public:
 
 

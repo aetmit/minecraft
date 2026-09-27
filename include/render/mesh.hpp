@@ -1,6 +1,9 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
+
+#include <render/vertex.hpp>
 
 namespace engine {
 
@@ -9,12 +12,20 @@ namespace engine {
 class Mesh {
 
 public:
-    virtual void addIndex(std::uint32_t index) = 0;
 
     virtual ~Mesh() = default;
 
+
 protected:
 
+};
+
+struct MeshData {
+    std::vector<std::uint32_t> indices;
+    std::vector<Vertex> vertices;
+
+    void addIndex(std::uint32_t index);
+    void addVertex(Vertex vertex);
 };
 
 } // namespace engine

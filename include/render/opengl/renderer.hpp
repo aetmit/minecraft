@@ -19,7 +19,7 @@
 namespace engine {
 
 namespace opengl {
-class Renderer : public engine::Renderer {
+class Renderer final : public engine::Renderer {
 public:
     void drawSquare() override;
 
