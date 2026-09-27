@@ -20,7 +20,7 @@ public:
 private:
     std::unique_ptr<VertexArray> vao;
     std::unique_ptr<VertexBuffer> vbo;
-    std::unique_ptr<IndexBuffer> ibo; 
+    std::unique_ptr<IndexBuffer> ebo; 
 };
 
 } // namespace opengl

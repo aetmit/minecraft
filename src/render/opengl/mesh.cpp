@@ -7,7 +7,7 @@ namespace opengl {
 void Mesh::bind() const {
     vao->bind();
     vbo->bind();
-    ibo->bind();
+    ebo->bind();
 }
 
 } // namespace opengl
