@@ -7,9 +7,17 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <render/opengl/mesh.hpp>
+
 namespace engine {
 
 namespace opengl {
+
+void Renderer::drawMesh(const engine::Mesh &mesh) {
+    auto &glMesh = dynamic_cast<const engine::opengl::Mesh&>(mesh);
+
+    glMesh.bind();
+}
 
 void Renderer::drawSquare() {
 

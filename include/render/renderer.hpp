@@ -1,6 +1,7 @@
 #pragma once
 
 #include <window/window.hpp>
+#include <render/mesh.hpp>
 #include <core/logger.hpp>
 
 namespace engine {
@@ -12,6 +13,7 @@ class Renderer {
 public:
     virtual ~Renderer() = default;
 
+    virtual void drawMesh(const Mesh &mesh) = 0;
 
     // temporary function to test rnedering
     virtual void drawSquare() = 0;

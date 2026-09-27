@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 
 #include <render/renderer.hpp>
+#include <render/mesh.hpp>
 #include <render/opengl/shader.hpp>
 #include <render/opengl/vertex_buffer.hpp>
 #include <render/opengl/index_buffer.hpp>
@@ -21,6 +22,8 @@ namespace engine {
 namespace opengl {
 class Renderer final : public engine::Renderer {
 public:
+
+    void drawMesh(const engine::Mesh &mesh) override;
     void drawSquare() override;
 
     void clearScreen() override;
