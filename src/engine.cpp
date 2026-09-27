@@ -2,7 +2,6 @@
 
 #include <iostream>
 
-#include "render/opengl/renderer.hpp"
 
 #include "render/opengl/renderer.hpp"
 
