@@ -4,6 +4,7 @@ set(SOURCES
     input/input.cpp
 
     render/renderer.cpp
+    render/mesh.cpp
 
     render/opengl/shader.cpp
     render/opengl/renderer.cpp
@@ -12,6 +13,7 @@ set(SOURCES
     render/opengl/index_buffer.cpp 
     render/opengl/texture.cpp
     render/opengl/vertex.cpp
+    render/opengl/mesh.cpp
 
     camera/camera.cpp
 
