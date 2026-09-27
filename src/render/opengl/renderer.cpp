@@ -56,8 +56,8 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     glEnable(GL_DEPTH_TEST);
 
     shaderProgram = std::make_unique<Shader>(window, logger);
-    shaderProgram->compileShader("assets/shaders/basic.vert", ShaderType::Vertex);
-    shaderProgram->compileShader("assets/shaders/basic.frag", ShaderType::Fragment);
+    shaderProgram->compileShader("assets/shaders/solid.vert", ShaderType::Vertex);
+    shaderProgram->compileShader("assets/shaders/solid.frag", ShaderType::Fragment);
 
     shaderProgram->link();
     
