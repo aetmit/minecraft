@@ -111,6 +111,10 @@ void Engine::run() {
 
         renderer->clearScreen();    
 
+        if (!window.isCursorLocked() && input.wasMouseButtonPressed(MouseButton::Left)) {
+            window.setCursorLocked(true);
+        }
+
         if (window.isCursorLocked()) {
             player.update(clock.getDeltaTime(), input);
         }
