@@ -14,6 +14,7 @@
 #include <render/opengl/vertex_array.hpp>
 #include <camera/camera.hpp>
 #include <window/window.hpp>
+#include <core/transform.hpp>
 #include <core/logger.hpp>
 
 namespace engine {
@@ -22,7 +23,7 @@ namespace opengl {
 class Renderer final : public engine::Renderer {
 public:
 
-    void drawMesh(const engine::Mesh &mesh) override;
+    void drawMesh(const engine::Mesh &mesh, Transform transform) override;
 
     void clearScreen() override;
 
@@ -42,8 +43,6 @@ private:
 
     Camera *camera;
     
-    glm::mat4 model;
-
     // we use pointers here because we need runtime initalisation
     std::unique_ptr<Shader> shaderProgram;
 

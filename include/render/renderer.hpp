@@ -5,6 +5,7 @@
 #include <window/window.hpp>
 #include <render/mesh.hpp>
 #include <core/logger.hpp>
+#include <core/transform.hpp>
 #include <camera/camera.hpp>
 
 namespace engine {
@@ -16,7 +17,7 @@ class Renderer {
 public:
     virtual ~Renderer() = default;
 
-    virtual void drawMesh(const Mesh &mesh) = 0;
+    virtual void drawMesh(const Mesh &mesh, Transform transform) = 0;
 
     // abstration over screen clearing
     virtual void clearScreen() = 0;

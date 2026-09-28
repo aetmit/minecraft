@@ -12,15 +12,22 @@ namespace engine {
 
 namespace opengl {
 
-void Renderer::drawMesh(const engine::Mesh &mesh) {
+void Renderer::drawMesh(const engine::Mesh &mesh, Transform transform) {
     auto &glMesh = dynamic_cast<const engine::opengl::Mesh&>(mesh);
 
     glMesh.bind();
     shaderProgram->bind();
     texture->bind();
 
+    clearErrors();
     auto view = camera->viewMatrix();
     shaderProgram->setUniformMat4("uView", view);
+    checkErrors();
+
+    clearErrors();
+    auto model = transform.matrix();
+    shaderProgram->setUniformMat4("uModel", model); 
+    checkErrors();
 
     clearErrors();
     glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(glMesh.getIndiciesLen()), GL_UNSIGNED_INT, nullptr);
@@ -85,13 +92,6 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     texture->bind();
     clearErrors();
     shaderProgram->setUniform1i("uTexture", 0);
-    checkErrors();
-
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f));
-
-    clearErrors();
-    shaderProgram->setUniformMat4("uModel", model);
     checkErrors();
 
     logger.info("Initialised OpenGL renderer successfully");

@@ -1,6 +1,7 @@
 set(SOURCES
     core/logger.cpp
     core/clock.cpp
+    core/transform.cpp
 
     input/input.cpp
 

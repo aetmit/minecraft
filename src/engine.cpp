@@ -3,10 +3,11 @@
 #include <iostream>
 #include <memory>
 
-#include "render/opengl/renderer.hpp"
+#include <render/opengl/renderer.hpp>
 
 #include <game/player.hpp>
 #include <render/mesh.hpp>
+#include <core/transform.hpp>
 
 namespace engine {
 
@@ -85,6 +86,7 @@ void Engine::run() {
     };
 
     std::unique_ptr<Mesh> mesh = renderer->createMesh(meshdata);
+    Transform transform;
 
     window.setCursorLocked(true);
 
@@ -119,7 +121,7 @@ void Engine::run() {
             player.update(clock.getDeltaTime(), input);
         }
 
-        renderer->drawMesh(*mesh);
+        renderer->drawMesh(*mesh, transform);
 
 
         window.swapBuffers();
