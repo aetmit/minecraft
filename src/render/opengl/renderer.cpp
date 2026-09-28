@@ -90,8 +90,6 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
 
     model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f));
-    model = glm::rotate(model, glm::radians(25.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    model = glm::rotate(model, glm::radians(-35.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
     clearErrors();
     shaderProgram->setUniformMat4("uModel", model);
