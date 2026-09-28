@@ -217,6 +217,10 @@ void Window::setCursorLocked(bool locked) {
         if (glfwRawMouseMotionSupported()) {
             glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
         }
+
+        double x, y;
+        glfwGetCursorPos(window, &x, &y);
+        input.resetMousePosition(x, y);
     } else {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }

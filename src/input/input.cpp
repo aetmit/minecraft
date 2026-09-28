@@ -82,4 +82,13 @@ double Input::mouseDeltaY() const {
     return mouseDeltaY_;
 }
 
+void Input::resetMousePosition(double currentX, double currentY) {
+    mouseX = currentX;
+    mouseY = currentY;
+    previousMouseX = currentX;
+    previousMouseY = currentY;
+    mouseDeltaX_ = 0.0;
+    mouseDeltaY_ = 0.0;
+}
+
 } // namespace engine
