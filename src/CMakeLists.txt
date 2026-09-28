@@ -18,8 +18,8 @@ set(SOURCES
     render/opengl/mesh.cpp
 
     game/player.cpp
-    game/chunk.cpp
-    game/chunk_mesher.cpp
+    game/world/chunk.cpp
+    game/world/chunk_mesher.cpp
 
     camera/camera.cpp
 

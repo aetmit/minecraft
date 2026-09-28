@@ -8,6 +8,8 @@
 #include <game/player.hpp>
 #include <render/mesh.hpp>
 #include <core/transform.hpp>
+#include <game/world/chunk.hpp>
+#include <game/world/chunk_mesher.hpp>
 
 namespace engine {
 
@@ -37,55 +39,13 @@ Engine::Engine(EngineConfig& config, Input &input, Logger &logger) :
 
 void Engine::run() {
 
-    MeshData meshdata;
-    meshdata.indices = {
-        0, 1, 2, 2, 3, 0,
+    game::Chunk chunk;
+    chunk.setDummy();
+    
+    game::ChunkMesher mesher;
+    MeshData data = mesher.generate(chunk);
 
-        4, 7, 6, 6, 5, 4,
-
-        8, 11, 10, 10, 9, 8,
-
-        12, 13, 14, 14, 15, 12,
-
-        16, 17, 18, 18, 19, 16,
-
-        20, 23, 22, 22, 21, 20
-    };
-
-    meshdata.vertices = {
-        Vertex(-0.5f, -0.5f,  0.5f, 0.0f, 0.0f),
-        Vertex( 0.5f, -0.5f,  0.5f, 1.0f, 0.0f),
-        Vertex( 0.5f,  0.5f,  0.5f, 1.0f, 1.0f),
-        Vertex(-0.5f,  0.5f,  0.5f, 0.0f, 1.0f),
-
-        Vertex( 0.5f, -0.5f, -0.5f, 0.0f, 0.0f),
-        Vertex(-0.5f, -0.5f, -0.5f, 1.0f, 0.0f),
-        Vertex(-0.5f,  0.5f, -0.5f, 1.0f, 1.0f),
-        Vertex( 0.5f,  0.5f, -0.5f, 0.0f, 1.0f),
-
-        Vertex(-0.5f, -0.5f, -0.5f, 0.0f, 0.0f),
-        Vertex(-0.5f, -0.5f,  0.5f, 1.0f, 0.0f),
-        Vertex(-0.5f,  0.5f,  0.5f, 1.0f, 1.0f),
-        Vertex(-0.5f,  0.5f, -0.5f, 0.0f, 1.0f),
-
-
-        Vertex(0.5f, -0.5f,  0.5f, 0.0f, 0.0f),
-        Vertex(0.5f, -0.5f, -0.5f, 1.0f, 0.0f),
-        Vertex(0.5f,  0.5f, -0.5f, 1.0f, 1.0f),
-        Vertex(0.5f,  0.5f,  0.5f, 0.0f, 1.0f),
-
-        Vertex(-0.5f, 0.5f,  0.5f, 0.0f, 0.0f),
-        Vertex( 0.5f, 0.5f,  0.5f, 1.0f, 0.0f),
-        Vertex( 0.5f, 0.5f, -0.5f, 1.0f, 1.0f),
-        Vertex(-0.5f, 0.5f, -0.5f, 0.0f, 1.0f),
-
-        Vertex(-0.5f, -0.5f, -0.5f, 0.0f, 0.0f),
-        Vertex( 0.5f, -0.5f, -0.5f, 1.0f, 0.0f),
-        Vertex( 0.5f, -0.5f,  0.5f, 1.0f, 1.0f),
-        Vertex(-0.5f, -0.5f,  0.5f, 0.0f, 1.0f),
-    };
-
-    std::unique_ptr<Mesh> mesh = renderer->createMesh(meshdata);
+    std::unique_ptr<Mesh> mesh = renderer->createMesh(data);
     Transform transform;
 
     window.setCursorLocked(true);
