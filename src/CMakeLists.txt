@@ -1,5 +1,7 @@
 set(SOURCES
     core/logger.cpp
+    core/clock.cpp
+    core/transform.cpp
 
     input/input.cpp
 
@@ -15,14 +17,12 @@ set(SOURCES
     render/opengl/texture.cpp
     render/opengl/mesh.cpp
 
-    math/vec2.cpp
-    math/vec3.cpp
+    game/player.cpp
 
     camera/camera.cpp
 
     window/window.cpp
 
-    clock.cpp
     engine.cpp
     application.cpp
 )

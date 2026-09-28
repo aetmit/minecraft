@@ -6,7 +6,7 @@
 #include <vector>
 
 #include <glad/glad.h>
-#include <glm/glm.hpp>
+#include <math/glm.hpp>
 
 #include <window/window.hpp>
 #include <core/logger.hpp>

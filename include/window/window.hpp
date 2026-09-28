@@ -35,6 +35,9 @@ public:
     void resetResizedFlag();
     bool wasResized() const;
 
+    void setCursorLocked(bool locked);
+    bool isCursorLocked() const;
+
 private:
     GLFWwindow *getWindow() const;
 
@@ -54,6 +57,7 @@ private:
     int height;
 
     bool resized{false};
+    bool cursorLocked{false};
 };
 
 } // namespace engine

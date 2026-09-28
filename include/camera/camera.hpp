@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glm/glm.hpp>
+#include <math/glm.hpp>
 
 namespace engine {
 
@@ -11,10 +11,17 @@ public:
     glm::mat4 viewMatrix() const;
     glm::mat4 projectionMatrix() const;
 
+    glm::vec3 forward() const;
+
+    glm::vec3 right() const;
+    glm::vec3 up() const;
+
     void setAspectRatio(float aspectRatio);
 
     glm::vec3 position;
-    glm::vec3 rotation;
+
+    float yaw;
+    float pitch;
 
 private:
     float fov;

@@ -128,6 +128,8 @@ public:
 
     void update();
 
+    void resetMousePosition(double currentX, double currentY);
+
 private:
     std::array<KeyState, static_cast<std::size_t>(Key::Count)> keys;
 

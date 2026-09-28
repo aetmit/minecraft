@@ -3,10 +3,11 @@
 #include <iostream>
 #include <memory>
 
-#include "render/opengl/renderer.hpp"
+#include <render/opengl/renderer.hpp>
 
-
+#include <game/player.hpp>
 #include <render/mesh.hpp>
+#include <core/transform.hpp>
 
 namespace engine {
 
@@ -85,7 +86,12 @@ void Engine::run() {
     };
 
     std::unique_ptr<Mesh> mesh = renderer->createMesh(meshdata);
+    Transform transform;
 
+    window.setCursorLocked(true);
+
+    game::Player player(window.aspectRatio());
+    renderer->setCamera(&player.getCamera());
 
     while (!window.shouldClose()) {
         clock.updateTime();
@@ -95,6 +101,10 @@ void Engine::run() {
 
         window.pollEvents();
 
+        if (input.wasKeyPressed(Key::Escape)) {
+            window.setCursorLocked(false);
+        }
+
         if (window.wasResized()) {
             renderer->updateProjection();
 
@@ -103,7 +113,15 @@ void Engine::run() {
 
         renderer->clearScreen();    
 
-        renderer->drawMesh(*mesh);
+        if (!window.isCursorLocked() && input.wasMouseButtonPressed(MouseButton::Left)) {
+            window.setCursorLocked(true);
+        }
+
+        if (window.isCursorLocked()) {
+            player.update(clock.getDeltaTime(), input);
+        }
+
+        renderer->drawMesh(*mesh, transform);
 
 
         window.swapBuffers();

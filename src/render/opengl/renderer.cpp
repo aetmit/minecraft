@@ -4,21 +4,30 @@
 #include <sstream>
 
 #include <glad/glad.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
+#include <math/glm.hpp>
 #include <render/opengl/mesh.hpp>
 
 namespace engine {
 
 namespace opengl {
 
-void Renderer::drawMesh(const engine::Mesh &mesh) {
+void Renderer::drawMesh(const engine::Mesh &mesh, Transform transform) {
     auto &glMesh = dynamic_cast<const engine::opengl::Mesh&>(mesh);
 
     glMesh.bind();
     shaderProgram->bind();
     texture->bind();
+
+    clearErrors();
+    auto view = camera->viewMatrix();
+    shaderProgram->setUniformMat4("uView", view);
+    checkErrors();
+
+    clearErrors();
+    auto model = transform.matrix();
+    shaderProgram->setUniformMat4("uModel", model); 
+    checkErrors();
 
     clearErrors();
     glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(glMesh.getIndiciesLen()), GL_UNSIGNED_INT, nullptr);
@@ -78,33 +87,11 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
 
     texture = std::make_unique<Texture>("assets/textures/dirt.png");
 
-    camera = std::make_unique<Camera>(70, window->aspectRatio(), 0.1f, 1000.0f);
-    camera->position = glm::vec3(0.0f, 0.0f, 0.0f);
-    camera->rotation = glm::vec3(0.0f, 0.0f, 0.0f);
-
     shaderProgram->bind();
 
     texture->bind();
     clearErrors();
     shaderProgram->setUniform1i("uTexture", 0);
-    checkErrors();
-
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f));
-    model = glm::rotate(model, glm::radians(25.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    model = glm::rotate(model, glm::radians(-35.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-
-    glm::mat4 projectionMatrix = camera->projectionMatrix();
-    glm::mat4 viewMatrix = camera->viewMatrix();
-
-    clearErrors();
-    shaderProgram->setUniformMat4("uProjection", projectionMatrix);
-    checkErrors();
-    clearErrors();
-    shaderProgram->setUniformMat4("uView", viewMatrix);
-    checkErrors();
-    clearErrors();
-    shaderProgram->setUniformMat4("uModel", model);
     checkErrors();
 
     logger.info("Initialised OpenGL renderer successfully");
@@ -132,6 +119,11 @@ void Renderer::updateProjection() {
 
 std::unique_ptr<engine::Mesh> Renderer::createMesh(engine::MeshData data) {
     return std::make_unique<engine::opengl::Mesh>(std::move(data));
+}
+
+void Renderer::setCamera(Camera *camera) {
+    this->camera = camera;
+    updateProjection();
 }
 
 } // namespace opengl

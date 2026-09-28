@@ -5,6 +5,8 @@
 #include <window/window.hpp>
 #include <render/mesh.hpp>
 #include <core/logger.hpp>
+#include <core/transform.hpp>
+#include <camera/camera.hpp>
 
 namespace engine {
 
@@ -15,7 +17,7 @@ class Renderer {
 public:
     virtual ~Renderer() = default;
 
-    virtual void drawMesh(const Mesh &mesh) = 0;
+    virtual void drawMesh(const Mesh &mesh, Transform transform) = 0;
 
     // abstration over screen clearing
     virtual void clearScreen() = 0;
@@ -24,6 +26,8 @@ public:
     virtual void updateProjection() = 0;
 
     virtual std::unique_ptr<Mesh> createMesh(MeshData data) = 0;
+
+    virtual void setCamera(Camera *camera) = 0;
 
     Renderer(Window *window, Logger &logger);
 protected:
