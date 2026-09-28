@@ -15,9 +15,6 @@ public:
 
     virtual ~Mesh() = default;
 
-
-protected:
-
 };
 
 struct MeshData {

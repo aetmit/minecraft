@@ -20,6 +20,9 @@ void Renderer::drawMesh(const engine::Mesh &mesh) {
     shaderProgram->bind();
     texture->bind();
 
+    auto view = camera->viewMatrix();
+    shaderProgram->setUniformMat4("uView", view);
+
     clearErrors();
     glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(glMesh.getIndiciesLen()), GL_UNSIGNED_INT, nullptr);
     checkErrors();
@@ -78,10 +81,6 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
 
     texture = std::make_unique<Texture>("assets/textures/dirt.png");
 
-    camera = std::make_unique<Camera>(70, window->aspectRatio(), 0.1f, 1000.0f);
-    camera->position = glm::vec3(0.0f, 0.0f, 0.0f);
-    camera->rotation = glm::vec3(0.0f, 0.0f, 0.0f);
-
     shaderProgram->bind();
 
     texture->bind();
@@ -94,15 +93,6 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     model = glm::rotate(model, glm::radians(25.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     model = glm::rotate(model, glm::radians(-35.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-    glm::mat4 projectionMatrix = camera->projectionMatrix();
-    glm::mat4 viewMatrix = camera->viewMatrix();
-
-    clearErrors();
-    shaderProgram->setUniformMat4("uProjection", projectionMatrix);
-    checkErrors();
-    clearErrors();
-    shaderProgram->setUniformMat4("uView", viewMatrix);
-    checkErrors();
     clearErrors();
     shaderProgram->setUniformMat4("uModel", model);
     checkErrors();
@@ -132,6 +122,11 @@ void Renderer::updateProjection() {
 
 std::unique_ptr<engine::Mesh> Renderer::createMesh(engine::MeshData data) {
     return std::make_unique<engine::opengl::Mesh>(std::move(data));
+}
+
+void Renderer::setCamera(Camera *camera) {
+    this->camera = camera;
+    updateProjection();
 }
 
 } // namespace opengl

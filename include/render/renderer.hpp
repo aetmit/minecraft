@@ -5,6 +5,7 @@
 #include <window/window.hpp>
 #include <render/mesh.hpp>
 #include <core/logger.hpp>
+#include <camera/camera.hpp>
 
 namespace engine {
 
@@ -24,6 +25,8 @@ public:
     virtual void updateProjection() = 0;
 
     virtual std::unique_ptr<Mesh> createMesh(MeshData data) = 0;
+
+    virtual void setCamera(Camera *camera) = 0;
 
     Renderer(Window *window, Logger &logger);
 protected:

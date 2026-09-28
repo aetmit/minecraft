@@ -2,7 +2,7 @@
 
 #include <engine.hpp>
 
-#define BACKEND_OPENGL 1
+#define BACKEND_OPENGL 0x01
 
 class Application {
 

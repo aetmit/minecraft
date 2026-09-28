@@ -209,4 +209,8 @@ double Window::getTime() {
 float Window::aspectRatio() const {
     return static_cast<float>(width) / static_cast<float>(height);
 }
+
+void Window::hideCursor() const {
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
 } // namespace engine

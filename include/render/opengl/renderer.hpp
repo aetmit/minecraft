@@ -27,22 +27,20 @@ public:
     void clearScreen() override;
 
     ~Renderer() override;
-
     Renderer(Window *window, Logger &logger);
-
 
     void updateProjection() override;
 
     std::unique_ptr<engine::Mesh> createMesh(engine::MeshData data) override;
+
+    void setCamera(Camera *camera) override;
 
 private:
 
     void clearErrors();
     void checkErrors();
 
-
-
-    std::unique_ptr<Camera> camera;
+    Camera *camera;
     
     glm::mat4 model;
 

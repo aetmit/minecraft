@@ -5,7 +5,7 @@
 
 #include "render/opengl/renderer.hpp"
 
-
+#include <game/player.hpp>
 #include <render/mesh.hpp>
 
 namespace engine {
@@ -86,6 +86,10 @@ void Engine::run() {
 
     std::unique_ptr<Mesh> mesh = renderer->createMesh(meshdata);
 
+    window.hideCursor();
+
+    game::Player player(window.aspectRatio());
+    renderer->setCamera(&player.getCamera());
 
     while (!window.shouldClose()) {
         clock.updateTime();
@@ -102,6 +106,8 @@ void Engine::run() {
         }
 
         renderer->clearScreen();    
+
+        player.update(clock.getDeltaTime(), input);
 
         renderer->drawMesh(*mesh);
 

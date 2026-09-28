@@ -16,6 +16,8 @@ set(SOURCES
     render/opengl/texture.cpp
     render/opengl/mesh.cpp
 
+    game/player.cpp
+
     math/vec2.cpp
     math/vec3.cpp
 

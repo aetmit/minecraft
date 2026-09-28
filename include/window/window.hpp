@@ -35,6 +35,8 @@ public:
     void resetResizedFlag();
     bool wasResized() const;
 
+    void hideCursor() const;
+
 private:
     GLFWwindow *getWindow() const;
 
