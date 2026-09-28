@@ -18,9 +18,6 @@ set(SOURCES
 
     game/player.cpp
 
-    math/vec2.cpp
-    math/vec3.cpp
-
     camera/camera.cpp
 
     window/window.cpp

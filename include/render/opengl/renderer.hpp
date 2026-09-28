@@ -3,8 +3,8 @@
 #include <memory>
 
 #include <glad/glad.h>
-#include <glm/glm.hpp>
 
+#include <math/glm.hpp>
 #include <render/renderer.hpp>
 #include <render/mesh.hpp>
 #include <render/opengl/shader.hpp>

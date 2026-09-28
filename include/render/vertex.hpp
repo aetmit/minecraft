@@ -1,16 +1,14 @@
 #pragma once
 
-#include <math/vec2.hpp>
-#include <math/vec3.hpp>
-
+#include <math/glm.hpp>
 namespace engine {
 
 struct Vertex final {
-    math::Vec3 position;
-    math::Vec2 uv; 
+    glm::vec3 position;
+    glm::vec2 uv; 
 
     Vertex() = default;
-    Vertex(math::Vec3 position, math::Vec2 uv);
+    Vertex(glm::vec3 position, glm::vec2 uv);
 
     // temporary api
     Vertex(float x, float y, float z, float u, float v);

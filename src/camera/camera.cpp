@@ -1,6 +1,6 @@
 #include <camera/camera.hpp>
 
-#include <glm/gtc/matrix_transform.hpp>
+#include <math/glm.hpp>
 
 namespace engine {
 

@@ -1,6 +1,7 @@
 #include <game/player.hpp>
 
-#include <glm/glm.hpp>
+
+#include <math/glm.hpp>
 
 namespace game {
 

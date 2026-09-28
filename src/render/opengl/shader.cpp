@@ -10,7 +10,7 @@
 #include <optional>
 #include <filesystem>
 
-#include <glm/gtc/type_ptr.hpp>
+#include <math/glm.hpp>
 
 namespace engine {
 
