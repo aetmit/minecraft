@@ -210,7 +210,20 @@ float Window::aspectRatio() const {
     return static_cast<float>(width) / static_cast<float>(height);
 }
 
-void Window::hideCursor() const {
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+void Window::setCursorLocked(bool locked) {
+    cursorLocked = locked;
+    if (cursorLocked) {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        if (glfwRawMouseMotionSupported()) {
+            glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+        }
+    } else {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    }
 }
+
+bool Window::isCursorLocked() const {
+    return cursorLocked;
+}
+
 } // namespace engine

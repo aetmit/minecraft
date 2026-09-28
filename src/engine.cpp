@@ -86,7 +86,7 @@ void Engine::run() {
 
     std::unique_ptr<Mesh> mesh = renderer->createMesh(meshdata);
 
-    window.hideCursor();
+    window.setCursorLocked(true);
 
     game::Player player(window.aspectRatio());
     renderer->setCamera(&player.getCamera());
@@ -99,6 +99,10 @@ void Engine::run() {
 
         window.pollEvents();
 
+        if (input.wasKeyPressed(Key::Escape)) {
+            window.setCursorLocked(false);
+        }
+
         if (window.wasResized()) {
             renderer->updateProjection();
 
@@ -107,7 +111,9 @@ void Engine::run() {
 
         renderer->clearScreen();    
 
-        player.update(clock.getDeltaTime(), input);
+        if (window.isCursorLocked()) {
+            player.update(clock.getDeltaTime(), input);
+        }
 
         renderer->drawMesh(*mesh);
 
