@@ -22,6 +22,7 @@ struct MeshData {
     std::vector<Vertex> vertices;
 
     void addIndex(std::uint32_t index);
+    void addQuadIndicies();
     void addVertex(Vertex vertex);
 };
 

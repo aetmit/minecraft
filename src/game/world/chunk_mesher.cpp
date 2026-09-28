@@ -54,106 +54,57 @@ engine::MeshData ChunkMesher::generate(const Chunk &chunk) {
 }
 
 void ChunkMesher::addPositiveXFace(engine::MeshData &data, int x, int y, int z) {
-
-    const std::uint32_t base = data.vertices.size();
-
     data.addVertex({{x + 1, y, z}, {0.0f, 0.0f}});
     data.addVertex({{x + 1, y + 1, z}, {0.0f, 1.0f}});
     data.addVertex({{x + 1, y + 1, z + 1}, {1.0f, 1.0f}});
     data.addVertex({{x + 1, y, z + 1}, {1.0f, 0.0f}});
 
-    data.addIndex(base + 0);
-    data.addIndex(base + 1);
-    data.addIndex(base + 2);
-
-    data.addIndex(base + 2);
-    data.addIndex(base + 3);
-    data.addIndex(base + 0);
+    data.addQuadIndicies();
 }
 
 void ChunkMesher::addNegativeXFace(engine::MeshData &data, int x, int y, int z) {
-    const std::uint32_t base = data.vertices.size();
-
     data.addVertex({{x, y, z + 1}, {0.0f, 0.0f}});
     data.addVertex({{x, y + 1, z + 1}, {0.0f, 1.0f}});
     data.addVertex({{x, y + 1, z}, {1.0f, 1.0f}});
     data.addVertex({{x, y, z}, {1.0f, 0.0f}});
 
-    data.addIndex(base + 0);
-    data.addIndex(base + 1);
-    data.addIndex(base + 2);
-
-    data.addIndex(base + 2);
-    data.addIndex(base + 3);
-    data.addIndex(base + 0);
+    data.addQuadIndicies(); 
 }
 
 void ChunkMesher::addPositiveYFace(engine::MeshData &data, int x, int y, int z) {
-    const std::uint32_t base = data.vertices.size();
-
     data.addVertex({{x, y + 1, z}, {0.0f, 0.0f}});
     data.addVertex({{x, y + 1, z + 1}, {0.0f, 1.0f}});
     data.addVertex({{x + 1, y + 1, z + 1}, {1.0f, 1.0f}});
     data.addVertex({{x + 1, y + 1, z}, {1.0f, 0.0f}});
 
-    data.addIndex(base + 0);
-    data.addIndex(base + 1);
-    data.addIndex(base + 2);
-
-    data.addIndex(base + 2);
-    data.addIndex(base + 3);
-    data.addIndex(base + 0);
+    data.addQuadIndicies();
 }
 
 void ChunkMesher::addNegativeYFace(engine::MeshData &data, int x, int y, int z) {
-    const std::uint32_t base = data.vertices.size();
-
     data.addVertex({{x, y, z + 1}, {0.0f, 0.0f}});
     data.addVertex({{x, y, z}, {0.0f, 1.0f}});
     data.addVertex({{x + 1, y, z}, {1.0f, 1.0f}});
     data.addVertex({{x + 1, y, z + 1}, {1.0f, 0.0f}});
 
-    data.addIndex(base + 0);
-    data.addIndex(base + 1);
-    data.addIndex(base + 2);
-
-    data.addIndex(base + 2);
-    data.addIndex(base + 3);
-    data.addIndex(base + 0);
+    data.addQuadIndicies();
 }
 
 void ChunkMesher::addPositiveZFace(engine::MeshData &data, int x, int y, int z) {
-    const std::uint32_t base = data.vertices.size();
-
     data.addVertex({{x, y, z + 1}, {0.0f, 0.0f}});
     data.addVertex({{x + 1, y, z + 1}, {1.0f, 0.0f}});
     data.addVertex({{x + 1, y + 1, z + 1}, {1.0f, 1.0f}});
     data.addVertex({{x, y + 1, z + 1}, {0.0f, 1.0f}});
 
-    data.addIndex(base + 0);
-    data.addIndex(base + 1);
-    data.addIndex(base + 2);
-
-    data.addIndex(base + 2);
-    data.addIndex(base + 3);
-    data.addIndex(base + 0);
+    data.addQuadIndicies();
 }
 
 void ChunkMesher::addNegativeZFace(engine::MeshData &data, int x, int y, int z) {
-    const std::uint32_t base = data.vertices.size();
-
     data.addVertex({{x + 1, y, z}, {0.0f, 0.0f}});
     data.addVertex({{x, y, z}, {1.0f, 0.0f}});
     data.addVertex({{x, y + 1, z}, {1.0f, 1.0f}});
     data.addVertex({{x + 1, y + 1, z}, {0.0f, 1.0f}});
 
-    data.addIndex(base + 0);
-    data.addIndex(base + 1);
-    data.addIndex(base + 2);
-
-    data.addIndex(base + 2);
-    data.addIndex(base + 3);
-    data.addIndex(base + 0);
+    data.addQuadIndicies();
 }
 
 } // namespace game
