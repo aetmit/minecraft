@@ -1,5 +1,6 @@
 set(SOURCES
     core/logger.cpp
+    core/clock.cpp
 
     input/input.cpp
 
@@ -22,7 +23,6 @@ set(SOURCES
 
     window/window.cpp
 
-    clock.cpp
     engine.cpp
     application.cpp
 )
