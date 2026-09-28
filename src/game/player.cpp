@@ -13,7 +13,7 @@ void Player::update(float deltaTime, const engine::Input &input) {
     float yOffset = static_cast<float>(input.mouseDeltaY()) * sensitivity;
 
     camera.yaw += xOffset;
-    camera.pitch += yOffset;
+    camera.pitch -= yOffset;
 
     // clamping
     if (camera.pitch > 89.0f) {
@@ -43,10 +43,10 @@ void Player::update(float deltaTime, const engine::Input &input) {
         camera.position += camera.right() * speed;
     }
     if (input.isKeyDown(engine::Key::Space)) {
-        camera.position += glm::vec3(0.0f, 1.0f, 0.0f) * speed; // Ascend
+        camera.position += glm::vec3(0.0f, 1.0f, 0.0f) * speed; 
     }
-    if (input.isKeyDown(engine::Key::LeftControl)) {
-        camera.position -= glm::vec3(0.0f, 1.0f, 0.0f) * speed; // Descend
+    if (input.isKeyDown(engine::Key::LeftShift)) {
+        camera.position -= glm::vec3(0.0f, 1.0f, 0.0f) * speed; 
     }
 }
 
