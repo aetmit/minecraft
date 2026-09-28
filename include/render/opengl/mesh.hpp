@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <cstddef>
 
 #include <render/mesh.hpp>
 #include <render/opengl/vertex_array.hpp>
@@ -17,6 +18,8 @@ public:
     Mesh(engine::MeshData data);
 
     void bind() const;
+
+    std::size_t getIndiciesLen() const;
 
 private:
     engine::MeshData data;

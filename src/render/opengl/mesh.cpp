@@ -33,6 +33,11 @@ void Mesh::bind() const {
     ebo->bind();
 }
 
+std::size_t Mesh::getIndiciesLen() const {
+    return data.indices.size();
+}
+
+
 } // namespace opengl
 
 } // namespace engine

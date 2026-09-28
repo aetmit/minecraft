@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <window/window.hpp>
 #include <render/mesh.hpp>
 #include <core/logger.hpp>
@@ -15,14 +17,13 @@ public:
 
     virtual void drawMesh(const Mesh &mesh) = 0;
 
-    // temporary function to test rnedering
-    virtual void drawSquare() = 0;
-
     // abstration over screen clearing
     virtual void clearScreen() = 0;
 
     // abstraction for updating the projection matrix
     virtual void updateProjection() = 0;
+
+    virtual std::unique_ptr<Mesh> createMesh(MeshData data) = 0;
 
     Renderer(Window *window, Logger &logger);
 protected:

@@ -11,6 +11,9 @@ struct Vertex final {
 
     Vertex() = default;
     Vertex(math::Vec3 position, math::Vec2 uv);
+
+    // temporary api
+    Vertex(float x, float y, float z, float u, float v);
 };
 
 } // namespace engine
