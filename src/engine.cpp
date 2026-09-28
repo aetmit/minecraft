@@ -1,10 +1,12 @@
 #include <engine.hpp>
 
 #include <iostream>
+#include <memory>
 
 #include "render/opengl/renderer.hpp"
 
-#include "render/opengl/renderer.hpp"
+
+#include <render/mesh.hpp>
 
 namespace engine {
 
@@ -34,6 +36,57 @@ Engine::Engine(EngineConfig& config, Input &input, Logger &logger) :
 
 void Engine::run() {
 
+    MeshData meshdata;
+    meshdata.indices = {
+        0, 1, 2, 2, 3, 0,
+
+        4, 7, 6, 6, 5, 4,
+
+        8, 11, 10, 10, 9, 8,
+
+        12, 13, 14, 14, 15, 12,
+
+        16, 17, 18, 18, 19, 16,
+
+        20, 23, 22, 22, 21, 20
+    };
+
+    meshdata.vertices = {
+        Vertex(-0.5f, -0.5f,  0.5f, 0.0f, 0.0f),
+        Vertex( 0.5f, -0.5f,  0.5f, 1.0f, 0.0f),
+        Vertex( 0.5f,  0.5f,  0.5f, 1.0f, 1.0f),
+        Vertex(-0.5f,  0.5f,  0.5f, 0.0f, 1.0f),
+
+        Vertex( 0.5f, -0.5f, -0.5f, 0.0f, 0.0f),
+        Vertex(-0.5f, -0.5f, -0.5f, 1.0f, 0.0f),
+        Vertex(-0.5f,  0.5f, -0.5f, 1.0f, 1.0f),
+        Vertex( 0.5f,  0.5f, -0.5f, 0.0f, 1.0f),
+
+        Vertex(-0.5f, -0.5f, -0.5f, 0.0f, 0.0f),
+        Vertex(-0.5f, -0.5f,  0.5f, 1.0f, 0.0f),
+        Vertex(-0.5f,  0.5f,  0.5f, 1.0f, 1.0f),
+        Vertex(-0.5f,  0.5f, -0.5f, 0.0f, 1.0f),
+
+
+        Vertex(0.5f, -0.5f,  0.5f, 0.0f, 0.0f),
+        Vertex(0.5f, -0.5f, -0.5f, 1.0f, 0.0f),
+        Vertex(0.5f,  0.5f, -0.5f, 1.0f, 1.0f),
+        Vertex(0.5f,  0.5f,  0.5f, 0.0f, 1.0f),
+
+        Vertex(-0.5f, 0.5f,  0.5f, 0.0f, 0.0f),
+        Vertex( 0.5f, 0.5f,  0.5f, 1.0f, 0.0f),
+        Vertex( 0.5f, 0.5f, -0.5f, 1.0f, 1.0f),
+        Vertex(-0.5f, 0.5f, -0.5f, 0.0f, 1.0f),
+
+        Vertex(-0.5f, -0.5f, -0.5f, 0.0f, 0.0f),
+        Vertex( 0.5f, -0.5f, -0.5f, 1.0f, 0.0f),
+        Vertex( 0.5f, -0.5f,  0.5f, 1.0f, 1.0f),
+        Vertex(-0.5f, -0.5f,  0.5f, 0.0f, 1.0f),
+    };
+
+    std::unique_ptr<Mesh> mesh = renderer->createMesh(meshdata);
+
+
     while (!window.shouldClose()) {
         clock.updateTime();
 
@@ -50,8 +103,7 @@ void Engine::run() {
 
         renderer->clearScreen();    
 
-
-        renderer->drawSquare();
+        renderer->drawMesh(*mesh);
 
 
         window.swapBuffers();

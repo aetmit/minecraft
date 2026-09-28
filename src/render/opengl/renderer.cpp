@@ -7,19 +7,21 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <render/opengl/mesh.hpp>
+
 namespace engine {
 
 namespace opengl {
 
-void Renderer::drawSquare() {
+void Renderer::drawMesh(const engine::Mesh &mesh) {
+    auto &glMesh = dynamic_cast<const engine::opengl::Mesh&>(mesh);
 
+    glMesh.bind();
     shaderProgram->bind();
-
-    vao->bind();
     texture->bind();
 
     clearErrors();
-    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(glMesh.getIndiciesLen()), GL_UNSIGNED_INT, nullptr);
     checkErrors();
 }
 
@@ -48,8 +50,8 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     glEnable(GL_DEPTH_TEST);
 
     shaderProgram = std::make_unique<Shader>(window, logger);
-    shaderProgram->compileShader("assets/shaders/basic.vert", ShaderType::Vertex);
-    shaderProgram->compileShader("assets/shaders/basic.frag", ShaderType::Fragment);
+    shaderProgram->compileShader("assets/shaders/solid.vert", ShaderType::Vertex);
+    shaderProgram->compileShader("assets/shaders/solid.frag", ShaderType::Fragment);
 
     shaderProgram->link();
     
@@ -73,10 +75,6 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     logger.info(renderer.c_str());
     logger.info(version.c_str());
     logger.info(glsl.c_str());
-
-    vao = std::make_unique<VertexArray>();
-    vbo = std::make_unique<VertexBuffer>();
-    ibo = std::make_unique<IndexBuffer>();
 
     texture = std::make_unique<Texture>("assets/textures/dirt.png");
 
@@ -109,25 +107,6 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     shaderProgram->setUniformMat4("uModel", model);
     checkErrors();
 
-    vao->bind();
-
-    vbo->bind();
-    vbo->setData(cubeVertices, sizeof(cubeVertices));
-
-
-    ibo->bind();
-    ibo->setData(cubeIndices, sizeof(cubeIndices));
-
-    // Specifies how OpenGL interprets vertex data
-    VertexLayout layout(0, 3, VertexElementType::Float, false, sizeof(Vertex), static_cast<const void*>(0));
-    vao->setLayout(layout);
-    vao->enableSlot(0);
-    VertexLayout uvlayout(1, 2, VertexElementType::Float, false, sizeof(Vertex), reinterpret_cast<const void*>(offsetof(Vertex, u)));
-    vao->setLayout(uvlayout);
-    vao->enableSlot(1);
-
-    
-
     logger.info("Initialised OpenGL renderer successfully");
 }
 
@@ -149,6 +128,10 @@ void Renderer::updateProjection() {
 
     shaderProgram->bind();
     shaderProgram->setUniformMat4("uProjection", projection);
+}
+
+std::unique_ptr<engine::Mesh> Renderer::createMesh(engine::MeshData data) {
+    return std::make_unique<engine::opengl::Mesh>(std::move(data));
 }
 
 } // namespace opengl

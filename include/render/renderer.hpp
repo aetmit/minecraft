@@ -1,6 +1,9 @@
 #pragma once
 
+#include <memory>
+
 #include <window/window.hpp>
+#include <render/mesh.hpp>
 #include <core/logger.hpp>
 
 namespace engine {
@@ -12,15 +15,15 @@ class Renderer {
 public:
     virtual ~Renderer() = default;
 
-
-    // temporary function to test rnedering
-    virtual void drawSquare() = 0;
+    virtual void drawMesh(const Mesh &mesh) = 0;
 
     // abstration over screen clearing
     virtual void clearScreen() = 0;
 
     // abstraction for updating the projection matrix
     virtual void updateProjection() = 0;
+
+    virtual std::unique_ptr<Mesh> createMesh(MeshData data) = 0;
 
     Renderer(Window *window, Logger &logger);
 protected:
