@@ -12,7 +12,6 @@ set(SOURCES
     render/opengl/vertex_buffer.cpp
     render/opengl/index_buffer.cpp 
     render/opengl/texture.cpp
-    render/opengl/vertex.cpp
     render/opengl/mesh.cpp
 
     camera/camera.cpp
