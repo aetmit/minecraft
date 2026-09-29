@@ -1,12 +1,16 @@
 #pragma once
 
 #include <array>
+#include <cstddef>
 
 namespace game {
 
-enum class BlockType {
+enum class BlockType : std::size_t {
     Dirt,
     Air,
+    Stone,
+
+    Count, // must be last variant in this enum or else stuff gonna break
 };
 
 class Chunk {

@@ -70,4 +70,13 @@ void AtlasGenerator::generateAtlas() {
     stbi_write_png("assets/textures/atlas.png", atlasWidth, atlasHeight, channels, pixels, atlasWidth * channels);
 }
 
+engine::UVCoord AtlasGenerator::getUV(game::BlockType block) {
+    const AtlasTile tile = atlasTiles[static_cast<std::size_t>(block)];
+
+    constexpr float atlasTilesPerAxis = 64.0f;
+
+    return {tile.x / atlasTilesPerAxis, 1.0f - (tile.y + 1) / atlasTilesPerAxis, (tile.x + 1) / atlasTilesPerAxis, 1.0f - tile.y / atlasTilesPerAxis};
+}
+
+
 } // namespace tools
