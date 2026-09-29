@@ -8,6 +8,7 @@
 #include <game/player.hpp>
 #include <render/mesh.hpp>
 #include <core/transform.hpp>
+#include <core/atlas.hpp>
 #include <game/world/chunk.hpp>
 #include <game/world/chunk_mesher.hpp>
 
@@ -33,6 +34,11 @@ Engine::Engine(EngineConfig& config, Input &input, Logger &logger) :
             renderer = std::make_unique<opengl::Renderer>(&window, logger);
             break;
     }
+
+    // TODO: we should prolly optimise this so that the atlas is only regenerated if new textures were added
+    // or if an atlas doesnt exist
+    tools::AtlasGenerator atlasGenerator;
+    atlasGenerator.generateAtlas();
 
     logger.info("Engine initialised");
 }

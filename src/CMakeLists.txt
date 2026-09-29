@@ -2,6 +2,7 @@ set(SOURCES
     core/logger.cpp
     core/clock.cpp
     core/transform.cpp
+    core/atlas.cpp
 
     input/input.cpp
 
