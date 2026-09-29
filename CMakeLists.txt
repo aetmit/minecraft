@@ -47,7 +47,7 @@ add_library(glad STATIC "vendor/glad/src/glad.c")
 target_include_directories(glad PUBLIC "vendor/glad/include")
 
 # Link stb_image as a static library
-add_library(stbi STATIC "vendor/stbi/src/stb_image.cpp")
+add_library(stbi STATIC "vendor/stbi/src/stb_image.cpp" "vendor/stbi/src/stb_image_write.cpp")
 target_include_directories(stbi PUBLIC "vendor/")
 
 add_library(glm INTERFACE)
