@@ -37,8 +37,8 @@ Engine::Engine(EngineConfig& config, Input &input, Logger &logger) :
 
     // TODO: we should prolly optimise this so that the atlas is only regenerated if new textures were added
     // or if an atlas doesnt exist
-    tools::AtlasGenerator atlasGenerator;
-    atlasGenerator.generateAtlas();
+    tools::Atlas atlas;
+    atlas.generateAtlas();
 
     logger.info("Engine initialised");
 }

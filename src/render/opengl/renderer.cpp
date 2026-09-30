@@ -85,7 +85,7 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     logger.info(version.c_str());
     logger.info(glsl.c_str());
 
-    texture = std::make_unique<Texture>("assets/textures/dirt.png");
+    texture = std::make_unique<Texture>("assets/textures/atlas.png");
 
     shaderProgram->bind();
 

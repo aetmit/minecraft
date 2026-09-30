@@ -14,10 +14,10 @@ struct AtlasTile {
     std::uint16_t y;
 };
 
-class AtlasGenerator {
+class Atlas {
 public:
     void generateAtlas();
-    engine::UVCoord getUV(game::BlockType block);
+    static engine::UVCoord getUV(game::BlockType block);
 
 private:
     static constexpr std::size_t blockTypeCount = static_cast<std::size_t>(game::BlockType::Count);

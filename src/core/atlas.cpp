@@ -10,7 +10,7 @@
 
 namespace tools {
 
-void AtlasGenerator::generateAtlas() {
+void Atlas::generateAtlas() {
     constexpr int atlasHeight = 1024;
     constexpr int atlasWidth = 1024;
     constexpr int channels = 4;
@@ -70,7 +70,7 @@ void AtlasGenerator::generateAtlas() {
     stbi_write_png("assets/textures/atlas.png", atlasWidth, atlasHeight, channels, pixels, atlasWidth * channels);
 }
 
-engine::UVCoord AtlasGenerator::getUV(game::BlockType block) {
+engine::UVCoord Atlas::getUV(game::BlockType block) {
     const AtlasTile tile = atlasTiles[static_cast<std::size_t>(block)];
 
     constexpr float atlasTilesPerAxis = 64.0f;
