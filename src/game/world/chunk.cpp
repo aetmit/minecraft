@@ -15,7 +15,7 @@ void Chunk::setDummy() {
         for (int y = 0; y < 256; y++) {
             for (int z = 0; z < 16; z++) {
                 if (y < 64) {
-                    setBlock(x, y, z, BlockType::Dirt);
+                    setBlock(x, y, z, BlockType::Stone);
                 } else {
                     setBlock(x, y, z, BlockType::Air);
                 }

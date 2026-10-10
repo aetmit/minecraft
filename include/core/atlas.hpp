@@ -24,6 +24,7 @@ private:
 
     static constexpr std::array<AtlasTile, blockTypeCount> atlasTiles {{
         {0, 0}, // dirt
+        {0, 0}, // air (not used tho)
         {1, 0}, // stone
     }};
 };
