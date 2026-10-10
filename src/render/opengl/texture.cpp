@@ -1,5 +1,6 @@
 #include <render/opengl/texture.hpp>
 
+#include <stdexcept>
 
 namespace engine {
 

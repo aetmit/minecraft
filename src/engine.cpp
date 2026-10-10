@@ -28,17 +28,16 @@ Engine::Engine(EngineConfig& config, Input &input, Logger &logger) :
     logger.info("Initialised clock");
     logger.info("Initialised input system");
 
+    // The renderer uploads the atlas during construction, so generate it first.
+    tools::Atlas atlas;
+    atlas.generateAtlas();
+
     switch (config.backend) {
         case GraphicsBackend::OpenGL:
             logger.info("Using backend OpenGL");
             renderer = std::make_unique<opengl::Renderer>(&window, logger);
             break;
     }
-
-    // TODO: we should prolly optimise this so that the atlas is only regenerated if new textures were added
-    // or if an atlas doesnt exist
-    tools::Atlas atlas;
-    atlas.generateAtlas();
 
     logger.info("Engine initialised");
 }

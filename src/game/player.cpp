@@ -6,7 +6,8 @@
 namespace game {
 
 Player::Player(float aspectRatio): camera(70.0f, aspectRatio, 0.1f, 1000.0f), sensitivity(0.1f), moveSpeed(5.0f) {
-    camera.position = glm::vec3(0.0f, 0.0f, 3.0f);
+    camera.position = glm::vec3(8.0f, 70.0f, 20.0f);
+    camera.pitch = -25.0f;
 }
 
 void Player::update(float deltaTime, const engine::Input &input) {

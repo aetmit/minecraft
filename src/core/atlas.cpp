@@ -72,10 +72,15 @@ void Atlas::generateAtlas() {
 
 engine::UVCoord Atlas::getUV(game::BlockType block) {
     const AtlasTile tile = atlasTiles[static_cast<std::size_t>(block)];
+    constexpr float atlasTilesPerAxis = 64.0f; 
 
-    constexpr float atlasTilesPerAxis = 64.0f;
+    float uMin = static_cast<float>(tile.x) / atlasTilesPerAxis;
+    float uMax = static_cast<float>(tile.x + 1) / atlasTilesPerAxis;
+    
+    float vMin = static_cast<float>(tile.y) / atlasTilesPerAxis;
+    float vMax = static_cast<float>(tile.y + 1) / atlasTilesPerAxis;
 
-    return {tile.x / atlasTilesPerAxis, 1.0f - (tile.y + 1) / atlasTilesPerAxis, (tile.x + 1) / atlasTilesPerAxis, 1.0f - tile.y / atlasTilesPerAxis};
+    return { uMin, uMax, vMin, vMax };
 }
 
 
