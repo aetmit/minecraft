@@ -16,6 +16,8 @@ struct AtlasTile {
 
 class Atlas {
 public:
+    Atlas() = default;
+
     void generateAtlas();
     static engine::UVCoord getUV(game::BlockType block);
 

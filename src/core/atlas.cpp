@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <string>
 #include <cstdint>
+#include <vector>
 
 #include <stbi/stb_image_write.h>
 #include <stbi/stb_image.h>
@@ -17,8 +18,10 @@ void Atlas::generateAtlas() {
     constexpr int tileSize = 16;
     constexpr int tilesPerRow = atlasWidth / tileSize;
 
-
-    std::uint8_t pixels[atlasHeight * atlasWidth * channels] {};
+    // Use vector so the pixel data stores on heap
+    // Using array exceeds Windows stack limit.
+    
+    std::vector<std::uint8_t> pixels(atlasHeight * atlasWidth * channels, 0);
 
     int tileIndex = 0;
 
@@ -67,7 +70,7 @@ void Atlas::generateAtlas() {
         tileIndex++;
     }
 
-    stbi_write_png("assets/textures/atlas.png", atlasWidth, atlasHeight, channels, pixels, atlasWidth * channels);
+    stbi_write_png("assets/textures/atlas.png", atlasWidth, atlasHeight, channels, pixels.data(), atlasWidth * channels);
 }
 
 engine::UVCoord Atlas::getUV(game::BlockType block) {
