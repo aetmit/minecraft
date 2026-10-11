@@ -60,9 +60,9 @@ void ChunkMesher::addPositiveXFace(engine::MeshData &data, int x, int y, int z, 
     data.addQuadIndicies();
 
     data.addVertex({{x + 1, y, z}, {uv.uMin, uv.vMin}});
-    data.addVertex({{x + 1, y + 1, z}, {uv.uMax, uv.vMin}});
+    data.addVertex({{x + 1, y, z + 1}, {uv.uMax, uv.vMin}});
     data.addVertex({{x + 1, y + 1, z + 1}, {uv.uMax, uv.vMax}});
-    data.addVertex({{x + 1, y, z + 1}, {uv.uMin, uv.vMax}});
+    data.addVertex({{x + 1, y + 1, z}, {uv.uMin, uv.vMax}});
 }
 
 void ChunkMesher::addNegativeXFace(engine::MeshData &data, int x, int y, int z, BlockType type) {
