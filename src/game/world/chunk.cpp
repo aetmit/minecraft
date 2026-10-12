@@ -10,10 +10,13 @@ void Chunk::setBlock(unsigned int x, unsigned int y, unsigned int z, BlockType b
     blocks[x + CHUNK_WIDTH * (z + CHUNK_WIDTH * y)] = block;
 }
 
-void Chunk::setDummy() {
-    for (int x = 0; x < 16; x++) {
-        for (int y = 0; y < 256; y++) {
-            for (int z = 0; z < 16; z++) {
+void Chunk::setDummy(long long x_, long long z_) {
+    chunkX = x_;
+    chunkZ = z_;
+
+    for (int x = 0; x < CHUNK_WIDTH; x++) {
+        for (int y = 0; y < CHUNK_HEIGHT; y++) {
+            for (int z = 0; z < CHUNK_WIDTH; z++) {
                 if (y < 64) {
                     setBlock(x, y, z, BlockType::Stone);
                 } else {

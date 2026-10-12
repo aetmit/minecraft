@@ -18,7 +18,10 @@ public:
     static constexpr int CHUNK_WIDTH = 16;
     static constexpr int CHUNK_HEIGHT = 256;
 
-    void setDummy();
+    long long chunkX = 0;
+    long long chunkZ = 0;
+
+    void setDummy(long long x_, long long z_);
 
 
     BlockType block(unsigned int x, unsigned int y, unsigned int z) const;
