@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <memory>
+#include <vector>
 
 #include <render/opengl/renderer.hpp>
 
@@ -44,13 +45,20 @@ Engine::Engine(EngineConfig& config, Input &input, Logger &logger) :
 
 void Engine::run() {
 
-    game::Chunk chunk;
-    chunk.setDummy();
-    
-    game::ChunkMesher mesher;
-    MeshData data = mesher.generate(chunk);
+    std::vector<std::unique_ptr<Mesh>> chunkMeshes;
 
-    std::unique_ptr<Mesh> mesh = renderer->createMesh(data);
+    game::ChunkMesher mesher{logger};
+
+    for (long long x = -1; x <= 1; ++x) {
+        for (long long z = -1; z <= 1; ++z) {
+            game::Chunk chunk;
+            chunk.setDummy(x, z);
+            MeshData data = mesher.generate(chunk);
+
+            chunkMeshes.push_back(renderer->createMesh(data));
+        }
+    }
+    
     Transform transform;
 
     window.setCursorLocked(true);
@@ -86,8 +94,9 @@ void Engine::run() {
             player.update(clock.getDeltaTime(), input);
         }
 
-        renderer->drawMesh(*mesh, transform);
-
+        for (const auto& mesh : chunkMeshes) {
+            renderer->drawMesh(*mesh, transform);
+        }
 
         window.swapBuffers();
     }
