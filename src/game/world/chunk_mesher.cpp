@@ -11,7 +11,12 @@ ChunkMesher::ChunkMesher(engine::Logger& logger) :
 {
 }
 
-engine::MeshData ChunkMesher::generate(const Chunk &chunk) {
+engine::MeshData ChunkMesher::generate(
+    const Chunk &chunk,
+    const Chunk* positiveX,
+    const Chunk* negativeX,
+    const Chunk* positiveZ,
+    const Chunk* negativeZ) {
     engine::MeshData data;
 
     logger.info("Generating chunk at: ({}, {})", chunk.chunkX * Chunk::CHUNK_WIDTH, chunk.chunkZ * Chunk::CHUNK_WIDTH);
@@ -31,13 +36,17 @@ engine::MeshData ChunkMesher::generate(const Chunk &chunk) {
                 const auto worldX = chunkX + x;
                 const auto worldZ = chunkZ + z;
 
-                if (x == Chunk::CHUNK_WIDTH - 1 ||
-                    chunk.block(x + 1, y, z) == BlockType::Air) {
+                if ((x == Chunk::CHUNK_WIDTH - 1 &&
+                     (positiveX == nullptr || positiveX->block(0, y, z) == BlockType::Air)) ||
+                    (x < Chunk::CHUNK_WIDTH - 1 &&
+                     chunk.block(x + 1, y, z) == BlockType::Air)) {
                     addPositiveXFace(data, worldX, y, worldZ, block);
                 }
 
-                if (x == 0 ||
-                    chunk.block(x - 1, y, z) == BlockType::Air) {
+                if ((x == 0 &&
+                     (negativeX == nullptr ||
+                      negativeX->block(Chunk::CHUNK_WIDTH - 1, y, z) == BlockType::Air)) ||
+                    (x > 0 && chunk.block(x - 1, y, z) == BlockType::Air)) {
                     addNegativeXFace(data, worldX, y, worldZ, block);
                 }
 
@@ -51,13 +60,17 @@ engine::MeshData ChunkMesher::generate(const Chunk &chunk) {
                     addNegativeYFace(data, worldX, y, worldZ, block);
                 }
 
-                if (z == Chunk::CHUNK_WIDTH - 1 ||
-                    chunk.block(x, y, z + 1) == BlockType::Air) {
+                if ((z == Chunk::CHUNK_WIDTH - 1 &&
+                     (positiveZ == nullptr || positiveZ->block(x, y, 0) == BlockType::Air)) ||
+                    (z < Chunk::CHUNK_WIDTH - 1 &&
+                     chunk.block(x, y, z + 1) == BlockType::Air)) {
                     addPositiveZFace(data, worldX, y, worldZ, block);
                 }
 
-                if (z == 0 ||
-                    chunk.block(x, y, z - 1) == BlockType::Air) {
+                if ((z == 0 &&
+                     (negativeZ == nullptr ||
+                      negativeZ->block(x, y, Chunk::CHUNK_WIDTH - 1) == BlockType::Air)) ||
+                    (z > 0 && chunk.block(x, y, z - 1) == BlockType::Air)) {
                     addNegativeZFace(data, worldX, y, worldZ, block);
                 }
             }

@@ -1,6 +1,7 @@
 #include <engine.hpp>
 
 #include <iostream>
+#include <cstddef>
 #include <memory>
 #include <vector>
 
@@ -47,14 +48,38 @@ void Engine::run() {
 
     std::vector<std::unique_ptr<Mesh>> chunkMeshes;
 
+    constexpr int mapLength = 3;
+    constexpr int mapWidth = 3;
+    constexpr long long firstChunkX = -(mapLength / 2);
+    constexpr long long firstChunkZ = -(mapWidth / 2);
+
     game::ChunkMesher mesher{logger};
+    std::vector<game::Chunk> chunks(
+        static_cast<std::size_t>(mapLength * mapWidth));
 
-    for (long long x = -1; x <= 1; ++x) {
-        for (long long z = -1; z <= 1; ++z) {
-            game::Chunk chunk;
-            chunk.setDummy(x, z);
-            MeshData data = mesher.generate(chunk);
+    const auto chunkIndex = [](int x, int z) {
+        return static_cast<std::size_t>(x * mapWidth + z);
+    };
 
+    for (int x = 0; x < mapLength; ++x) {
+        for (int z = 0; z < mapWidth; ++z) {
+            chunks[chunkIndex(x, z)].setDummy(firstChunkX + x, firstChunkZ + z);
+        }
+    }
+
+    for (int x = 0; x < mapLength; ++x) {
+        for (int z = 0; z < mapWidth; ++z) {
+            const game::Chunk* positiveX =
+                x < (mapLength - 1) ? &chunks[chunkIndex(x + 1, z)] : nullptr;
+            const game::Chunk* negativeX =
+                x > 0 ? &chunks[chunkIndex(x - 1, z)] : nullptr;
+            const game::Chunk* positiveZ =
+                z < (mapWidth - 1) ? &chunks[chunkIndex(x, z + 1)] : nullptr;
+            const game::Chunk* negativeZ =
+                z > 0 ? &chunks[chunkIndex(x, z - 1)] : nullptr;
+
+            MeshData data = mesher.generate(
+                chunks[chunkIndex(x, z)], positiveX, negativeX, positiveZ, negativeZ);
             chunkMeshes.push_back(renderer->createMesh(data));
         }
     }

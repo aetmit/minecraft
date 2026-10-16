@@ -10,7 +10,12 @@ class ChunkMesher {
 public:
     ChunkMesher(engine::Logger& logger);
 
-    engine::MeshData generate(const Chunk &chunk);
+    engine::MeshData generate(
+        const Chunk &chunk,
+        const Chunk* positiveX = nullptr,
+        const Chunk* negativeX = nullptr,
+        const Chunk* positiveZ = nullptr,
+        const Chunk* negativeZ = nullptr);
 
 private:
     engine::Logger& logger;
