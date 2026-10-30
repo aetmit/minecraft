@@ -70,6 +70,15 @@ void Text::show() {
     hidden = false;
 }
 
+void Text::setText(const std::string& newText) {
+    text = newText;
+}
+
+void Text::setPos(float newX, float newY) {
+    x = newX;
+    y = newY;
+}
+
 void Text::render(
     opengl::Shader& shaderProgram,
     int windowWidth,
