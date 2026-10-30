@@ -6,6 +6,6 @@ uniform sampler2D textAtlas;
 uniform vec4 textColor;
 
 void main() {
-    float alpha = texture(textAtlas, TexCoords).r;
+    float alpha = texture(textAtlas, TexCoords).a;
     color = vec4(textColor.rgb, textColor.a * alpha);
 }

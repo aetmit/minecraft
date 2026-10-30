@@ -131,9 +131,9 @@ void Text::render(
             continue;
         }
 
-        const int asciiCode = character;
-        int col = asciiCode % atlasColumns;
-        int row = asciiCode / atlasColumns;
+        const int glyphIndex = static_cast<int>(character);
+        const int col = glyphIndex % atlasColumns;
+        const int row = glyphIndex / atlasColumns;
 
         float uWidth = 1.0f / atlasColumns;
         float vHeight = 1.0f / atlasRows;
