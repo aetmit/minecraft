@@ -38,7 +38,7 @@ Engine::Engine(EngineConfig& config, Input &input, Logger &logger) :
 }
 
 void Engine::run() {
-    ui::DebugScreen debugScreen{renderer.get(), window};
+    ui::DebugScreen debugScreen{renderer.get(), window, clock};
 
     MeshData meshdata;
     meshdata.indices = {
