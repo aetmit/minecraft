@@ -40,7 +40,7 @@ Text::Text(Text&& other) {
     vao = other.vao;
     vbo = other.vbo;
     x = other.x;
-    x = other.y;
+    y = other.y;
 
     // Assign to default
     other.bitmapTexture = nullptr;
