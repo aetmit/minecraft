@@ -38,7 +38,7 @@ private:
     friend class opengl::Renderer;
 
 public:
-    Text(std::string text, float x, float y, float size = 1.0f, Color color = Color(255, 255, 255));
+    Text(std::string text, float x, float y, float size = 2.0f, Color color = Color(255, 255, 255));
 
     Text(Text&& other);
 
