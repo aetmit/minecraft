@@ -19,6 +19,8 @@ set(SOURCES
     render/opengl/mesh.cpp
     render/text.cpp
 
+    ui/debug_screen.cpp
+
     game/player.cpp
 
     camera/camera.cpp
