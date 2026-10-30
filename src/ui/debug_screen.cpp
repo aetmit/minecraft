@@ -10,18 +10,23 @@ DebugScreen::DebugScreen(engine::Renderer *renderer, engine::Window& window) :
     displayDebug(false)
 {
     renderer = renderer;
-    versionText = renderer->addText(engine::Text("Minecraft 1.16.1", 0.0f, window.getHeight() - 20));
+    versionText = renderer->addText(engine::Text("Minecraft 1.16", 0.0f, window.getHeight() - 20, 2.0f));
 }
 
 
 void DebugScreen::update(const engine::Input &input, engine::Window& window) {
-    if (input.isKeyDown(engine::Key::F3)) {
+    if (input.wasKeyPressed(engine::Key::F3)) {
         displayDebug = !displayDebug;
     }
     if (window.wasResized()) {
         versionText->setPos(0.0f, window.getHeight() - 20);
     }
-
+    if (displayDebug) {
+        versionText->show();
+    }
+    else {
+        versionText->hide();
+    }
 }
 
 }  // namespace ui
