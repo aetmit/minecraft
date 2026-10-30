@@ -38,9 +38,6 @@ Engine::Engine(EngineConfig& config, Input &input, Logger &logger) :
 }
 
 void Engine::run() {
-    Text text{"Hello World", 0.0f, 0.0f};
-    renderer->addText(text);
-
     ui::DebugScreen debugScreen{renderer.get(), window};
 
     MeshData meshdata;
