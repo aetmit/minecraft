@@ -31,6 +31,8 @@ public:
     double getTime();
 
     float aspectRatio() const;
+    int getWidth() const;
+    int getHeight() const;
 
     void resetResizedFlag();
     bool wasResized() const;
