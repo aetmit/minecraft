@@ -27,6 +27,8 @@ private:
 
     float size;
 
+    bool hidden;
+
     std::string text;
 
     const opengl::Texture* bitmapTexture{nullptr};
@@ -43,6 +45,10 @@ public:
     Text(const Text&) = delete;
 
     ~Text();
+
+    void hide();
+
+    void show();
 
     void render(
         opengl::Shader& shaderProgram,

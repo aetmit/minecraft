@@ -18,7 +18,8 @@ Text::Text(std::string text, float x, float y, float size, Color color) :
     x(x),
     y(y),
     size(size),
-    color(color)
+    color(color),
+    hidden(false)
 {
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
@@ -43,6 +44,7 @@ Text::Text(Text&& other) {
     vbo = other.vbo;
     x = other.x;
     y = other.y;
+    hidden = other.hidden;
 
     // Assign to default
     other.bitmapTexture = nullptr;
@@ -52,6 +54,7 @@ Text::Text(Text&& other) {
     other.vbo = 0;
     other.x = 0;
     other.y = 0;
+    other.hidden = false;
 }
 
 Text::~Text() {
@@ -59,19 +62,23 @@ Text::~Text() {
     glDeleteVertexArrays(1, &vao);
 }
 
+void Text::hide() {
+    hidden = true;
+}
+
+void Text::show() {
+    hidden = false;
+}
+
 void Text::render(
     opengl::Shader& shaderProgram,
     int windowWidth,
     int windowHeight
 ) {
-    if (!bitmapTexture) {
-        throw std::logic_error("Text must be initialized with a font texture before rendering");
-    }
-
     const int atlasColumns = 16;
     const int atlasRows = 16;
 
-    glUseProgram(shaderProgram.getProgram());
+    shaderProgram.bind();
     const glm::vec4 normalizedColor = color.normalize();
     shaderProgram.setUniform4f(
         "textColor",

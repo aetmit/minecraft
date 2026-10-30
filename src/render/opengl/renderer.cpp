@@ -33,7 +33,7 @@ void Renderer::drawMesh(const engine::Mesh &mesh, Transform transform) {
     glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(glMesh.getIndiciesLen()), GL_UNSIGNED_INT, nullptr);
     checkErrors();
 
-    textShader->bind();
+    
     for (auto& text : texts) {
         clearErrors();
         text.render(*textShader, window->getWidth(), window->getHeight());
