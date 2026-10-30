@@ -35,6 +35,8 @@ private:
 
     void engineInit(opengl::Texture& texture);
 
+    float spaceCharacter(unsigned char c, float size);
+
     friend class opengl::Renderer;
 
 public:

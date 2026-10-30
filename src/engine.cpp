@@ -3,10 +3,12 @@
 #include <iostream>
 #include <memory>
 
+#include <render/text.hpp>
 #include <render/opengl/renderer.hpp>
 
 #include <game/player.hpp>
 #include <render/mesh.hpp>
+#include <ui/debug_screen.hpp>
 #include <core/transform.hpp>
 
 namespace engine {
@@ -36,6 +38,10 @@ Engine::Engine(EngineConfig& config, Input &input, Logger &logger) :
 }
 
 void Engine::run() {
+    Text text{"Hello World", 0.0f, 0.0f};
+    renderer->addText(text);
+
+    ui::DebugScreen debugScreen{renderer.get(), window};
 
     MeshData meshdata;
     meshdata.indices = {
@@ -101,6 +107,8 @@ void Engine::run() {
 
         window.pollEvents();
 
+        debugScreen.update(input, window);
+
         if (input.wasKeyPressed(Key::Escape)) {
             window.setCursorLocked(false);
         }
@@ -122,7 +130,6 @@ void Engine::run() {
         }
 
         renderer->drawMesh(*mesh, transform);
-
 
         window.swapBuffers();
     }

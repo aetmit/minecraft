@@ -13,6 +13,19 @@ void Text::engineInit(opengl::Texture& texture) {
     bitmapTexture = &texture;
 }
 
+float Text::spaceCharacter(unsigned char c, float size) {
+    switch (c) {
+        case 'i':
+            return -5.0f * size;
+
+        case 'I':
+        case 'f':
+            return -3.0f * size;
+        default:
+            return -1.0f * size;
+    }
+}
+
 Text::Text(std::string text, float x, float y, float size, Color color) :
     text(text),
     x(x),
@@ -121,6 +134,7 @@ void Text::render(
     float cursorY = y;
 
     for (unsigned char character : text) {
+        float letterSpacing = spaceCharacter(character, size);
         if (character == '\n') {
             cursorX = x;
             cursorY -= charHeight;
@@ -160,7 +174,7 @@ void Text::render(
         
         glDrawArrays(GL_TRIANGLES, 0, 6);
         
-        cursorX += charWidth;
+        cursorX += charWidth + letterSpacing;
     }
 
     glBindVertexArray(0);
