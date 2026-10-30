@@ -19,8 +19,11 @@ float Text::spaceCharacter(unsigned char c, float size) {
         case '.':
             return -5.0f * size;
 
+        case ' ':
         case 'I':
         case 'f':
+        case 't':
+        case '(':
             return -3.0f * size;
         default:
             return -1.0f * size;
