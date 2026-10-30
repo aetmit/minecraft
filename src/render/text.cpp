@@ -33,9 +33,22 @@ Text::Text(std::string text, float x, float y, Color color) :
     glBindVertexArray(0);
 }
 
-Text::Text(Text&& other) :
-    color()
-{
+Text::Text(Text&& other) {
+    bitmapTexture = other.bitmapTexture;
+    color = other.color;
+    text = other.text;
+    vao = other.vao;
+    vbo = other.vbo;
+    x = other.x;
+    x = other.y;
+
+    // Assign to default
+    other.bitmapTexture = nullptr;
+    other.text = "";
+    other.vao = 0;
+    other.vbo = 0;
+    other.x = 0;
+    other.y = 0;
 }
 
 Text::~Text() {
