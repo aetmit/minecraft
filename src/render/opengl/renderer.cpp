@@ -32,6 +32,14 @@ void Renderer::drawMesh(const engine::Mesh &mesh, Transform transform) {
     clearErrors();
     glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(glMesh.getIndiciesLen()), GL_UNSIGNED_INT, nullptr);
     checkErrors();
+
+    textShader->bind();
+    for (auto& text : texts) {
+        clearErrors();
+        text.render(*textShader, window->getWidth(), window->getHeight());
+        checkErrors();
+    }
+
 }
 
 Renderer::~Renderer() {
@@ -42,7 +50,9 @@ void Renderer::clearScreen() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, logger) {
+Renderer::Renderer(Window *window, Logger &logger) :
+    engine::Renderer(window, logger)
+{
     logger.info("Initalising OpenGL renderer");
 
     window->makeContextCurrent();
@@ -62,7 +72,15 @@ Renderer::Renderer(Window *window, Logger &logger): engine::Renderer(window, log
     shaderProgram->compileShader("assets/shaders/solid.vert", ShaderType::Vertex);
     shaderProgram->compileShader("assets/shaders/solid.frag", ShaderType::Fragment);
 
+    textShader = std::make_unique<Shader>(window, logger);
+    textShader->compileShader("assets/shaders/text.vert", ShaderType::Vertex);
+    textShader->compileShader("assets/shaders/text.frag", ShaderType::Fragment);
+
+    asciiFonts = std::make_unique<Texture>("assets/fonts/ascii.png");
+
+
     shaderProgram->link();
+    textShader->link();
     
     const std::string vendor =
         std::string("Vendor: ") +
@@ -124,6 +142,11 @@ std::unique_ptr<engine::Mesh> Renderer::createMesh(engine::MeshData data) {
 void Renderer::setCamera(Camera *camera) {
     this->camera = camera;
     updateProjection();
+}
+
+void Renderer::addText(Text& text) {
+    texts.push_back(std::move(text));
+    texts.back().engineInit(*asciiFonts);
 }
 
 } // namespace opengl

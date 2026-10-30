@@ -2,6 +2,7 @@
 
 #include <memory>
 
+#include <render/text.hpp>
 #include <window/window.hpp>
 #include <render/mesh.hpp>
 #include <core/logger.hpp>
@@ -29,6 +30,8 @@ public:
 
     virtual void setCamera(Camera *camera) = 0;
 
+    virtual void addText(Text& text) = 0;
+
     Renderer(Window *window, Logger &logger);
 protected:
     Window *window;
@@ -37,6 +40,3 @@ protected:
 };
 
 } // namespace engine
-
-
-

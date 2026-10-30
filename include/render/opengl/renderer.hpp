@@ -1,12 +1,14 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 #include <glad/glad.h>
 
 #include <math/glm.hpp>
 #include <render/renderer.hpp>
 #include <render/mesh.hpp>
+#include <render/text.hpp>
 #include <render/opengl/shader.hpp>
 #include <render/opengl/vertex_buffer.hpp>
 #include <render/opengl/index_buffer.hpp>
@@ -36,6 +38,8 @@ public:
 
     void setCamera(Camera *camera) override;
 
+    void addText(Text& text) override;
+
 private:
 
     void clearErrors();
@@ -46,7 +50,13 @@ private:
     // we use pointers here because we need runtime initalisation
     std::unique_ptr<Shader> shaderProgram;
 
+    std::unique_ptr<Shader> textShader;
+
     std::unique_ptr<Texture> texture;
+
+    std::unique_ptr<Texture> asciiFonts;
+
+    std::vector<Text> texts;
 };
 
 } // namespace opengl
