@@ -144,9 +144,16 @@ void Renderer::setCamera(Camera *camera) {
     updateProjection();
 }
 
-void Renderer::addText(Text& text) {
+Text* Renderer::addText(Text& text) {
     texts.push_back(std::move(text));
     texts.back().engineInit(*asciiFonts);
+    return &texts.back();
+}
+
+Text* Renderer::addText(Text&& text) {
+    texts.push_back(std::move(text));
+    texts.back().engineInit(*asciiFonts);
+    return &texts.back();
 }
 
 } // namespace opengl
