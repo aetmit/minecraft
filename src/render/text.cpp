@@ -84,6 +84,10 @@ void Text::show() {
     hidden = false;
 }
 
+bool Text::visible() const {
+    return !hidden;
+}
+
 void Text::setText(const std::string& newText) {
     text = newText;
 }

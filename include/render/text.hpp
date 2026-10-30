@@ -52,6 +52,8 @@ public:
 
     void show();
 
+    bool visible() const;
+
     void setText(const std::string& newText);
 
     void setPos(float newX, float newY);
