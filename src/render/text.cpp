@@ -13,10 +13,11 @@ void Text::engineInit(opengl::Texture& texture) {
     bitmapTexture = &texture;
 }
 
-Text::Text(std::string text, float x, float y, Color color) :
+Text::Text(std::string text, float x, float y, float size, Color color) :
     text(text),
     x(x),
     y(y),
+    size(size),
     color(color)
 {
     glGenVertexArrays(1, &vao);
@@ -37,6 +38,7 @@ Text::Text(Text&& other) {
     bitmapTexture = other.bitmapTexture;
     color = other.color;
     text = other.text;
+    size = other.size;
     vao = other.vao;
     vbo = other.vbo;
     x = other.x;
@@ -45,6 +47,7 @@ Text::Text(Text&& other) {
     // Assign to default
     other.bitmapTexture = nullptr;
     other.text = "";
+    other.size = 0;
     other.vao = 0;
     other.vbo = 0;
     other.x = 0;
@@ -58,15 +61,11 @@ Text::~Text() {
 
 void Text::render(
     opengl::Shader& shaderProgram,
-    float scale,
     int windowWidth,
     int windowHeight
 ) {
     if (!bitmapTexture) {
         throw std::logic_error("Text must be initialized with a font texture before rendering");
-    }
-    if (windowWidth <= 0 || windowHeight <= 0 || scale <= 0.0f) {
-        return;
     }
 
     const int atlasColumns = 16;
@@ -98,8 +97,8 @@ void Text::render(
 
     glBindVertexArray(vao);
 
-    const float charWidth = 8.0f * scale;
-    const float charHeight = 8.0f * scale;
+    const float charWidth = 8.0f * size;
+    const float charHeight = 8.0f * size;
     float cursorX = x;
     float cursorY = y;
 

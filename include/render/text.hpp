@@ -25,6 +25,8 @@ private:
     float x;
     float y;
 
+    float size;
+
     std::string text;
 
     const opengl::Texture* bitmapTexture{nullptr};
@@ -34,7 +36,7 @@ private:
     friend class opengl::Renderer;
 
 public:
-    Text(std::string text, float x, float y, Color color = Color(255, 255, 255));
+    Text(std::string text, float x, float y, float size = 2.0f, Color color = Color(255, 255, 255));
 
     Text(Text&& other);
 
@@ -44,7 +46,6 @@ public:
 
     void render(
         opengl::Shader& shaderProgram,
-        float scale,
         int windowWidth,
         int windowHeight
     );
