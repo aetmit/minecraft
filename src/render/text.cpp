@@ -78,6 +78,8 @@ void Text::render(
     const int atlasColumns = 16;
     const int atlasRows = 16;
 
+    if (hidden) { return; }
+
     shaderProgram.bind();
     const glm::vec4 normalizedColor = color.normalize();
     shaderProgram.setUniform4f(
