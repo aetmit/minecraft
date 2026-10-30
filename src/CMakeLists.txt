@@ -1,6 +1,7 @@
 set(SOURCES
     core/logger.cpp
     core/clock.cpp
+    core/color.cpp
     core/transform.cpp
 
     input/input.cpp
@@ -16,6 +17,7 @@ set(SOURCES
     render/opengl/index_buffer.cpp 
     render/opengl/texture.cpp
     render/opengl/mesh.cpp
+    render/text.cpp
 
     game/player.cpp
 
