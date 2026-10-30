@@ -20,9 +20,11 @@ public:
 private:
     std::unique_ptr<engine::Renderer> renderer;
 
+    std::string leftPanelText;
+
     bool displayDebug;
 
-    engine::Text *versionText;
+    engine::Text *leftPanel;
 
     engine::Clock& clock;
 

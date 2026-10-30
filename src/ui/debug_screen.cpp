@@ -4,6 +4,7 @@
 
 #include <cmath>
 #include <format>
+#include <string>
 
 namespace ui {
 
@@ -16,12 +17,12 @@ DebugScreen::DebugScreen(engine::Renderer *renderer, engine::Window& window, eng
 {
     renderer = renderer;
 
-    // TODO: Hardcoded chunk updates
-    versionText = renderer->addText(
-        engine::Text(
-            "Minecraft 1.16 (0 fps,<none> chunk updates)",
-            0.0f, window.getHeight() - 20, 2.0f
-        )
+    leftPanelText = std::string("Minecraft 1.16 (1.16/vanilla)\n")
+        + "{} fps";
+
+
+    leftPanel = renderer->addText(
+        engine::Text(leftPanelText, 0.0f, window.getHeight() - 20, 2.0f)
     );
 }
 
@@ -31,13 +32,13 @@ void DebugScreen::update(const engine::Input &input, engine::Window& window) {
         displayDebug = !displayDebug;
     }
     if (window.wasResized()) {
-        versionText->setPos(0.0f, window.getHeight() - 20);
+        leftPanel->setPos(0.0f, window.getHeight() - 20);
     }
     if (displayDebug) {
-        versionText->show();
+        leftPanel->show();
     }
     else {
-        versionText->hide();
+        leftPanel->hide();
     }
 
     const double deltaTime = clock.getDeltaTime();
@@ -50,11 +51,8 @@ void DebugScreen::update(const engine::Input &input, engine::Window& window) {
         // Elapse FPS over time so the display will be stable
         const double fps = static_cast<double>(fpsFrames) / fpsElapsed;
 
-        // TODO: Hardcoded chunk updates
-        versionText->setText(std::format(
-            "Minecraft 1.16 ({} fps,<none> chunk updates)",
-            std::round(fps))
-        );
+        const double roundedFps = std::round(fps);
+        leftPanel->setText(std::vformat(leftPanelText, std::make_format_args(roundedFps)));
         fpsElapsed = 0.0;
         fpsFrames = 0;
     }
