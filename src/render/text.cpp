@@ -16,6 +16,7 @@ void Text::engineInit(opengl::Texture& texture) {
 float Text::spaceCharacter(unsigned char c, float size) {
     switch (c) {
         case 'i':
+        case '.':
             return -5.0f * size;
 
         case 'I':
