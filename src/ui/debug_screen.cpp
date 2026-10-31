@@ -41,9 +41,9 @@ DebugScreen::DebugScreen(engine::Renderer *renderer, engine::Window& window, eng
     );
 
     rightPanel = renderer->addText(
-        engine::Text(rightPanelText, window.getWidth() - 10, window.getHeight() - 20, 2.0f)
+        engine::Text(rightPanelText, window.getWidth(), window.getHeight() - 20, 2.0f)
     );
-    rightPanel->setRightAligned(window.getWidth() - 10, window.getHeight() - 20);
+    rightPanel->setRightAligned(window.getWidth(), window.getHeight() - 20);
 }
 
 
@@ -53,7 +53,7 @@ void DebugScreen::update(const engine::Input &input, engine::Window& window) {
     }
     if (window.wasResized()) {
         leftPanel->setPos(0.0f, window.getHeight() - 20);
-        rightPanel->setRightAligned(window.getWidth() - 10, window.getHeight() - 20);
+        rightPanel->setRightAligned(window.getWidth(), window.getHeight() - 20);
     }
     if (displayDebug) {
         leftPanel->show();
