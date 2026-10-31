@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 
 #include <string>
+#include <string_view>
 
 namespace engine {
 
@@ -28,6 +29,7 @@ private:
     float size;
 
     bool hidden;
+    bool rightAligned;
 
     std::string text;
 
@@ -35,7 +37,8 @@ private:
 
     void engineInit(opengl::Texture& texture);
 
-    float spaceCharacter(unsigned char c, float size);
+    float spaceCharacter(unsigned char c, float size) const;
+    float lineWidth(std::string_view line) const;
 
     friend class opengl::Renderer;
 
@@ -57,6 +60,8 @@ public:
     void setText(const std::string& newText);
 
     void setPos(float newX, float newY);
+
+    void setRightAligned(float rightX, float y);
 
     void render(
         opengl::Shader& shaderProgram,

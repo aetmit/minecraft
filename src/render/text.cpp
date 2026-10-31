@@ -13,7 +13,7 @@ void Text::engineInit(opengl::Texture& texture) {
     bitmapTexture = &texture;
 }
 
-float Text::spaceCharacter(unsigned char c, float size) {
+float Text::spaceCharacter(unsigned char c, float size) const {
     switch (c) {
         case 'i':
         case 'l':
@@ -37,7 +37,8 @@ Text::Text(std::string text, float x, float y, float size, Color color) :
     y(y),
     size(size),
     color(color),
-    hidden(false)
+    hidden(false),
+    rightAligned(false)
 {
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
@@ -63,6 +64,7 @@ Text::Text(Text&& other) {
     x = other.x;
     y = other.y;
     hidden = other.hidden;
+    rightAligned = other.rightAligned;
 
     // Assign to default
     other.bitmapTexture = nullptr;
@@ -73,6 +75,7 @@ Text::Text(Text&& other) {
     other.x = 0;
     other.y = 0;
     other.hidden = false;
+    other.rightAligned = false;
 }
 
 Text::~Text() {
@@ -99,6 +102,29 @@ void Text::setText(const std::string& newText) {
 void Text::setPos(float newX, float newY) {
     x = newX;
     y = newY;
+}
+
+void Text::setRightAligned(float rightX, float newY) {
+    x = rightX;
+    y = newY;
+    rightAligned = true;
+}
+
+float Text::lineWidth(std::string_view line) const {
+    const float charWidth = 8.0f * size;
+    float width = 0.0f;
+    float lastSpacing = 0.0f;
+
+    for (unsigned char character : line) {
+        if (character == '\n' || character == '\r') {
+            break;
+        }
+
+        lastSpacing = spaceCharacter(character, size);
+        width += charWidth + lastSpacing;
+    }
+
+    return width - lastSpacing;
 }
 
 void Text::render(
@@ -139,13 +165,16 @@ void Text::render(
 
     const float charWidth = 8.0f * size;
     const float charHeight = 8.0f * size;
-    float cursorX = x;
+    std::size_t lineStart = 0;
+    float cursorX = x - (rightAligned ? lineWidth(text) : 0.0f);
     float cursorY = y;
 
-    for (unsigned char character : text) {
+    for (std::size_t i = 0; i < text.size(); ++i) {
+        const auto character = static_cast<unsigned char>(text[i]);
         float letterSpacing = spaceCharacter(character, size);
         if (character == '\n') {
-            cursorX = x;
+            lineStart = i + 1;
+            cursorX = x - (rightAligned ? lineWidth(std::string_view(text).substr(lineStart)) : 0.0f);
             cursorY -= (charHeight + 2);
             continue;
         }
