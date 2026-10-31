@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include <vector>
+#include <deque>
 
 #include <glad/glad.h>
 
@@ -58,7 +58,7 @@ private:
 
     std::unique_ptr<Texture> asciiFonts;
 
-    std::vector<Text> texts;
+    std::deque<Text> texts;
 };
 
 } // namespace opengl

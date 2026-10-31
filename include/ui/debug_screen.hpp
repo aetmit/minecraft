@@ -6,7 +6,6 @@
 #include <input/input.hpp>
 
 #include <cstddef>
-#include <memory>
 
 namespace ui {
 
@@ -18,18 +17,22 @@ public:
     void update(const engine::Input &input, engine::Window& window);
 
 private:
-    std::unique_ptr<engine::Renderer> renderer;
-
     std::string leftPanelText;
+    std::string rightPanelText;
 
     bool displayDebug;
 
     engine::Text *leftPanel;
+    engine::Text *rightPanel;
 
     engine::Clock& clock;
 
     double fpsElapsed;
     std::size_t fpsFrames;
+
+    std::size_t getMemoryUsage() const;
+
+    std::size_t getSystemMemory() const;
 };
 
 }  // namespace ui
