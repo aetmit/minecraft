@@ -16,6 +16,7 @@ void Text::engineInit(opengl::Texture& texture) {
 float Text::spaceCharacter(unsigned char c, float size) {
     switch (c) {
         case 'i':
+        case 'l':
         case '.':
             return -5.0f * size;
 
@@ -145,7 +146,7 @@ void Text::render(
         float letterSpacing = spaceCharacter(character, size);
         if (character == '\n') {
             cursorX = x;
-            cursorY -= charHeight;
+            cursorY -= (charHeight + 2);
             continue;
         }
         if (character == '\r') {
