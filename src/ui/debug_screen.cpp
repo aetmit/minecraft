@@ -7,6 +7,9 @@
 #include <string>
 
 #if defined(_WIN32)
+
+    // Prevent Windows from defining min and max as macros
+    #define NOMINMAX
     #include <Windows.h>
     #include <Psapi.h>
 #elif defined(__APPLE__)
