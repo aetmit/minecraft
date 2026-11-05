@@ -34,8 +34,6 @@ DebugScreen::DebugScreen(engine::Renderer *renderer, engine::Window& window, eng
     rightPanelText = std::string("Java: 1.8.0_51 64bit\n")
         + "Mem: {}% {}/{}MB\n";
 
-
-
     leftPanel = renderer->addText(
         engine::Text(leftPanelText, 0.0f, window.getHeight() - 20, 2.0f)
     );
@@ -43,7 +41,12 @@ DebugScreen::DebugScreen(engine::Renderer *renderer, engine::Window& window, eng
     rightPanel = renderer->addText(
         engine::Text(rightPanelText, window.getWidth(), window.getHeight() - 20, 2.0f)
     );
+
     rightPanel->setRightAligned(window.getWidth(), window.getHeight() - 20);
+
+    leftPanel->setBackgroundColor({140, 140, 140, 80});
+
+    rightPanel->setBackgroundColor({140, 140, 140, 80});
 }
 
 

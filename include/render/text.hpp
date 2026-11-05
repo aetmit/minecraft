@@ -9,6 +9,7 @@
 
 #include <string>
 #include <string_view>
+#include <optional>
 
 namespace engine {
 
@@ -22,6 +23,7 @@ private:
     GLuint vbo{0};
 
     Color color;
+    std::optional<Color> backgroundColor;
 
     float x;
     float y;
@@ -39,6 +41,8 @@ private:
 
     float spaceCharacter(unsigned char c, float size) const;
     float lineWidth(std::string_view line) const;
+
+    void renderBackground(opengl::Shader& shaderProgram, float charHeight) const;
 
     friend class opengl::Renderer;
 
@@ -58,6 +62,10 @@ public:
     bool visible() const;
 
     void setText(const std::string& newText);
+
+    void setBackgroundColor(Color newColor);
+
+    void clearBackgroundColor();
 
     void setPos(float newX, float newY);
 

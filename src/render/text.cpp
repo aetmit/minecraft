@@ -31,6 +31,56 @@ float Text::spaceCharacter(unsigned char c, float size) const {
     }
 }
 
+void Text::renderBackground(opengl::Shader& shaderProgram, float charHeight) const {
+    const glm::vec4 normalizedBackgroundColor = backgroundColor->normalize();
+    shaderProgram.setUniform4f(
+        "backgroundColor",
+        normalizedBackgroundColor.r,
+        normalizedBackgroundColor.g,
+        normalizedBackgroundColor.b,
+        normalizedBackgroundColor.a
+    );
+    shaderProgram.setUniform1i("useBackground", 1);
+
+    // Slightly tweak it so it is slightly bigger than the text height
+    charHeight += 2.0f;
+
+    std::size_t lineStart = 0;
+    float lineY = y;
+    while (lineStart <= text.size()) {
+        const std::size_t lineEnd = text.find('\n', lineStart);
+        const std::size_t lineLength = lineEnd == std::string::npos
+            ? text.size() - lineStart
+            : lineEnd - lineStart;
+        const std::string_view line(text.data() + lineStart, lineLength);
+        const float width = lineWidth(line);
+
+        if (width > 0.0f && charHeight > 0.0f) {
+            const float lineX = x - (rightAligned ? width : 0.0f);
+            const float vertices[6][4] = {
+                { lineX,         lineY + charHeight, 0.0f, 0.0f },
+                { lineX,         lineY,              0.0f, 0.0f },
+                { lineX + width, lineY,              0.0f, 0.0f },
+
+                { lineX,         lineY + charHeight, 0.0f, 0.0f },
+                { lineX + width, lineY,              0.0f, 0.0f },
+                { lineX + width, lineY + charHeight, 0.0f, 0.0f }
+            };
+
+            glBindBuffer(GL_ARRAY_BUFFER, vbo);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+        }
+
+        if (lineEnd == std::string::npos) {
+            break;
+        }
+        lineStart = lineEnd + 1;
+        lineY -= charHeight;
+    }
+}
+
 Text::Text(std::string text, float x, float y, float size, Color color) :
     text(text),
     x(x),
@@ -57,6 +107,7 @@ Text::Text(std::string text, float x, float y, float size, Color color) :
 Text::Text(Text&& other) {
     bitmapTexture = other.bitmapTexture;
     color = other.color;
+    backgroundColor = other.backgroundColor;
     text = other.text;
     size = other.size;
     vao = other.vao;
@@ -97,6 +148,14 @@ bool Text::visible() const {
 
 void Text::setText(const std::string& newText) {
     text = newText;
+}
+
+void Text::setBackgroundColor(Color newColor) {
+    backgroundColor = newColor;
+}
+
+void Text::clearBackgroundColor() {
+    backgroundColor.reset();
 }
 
 void Text::setPos(float newX, float newY) {
@@ -165,6 +224,12 @@ void Text::render(
 
     const float charWidth = 8.0f * size;
     const float charHeight = 8.0f * size;
+
+    if (backgroundColor) {
+        renderBackground(shaderProgram, charHeight);
+    }
+
+    shaderProgram.setUniform1i("useBackground", 0);
     std::size_t lineStart = 0;
     float cursorX = x - (rightAligned ? lineWidth(text) : 0.0f);
     float cursorY = y;
