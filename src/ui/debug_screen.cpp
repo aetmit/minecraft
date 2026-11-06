@@ -1,7 +1,9 @@
 #include <ui/debug_screen.hpp>
 #include <render/text.hpp>
 #include <input/input.hpp>
+#include <window/window.hpp>
 
+#include <array>
 #include <cmath>
 #include <format>
 #include <string>
@@ -21,6 +23,12 @@
     #include <sys/sysinfo.h>
 #endif
 
+#ifdef _MSC_VER
+    #include <intrin.h>
+#else
+    #include <cpuid.h>
+#endif
+
 namespace ui {
 
 
@@ -35,7 +43,12 @@ DebugScreen::DebugScreen(engine::Renderer *renderer, engine::Window& window, eng
 
     // TODO Hardcoded Java version and bitnesss
     rightPanelText = std::string("Java: 1.8.0_51 64bit\n")
-        + "Mem: {}% {}/{}MB\n";
+        + "Mem: {}% {}/{}MB\n"
+        + "Allocated: {}% {}MB\n"
+        + "\n"
+        + "CPU: {}"
+        + "\n"
+        + "Display: {}";
 
     leftPanel = renderer->addText(
         engine::Text(leftPanelText, 0.0f, window.getHeight() - 20, 2.0f)
@@ -85,15 +98,28 @@ void DebugScreen::update(const engine::Input &input, engine::Window& window) {
 
         const auto memoryUsage = getMemoryUsage() / 1024;
 
-        // Simply just using 1/4 of system memory to simulate JVM allocated memory
-        const auto jvmMemory = std::round((getSystemMemory() / 1024) * 0.25);
+        // Simply just using 25% of system memory to simulate JVM max memory
+        const auto jvmMemory = std::round((getSystemMemory() / 1024) * 0.25f);
         const auto memoryUsagePercentage = std::round((memoryUsage / jvmMemory) * 100);
+
+        // Simply just using 45% of JVM max memory to simulate JVM allocated memory
+        const auto jvmAllocMemory = std::round(jvmMemory * 0.45f);
+        const auto allocMemoryUsagePercentage = std::round((memoryUsage / jvmAllocMemory) * 100);
+
+        const auto cpuName = getCPUName();
+        const auto displayName = getDisplayName();
+
         rightPanel->setText(std::vformat(
             rightPanelText,
             std::make_format_args(
                 memoryUsagePercentage,
                 memoryUsage,
-                jvmMemory)
+                jvmMemory,
+                allocMemoryUsagePercentage,
+                jvmAllocMemory,
+                cpuName,
+                displayName
+            )
             )
         );
 
@@ -149,6 +175,47 @@ std::size_t DebugScreen::getSystemMemory() const {
         }
     #endif
     return 0;
+}
+
+std::string DebugScreen::getCPUName() const {
+    std::array<int, 4> cpu_info = { 0 };
+    char cpu_string[49]; // 48 bytes of data + 1 null terminator
+    std::memset(cpu_string, 0, sizeof(cpu_string));
+
+    // Check if extended functions are supported
+    #ifdef _MSC_VER
+        __cpuid(cpu_info.data(), 0x80000000);
+    #else
+        __get_cpuid(0x80000000, 
+                    (unsigned int*)&cpu_info[0], (unsigned int*)&cpu_info[1], 
+                    (unsigned int*)&cpu_info[2], (unsigned int*)&cpu_info[3]);
+    #endif
+
+    unsigned int extended_ids = cpu_info[0];
+    if (extended_ids < 0x80000004) {
+        return "Unknown Processor (Extended IDs not supported)";
+    }
+
+    // Call CPUID with 0x80000002, 0x80000003, 0x80000004 to assemble the string
+    for (unsigned int i = 0x80000002; i <= 0x80000004; ++i) {
+    #ifdef _MSC_VER
+            __cpuid(cpu_info.data(), i);
+    #else
+            __get_cpuid(i, 
+                        (unsigned int*)&cpu_info[0], (unsigned int*)&cpu_info[1], 
+                        (unsigned int*)&cpu_info[2], (unsigned int*)&cpu_info[3]);
+    #endif
+        // Copy 16 bytes at a time into our buffer
+        std::memcpy(cpu_string + (i - 0x80000002) * 16, cpu_info.data(), 16);
+    }
+
+    return std::string(cpu_string);
+}
+
+std::string DebugScreen::getDisplayName() const {
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+    const char* name = glfwGetMonitorName(monitor);
+    return std::string(name ? name : "Unknown");
 }
 
 }  // namespace ui

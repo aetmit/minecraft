@@ -5,7 +5,7 @@
 #include <render/renderer.hpp>
 #include <input/input.hpp>
 
-#include <cstddef>
+#include <string>
 
 namespace ui {
 
@@ -33,6 +33,10 @@ private:
     std::size_t getMemoryUsage() const;
 
     std::size_t getSystemMemory() const;
+
+    std::string getCPUName() const;
+
+    std::string getDisplayName() const;
 };
 
 }  // namespace ui
