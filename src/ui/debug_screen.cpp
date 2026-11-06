@@ -3,6 +3,7 @@
 #include <input/input.hpp>
 #include <window/window.hpp>
 
+#include <glad/glad.h>
 #include <array>
 #include <cmath>
 #include <format>
@@ -46,9 +47,10 @@ DebugScreen::DebugScreen(engine::Renderer *renderer, engine::Window& window, eng
         + "Mem: {}% {}/{}MB\n"
         + "Allocated: {}% {}MB\n"
         + "\n"
-        + "CPU: {}"
+        + "CPU: {}\n"
         + "\n"
-        + "Display: {}";
+        + "Display: {}\n"
+        + "{}";
 
     leftPanel = renderer->addText(
         engine::Text(leftPanelText, 0.0f, window.getHeight() - 20, 2.0f)
@@ -108,6 +110,7 @@ void DebugScreen::update(const engine::Input &input, engine::Window& window) {
 
         const auto cpuName = getCPUName();
         const auto displayName = getDisplayName();
+        const auto gpuName = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
 
         rightPanel->setText(std::vformat(
             rightPanelText,
@@ -118,7 +121,8 @@ void DebugScreen::update(const engine::Input &input, engine::Window& window) {
                 allocMemoryUsagePercentage,
                 jvmAllocMemory,
                 cpuName,
-                displayName
+                displayName,
+                gpuName
             )
             )
         );
