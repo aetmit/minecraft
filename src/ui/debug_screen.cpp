@@ -52,13 +52,14 @@ DebugScreen::DebugScreen(engine::Renderer *renderer, engine::Window& window, eng
         + "E: 5/130, B: 0\n"
         + "P: 103, T: 131\n"
         + "Client Chunk Cache: 441, 373\n"
-        + "ServerChunkCache: 2522"
+        + "ServerChunkCache: 2522\n"
         + "minecraft:overworld FC: 0\n"
         + "\n"
         + "XYZ: {:.3f} / {:.3f} / {:.3f}\n"
         // TODO Hardcoded as it is not implemented yet
-        + "Block: 0 0 0"
-        + "Chunk: 0 0 0 in 0 4 0";
+        + "Block: 0 0 0\n"
+        + "Chunk: 0 0 0 in 0 4 0\n"
+        + "Facing: {} (Towards {}) ({:.1f} / {:.1f})";
 
     // TODO Hardcoded Java version and bitnesss
     rightPanelText = std::string("Java: 1.8.0_51 64bit\n")
@@ -125,13 +126,37 @@ void DebugScreen::update(const engine::Input &input, engine::Window& window) {
 }
 
 void DebugScreen::renderLeftPanel(const int fps) const {
+
+    // Minecraft Facing:
+    //
+    // West:  -X
+    // East:  +X
+    // North: -Z
+    // South: +Z
+
+    const auto forward = playerCam.forward();
+
+    const std::string facing =
+        std::abs(forward.x) > std::abs(forward.z)
+            ? (forward.x < 0 ? "West" : "East")
+            : (forward.z < 0 ? "North" : "South");
+
+    const std::string facingCoord =
+        std::abs(forward.x) > std::abs(forward.z)
+            ? (forward.x < 0 ? "negative X" : "positive X")
+            : (forward.z < 0 ? "negative Z" : "positive Z");
+
     leftPanel->setText(std::vformat(
         leftPanelText,
         std::make_format_args(
             fps,
             playerCam.position.x,
             playerCam.position.y,
-            playerCam.position.z
+            playerCam.position.z,
+            facing,
+            facingCoord,
+            playerCam.yaw,
+            playerCam.pitch
         )
     ));
 }
