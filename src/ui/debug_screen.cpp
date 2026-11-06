@@ -4,9 +4,11 @@
 #include <window/window.hpp>
 
 #include <glad/glad.h>
+
 #include <array>
 #include <cmath>
 #include <format>
+#include <regex>
 #include <string>
 
 #if defined(_WIN32)
@@ -47,10 +49,11 @@ DebugScreen::DebugScreen(engine::Renderer *renderer, engine::Window& window, eng
         + "Mem: {}% {}/{}MB\n"
         + "Allocated: {}% {}MB\n"
         + "\n"
-        + "CPU: {}\n"
+        + "CPU: " + getCPUName() + "\n"
         + "\n"
-        + "Display: {}\n"
-        + "{}";
+        + "Display: " + getDisplayName() + "\n"
+        + reinterpret_cast<const char*>(glGetString(GL_RENDERER)) + "\n"
+        + getOpenGLProfile() + " " + getDriverVersion();
 
     leftPanel = renderer->addText(
         engine::Text(leftPanelText, 0.0f, window.getHeight() - 20, 2.0f)
@@ -108,10 +111,6 @@ void DebugScreen::update(const engine::Input &input, engine::Window& window) {
         const auto jvmAllocMemory = std::round(jvmMemory * 0.45f);
         const auto allocMemoryUsagePercentage = std::round((memoryUsage / jvmAllocMemory) * 100);
 
-        const auto cpuName = getCPUName();
-        const auto displayName = getDisplayName();
-        const auto gpuName = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
-
         rightPanel->setText(std::vformat(
             rightPanelText,
             std::make_format_args(
@@ -119,10 +118,7 @@ void DebugScreen::update(const engine::Input &input, engine::Window& window) {
                 memoryUsage,
                 jvmMemory,
                 allocMemoryUsagePercentage,
-                jvmAllocMemory,
-                cpuName,
-                displayName,
-                gpuName
+                jvmAllocMemory
             )
             )
         );
@@ -183,16 +179,15 @@ std::size_t DebugScreen::getSystemMemory() const {
 
 std::string DebugScreen::getCPUName() const {
     std::array<int, 4> cpu_info = { 0 };
-    char cpu_string[49]; // 48 bytes of data + 1 null terminator
+    char cpu_string[49];
     std::memset(cpu_string, 0, sizeof(cpu_string));
 
-    // Check if extended functions are supported
     #ifdef _MSC_VER
         __cpuid(cpu_info.data(), 0x80000000);
     #else
         __get_cpuid(0x80000000, 
-                    (unsigned int*)&cpu_info[0], (unsigned int*)&cpu_info[1], 
-                    (unsigned int*)&cpu_info[2], (unsigned int*)&cpu_info[3]);
+            (unsigned int*)&cpu_info[0], (unsigned int*)&cpu_info[1], 
+            (unsigned int*)&cpu_info[2], (unsigned int*)&cpu_info[3]);
     #endif
 
     unsigned int extended_ids = cpu_info[0];
@@ -200,16 +195,15 @@ std::string DebugScreen::getCPUName() const {
         return "Unknown Processor (Extended IDs not supported)";
     }
 
-    // Call CPUID with 0x80000002, 0x80000003, 0x80000004 to assemble the string
+    // Call CPUID with 0x80000002, 0x80000003, 0x80000004
     for (unsigned int i = 0x80000002; i <= 0x80000004; ++i) {
     #ifdef _MSC_VER
             __cpuid(cpu_info.data(), i);
     #else
             __get_cpuid(i, 
-                        (unsigned int*)&cpu_info[0], (unsigned int*)&cpu_info[1], 
-                        (unsigned int*)&cpu_info[2], (unsigned int*)&cpu_info[3]);
+                (unsigned int*)&cpu_info[0], (unsigned int*)&cpu_info[1], 
+                (unsigned int*)&cpu_info[2], (unsigned int*)&cpu_info[3]);
     #endif
-        // Copy 16 bytes at a time into our buffer
         std::memcpy(cpu_string + (i - 0x80000002) * 16, cpu_info.data(), 16);
     }
 
@@ -220,6 +214,41 @@ std::string DebugScreen::getDisplayName() const {
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const char* name = glfwGetMonitorName(monitor);
     return std::string(name ? name : "Unknown");
+}
+
+std::string DebugScreen::getOpenGLProfile() const {
+    const auto version = std::string(reinterpret_cast<const char*>(glGetString(GL_VERSION)));
+
+    GLint profileMask = 0;
+    glGetIntegerv(GL_CONTEXT_PROFILE_MASK, &profileMask);
+    
+    if (profileMask & GL_CONTEXT_COMPATIBILITY_PROFILE_BIT) {
+        return version + " Compatibility Profile Context";
+    } else {
+        return version + " Core Profile Context";
+    }
+}
+
+std::string DebugScreen::getDriverVersion() const {
+    const GLubyte* rawVersion = glGetString(GL_VERSION);
+    if (!rawVersion) return "";
+
+    std::string versionStr(reinterpret_cast<const char*>(rawVersion));
+
+    std::regex versionRegex(R"((\d+\.\d+(?:\.\d+)*)\s*$)");
+    std::smatch match;
+
+    // Search from the end of the string
+    if (std::regex_search(versionStr, match, versionRegex)) {
+        return match[1].str();
+    }
+
+    size_t lastSpace = versionStr.find_last_of(' ');
+    if (lastSpace != std::string::npos) {
+        return versionStr.substr(lastSpace + 1);
+    }
+
+    return versionStr;
 }
 
 }  // namespace ui

@@ -37,6 +37,10 @@ private:
     std::string getCPUName() const;
 
     std::string getDisplayName() const;
+
+    std::string getOpenGLProfile() const;
+
+    std::string getDriverVersion() const;
 };
 
 }  // namespace ui
