@@ -59,7 +59,19 @@ DebugScreen::DebugScreen(engine::Renderer *renderer, engine::Window& window, eng
         // TODO Hardcoded as it is not implemented yet
         + "Block: 0 0 0\n"
         + "Chunk: 0 0 0 in 0 4 0\n"
-        + "Facing: {} (Towards {}) ({:.1f} / {:.1f})";
+        + "Facing: {} (Towards {}) ({:.1f} / {:.1f})\n"
+        // TODO Hardcoded as it is not implemented yet
+        + "Client Light: 15 (15 sky, 0 block)\n"
+        + "Server Light: (15 sky, 0 block)\n"
+        + "CH S: 63 M: 63\n"
+        + "SH S: 63 O: 63 M: 63 ML: 63\n"
+        + "Biome: minecraft:plains\n"
+        + "Local Difficulty: 0.75 // 0.00 (Day 0)\n"
+        + "SC: 289, M: 70, C: 155, A: 15, W: 7, W: 10, M: 0\n"
+        + "Sounds: 2/247 + 0/8 (Mood 0%)\n"
+        + "\n"
+        + "Debug: Pie [shift]: hidden FPS + TPS [alt]: hidden"  // Inoperative
+        + "For help: press F3 + Q";  // There is no help, go seek somewhere else!
 
     // TODO Hardcoded Java version and bitnesss
     rightPanelText = std::string("Java: 1.8.0_51 64bit\n")
