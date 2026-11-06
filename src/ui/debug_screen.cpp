@@ -62,9 +62,9 @@ DebugScreen::DebugScreen(engine::Renderer *renderer, engine::Window& window, eng
 
     rightPanel->setRightAligned(window.getWidth(), window.getHeight() - 20);
 
-    leftPanel->setBackgroundColor({140, 140, 140, 80});
+    leftPanel->setBackgroundColor({80, 80, 80, 80});
 
-    rightPanel->setBackgroundColor({140, 140, 140, 80});
+    rightPanel->setBackgroundColor({80, 80, 80, 80});
 }
 
 
