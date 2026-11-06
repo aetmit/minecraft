@@ -1,4 +1,5 @@
 #include <ui/debug_screen.hpp>
+#include <game/player.hpp>
 #include <render/text.hpp>
 #include <input/input.hpp>
 #include <window/window.hpp>
@@ -35,15 +36,29 @@
 namespace ui {
 
 
-DebugScreen::DebugScreen(engine::Renderer *renderer, engine::Window& window, engine::Clock& clock) :
+DebugScreen::DebugScreen(engine::Renderer *renderer, engine::Window& window, engine::Clock& clock, game::Player& player) :
     displayDebug(false),
     clock(clock),
     fpsElapsed(0.0),
-    fpsFrames(0)
+    fpsFrames(0),
+    playerCam(player.getCamera()),
+    roundedFps(0)
 {
     leftPanelText = std::string("Minecraft 1.16 (1.16/vanilla)\n")
         + "{} fps\n"
-        + "Integrated server @ 5ms ticks, 2 tx, 450 rx";  // TODO Hardcoded integrated server info
+        + "Integrated server @ 5ms ticks, 2 tx, 450 rx\n"  // TODO Hardcoded integrated server info
+        // TODO Hardcoded as it is not implemented yet
+        + "C: 5/2560 (s) D: 8, pC: 000, pU: 00, aB: 04\n"
+        + "E: 5/130, B: 0\n"
+        + "P: 103, T: 131\n"
+        + "Client Chunk Cache: 441, 373\n"
+        + "ServerChunkCache: 2522"
+        + "minecraft:overworld FC: 0\n"
+        + "\n"
+        + "XYZ: {:.3f} / {:.3f} / {:.3f}\n"
+        // TODO Hardcoded as it is not implemented yet
+        + "Block: 0 0 0"
+        + "Chunk: 0 0 0 in 0 4 0";
 
     // TODO Hardcoded Java version and bitnesss
     rightPanelText = std::string("Java: 1.8.0_51 64bit\n")
@@ -99,18 +114,26 @@ void DebugScreen::update(const engine::Input &input, engine::Window& window) {
         // Elapse FPS over time so the display will be stable
         const double fps = static_cast<double>(fpsFrames) / fpsElapsed;
 
-        const int roundedFps = std::round(fps);
-        
-        renderLeftPanel(roundedFps);
-        renderRightPanel();
+        roundedFps = std::round(fps);
 
         fpsElapsed = 0.0;
         fpsFrames = 0;
     }
+
+    renderLeftPanel(roundedFps);
+    renderRightPanel();
 }
 
 void DebugScreen::renderLeftPanel(const int fps) const {
-    leftPanel->setText(std::vformat(leftPanelText, std::make_format_args(fps)));
+    leftPanel->setText(std::vformat(
+        leftPanelText,
+        std::make_format_args(
+            fps,
+            playerCam.position.x,
+            playerCam.position.y,
+            playerCam.position.z
+        )
+    ));
 }
 
 void DebugScreen::renderRightPanel() const {

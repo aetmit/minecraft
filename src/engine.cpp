@@ -38,8 +38,6 @@ Engine::Engine(EngineConfig& config, Input &input, Logger &logger) :
 }
 
 void Engine::run() {
-    ui::DebugScreen debugScreen{renderer.get(), window, clock};
-
     MeshData meshdata;
     meshdata.indices = {
         0, 1, 2, 2, 3, 0,
@@ -95,6 +93,8 @@ void Engine::run() {
 
     game::Player player(window.aspectRatio());
     renderer->setCamera(&player.getCamera());
+
+    ui::DebugScreen debugScreen{renderer.get(), window, clock, player};
 
     while (!window.shouldClose()) {
         clock.updateTime();
