@@ -27,6 +27,7 @@ float Text::spaceCharacter(unsigned char c, float size) const {
         case 'f':
         case 't':
         case '(':
+        case '[':
             return -3.0f * size;
         default:
             return -1.0f * size;

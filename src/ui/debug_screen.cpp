@@ -70,7 +70,7 @@ DebugScreen::DebugScreen(engine::Renderer *renderer, engine::Window& window, eng
         + "SC: 289, M: 70, C: 155, A: 15, W: 7, W: 10, M: 0\n"
         + "Sounds: 2/247 + 0/8 (Mood 0%)\n"
         + "\n"
-        + "Debug: Pie [shift]: hidden FPS + TPS [alt]: hidden"  // Inoperative
+        + "Debug: Pie [shift]: hidden FPS + TPS [alt]: hidden\n"  // Inoperative
         + "For help: press F3 + Q";  // There is no help, go seek somewhere else!
 
     // TODO Hardcoded Java version and bitnesss
