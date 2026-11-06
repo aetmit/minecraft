@@ -30,6 +30,10 @@ private:
     double fpsElapsed;
     std::size_t fpsFrames;
 
+    void renderLeftPanel(const int fps) const;
+
+    void renderRightPanel() const;
+
     std::size_t getMemoryUsage() const;
 
     std::size_t getSystemMemory() const;

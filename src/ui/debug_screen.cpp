@@ -98,34 +98,42 @@ void DebugScreen::update(const engine::Input &input, engine::Window& window) {
         // Elapse FPS over time so the display will be stable
         const double fps = static_cast<double>(fpsFrames) / fpsElapsed;
 
-        const double roundedFps = std::round(fps);
-        leftPanel->setText(std::vformat(leftPanelText, std::make_format_args(roundedFps)));
-
-        const auto memoryUsage = getMemoryUsage() / 1024;
-
-        // Simply just using 25% of system memory to simulate JVM max memory
-        const auto jvmMemory = std::round((getSystemMemory() / 1024) * 0.25f);
-        const auto memoryUsagePercentage = std::round((memoryUsage / jvmMemory) * 100);
-
-        // Simply just using 45% of JVM max memory to simulate JVM allocated memory
-        const auto jvmAllocMemory = std::round(jvmMemory * 0.45f);
-        const auto allocMemoryUsagePercentage = std::round((memoryUsage / jvmAllocMemory) * 100);
-
-        rightPanel->setText(std::vformat(
-            rightPanelText,
-            std::make_format_args(
-                memoryUsagePercentage,
-                memoryUsage,
-                jvmMemory,
-                allocMemoryUsagePercentage,
-                jvmAllocMemory
-            )
-            )
-        );
+        const int roundedFps = std::round(fps);
+        
+        renderLeftPanel(roundedFps);
+        renderRightPanel();
 
         fpsElapsed = 0.0;
         fpsFrames = 0;
     }
+}
+
+void DebugScreen::renderLeftPanel(const int fps) const {
+    leftPanel->setText(std::vformat(leftPanelText, std::make_format_args(fps)));
+}
+
+void DebugScreen::renderRightPanel() const {
+    const auto memoryUsage = getMemoryUsage() / 1024;
+
+    // Simply just using 25% of system memory to simulate JVM max memory
+    const auto jvmMemory = std::round((getSystemMemory() / 1024) * 0.25f);
+    const auto memoryUsagePercentage = std::round((memoryUsage / jvmMemory) * 100);
+
+    // Simply just using 45% of JVM max memory to simulate JVM allocated memory
+    const auto jvmAllocMemory = std::round(jvmMemory * 0.45f);
+    const auto allocMemoryUsagePercentage = std::round((memoryUsage / jvmAllocMemory) * 100);
+
+    rightPanel->setText(std::vformat(
+        rightPanelText,
+        std::make_format_args(
+            memoryUsagePercentage,
+            memoryUsage,
+            jvmMemory,
+            allocMemoryUsagePercentage,
+            jvmAllocMemory
+        )
+        )
+    );
 }
 
 std::size_t DebugScreen::getMemoryUsage() const {
