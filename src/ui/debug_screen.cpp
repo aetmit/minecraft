@@ -42,7 +42,8 @@ DebugScreen::DebugScreen(engine::Renderer *renderer, engine::Window& window, eng
     fpsFrames(0)
 {
     leftPanelText = std::string("Minecraft 1.16 (1.16/vanilla)\n")
-        + "{} fps";
+        + "{} fps\n"
+        + "Integrated server @ 5ms ticks, 2 tx, 450 rx";  // TODO Hardcoded integrated server info
 
     // TODO Hardcoded Java version and bitnesss
     rightPanelText = std::string("Java: 1.8.0_51 64bit\n")

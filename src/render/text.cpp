@@ -18,6 +18,7 @@ float Text::spaceCharacter(unsigned char c, float size) const {
         case 'i':
         case 'l':
         case '.':
+        case ',':
             return -5.0f * size;
 
         case ' ':
