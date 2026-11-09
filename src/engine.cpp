@@ -3,10 +3,12 @@
 #include <iostream>
 #include <memory>
 
+#include <render/text.hpp>
 #include <render/opengl/renderer.hpp>
 
 #include <game/player.hpp>
 #include <render/mesh.hpp>
+#include <ui/debug_screen.hpp>
 #include <core/transform.hpp>
 
 namespace engine {
@@ -36,7 +38,6 @@ Engine::Engine(EngineConfig& config, Input &input, Logger &logger) :
 }
 
 void Engine::run() {
-
     MeshData meshdata;
     meshdata.indices = {
         0, 1, 2, 2, 3, 0,
@@ -93,6 +94,8 @@ void Engine::run() {
     game::Player player(window.aspectRatio());
     renderer->setCamera(&player.getCamera());
 
+    ui::DebugScreen debugScreen{renderer.get(), window, clock, player};
+
     while (!window.shouldClose()) {
         clock.updateTime();
 
@@ -100,6 +103,8 @@ void Engine::run() {
         input.update();
 
         window.pollEvents();
+
+        debugScreen.update(input, window);
 
         if (input.wasKeyPressed(Key::Escape)) {
             window.setCursorLocked(false);
@@ -122,7 +127,6 @@ void Engine::run() {
         }
 
         renderer->drawMesh(*mesh, transform);
-
 
         window.swapBuffers();
     }

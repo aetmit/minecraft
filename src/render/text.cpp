@@ -1,0 +1,294 @@
+#include <render/text.hpp>
+#include <render/opengl/shader.hpp>
+#include <render/opengl/texture.hpp>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+#include <stdexcept>
+
+namespace engine {
+
+void Text::engineInit(opengl::Texture& texture) {
+    bitmapTexture = &texture;
+}
+
+float Text::spaceCharacter(unsigned char c, float size) const {
+    switch (c) {
+        case 'i':
+        case 'l':
+        case ':':
+        case '.':
+        case ',':
+            return -5.0f * size;
+
+        case ' ':
+        case 'I':
+        case 'f':
+        case 't':
+        case '(':
+        case '[':
+            return -3.0f * size;
+        default:
+            return -1.0f * size;
+    }
+}
+
+void Text::renderBackground(opengl::Shader& shaderProgram, float charHeight) const {
+    const glm::vec4 normalizedBackgroundColor = backgroundColor->normalize();
+    shaderProgram.setUniform4f(
+        "backgroundColor",
+        normalizedBackgroundColor.r,
+        normalizedBackgroundColor.g,
+        normalizedBackgroundColor.b,
+        normalizedBackgroundColor.a
+    );
+    shaderProgram.setUniform1i("useBackground", 1);
+
+    // Slightly tweak it so it is slightly bigger than the text height
+    charHeight += 2.0f;
+
+    std::size_t lineStart = 0;
+    float lineY = y;
+    while (lineStart <= text.size()) {
+        const std::size_t lineEnd = text.find('\n', lineStart);
+        const std::size_t lineLength = lineEnd == std::string::npos
+            ? text.size() - lineStart
+            : lineEnd - lineStart;
+        const std::string_view line(text.data() + lineStart, lineLength);
+        const float width = lineWidth(line);
+
+        if (width > 0.0f && charHeight > 0.0f) {
+            const float lineX = x - (rightAligned ? width : 0.0f);
+            const float vertices[6][4] = {
+                { lineX,         lineY + charHeight, 0.0f, 0.0f },
+                { lineX,         lineY,              0.0f, 0.0f },
+                { lineX + width, lineY,              0.0f, 0.0f },
+
+                { lineX,         lineY + charHeight, 0.0f, 0.0f },
+                { lineX + width, lineY,              0.0f, 0.0f },
+                { lineX + width, lineY + charHeight, 0.0f, 0.0f }
+            };
+
+            glBindBuffer(GL_ARRAY_BUFFER, vbo);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+        }
+
+        if (lineEnd == std::string::npos) {
+            break;
+        }
+        lineStart = lineEnd + 1;
+        lineY -= charHeight;
+    }
+}
+
+Text::Text(std::string text, float x, float y, float size, Color color) :
+    text(text),
+    x(x),
+    y(y),
+    size(size),
+    color(color),
+    hidden(false),
+    rightAligned(false)
+{
+    glGenVertexArrays(1, &vao);
+    glGenBuffers(1, &vbo);
+    
+    glBindVertexArray(vao);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, nullptr, GL_DYNAMIC_DRAW);
+    
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+}
+
+Text::Text(Text&& other) {
+    bitmapTexture = other.bitmapTexture;
+    color = other.color;
+    backgroundColor = other.backgroundColor;
+    text = other.text;
+    size = other.size;
+    vao = other.vao;
+    vbo = other.vbo;
+    x = other.x;
+    y = other.y;
+    hidden = other.hidden;
+    rightAligned = other.rightAligned;
+
+    // Assign to default
+    other.bitmapTexture = nullptr;
+    other.text = "";
+    other.size = 0;
+    other.vao = 0;
+    other.vbo = 0;
+    other.x = 0;
+    other.y = 0;
+    other.hidden = false;
+    other.rightAligned = false;
+}
+
+Text::~Text() {
+    glDeleteBuffers(1, &vbo);
+    glDeleteVertexArrays(1, &vao);
+}
+
+void Text::hide() {
+    hidden = true;
+}
+
+void Text::show() {
+    hidden = false;
+}
+
+bool Text::visible() const {
+    return !hidden;
+}
+
+void Text::setText(const std::string& newText) {
+    text = newText;
+}
+
+void Text::setBackgroundColor(Color newColor) {
+    backgroundColor = newColor;
+}
+
+void Text::clearBackgroundColor() {
+    backgroundColor.reset();
+}
+
+void Text::setPos(float newX, float newY) {
+    x = newX;
+    y = newY;
+}
+
+void Text::setRightAligned(float rightX, float newY) {
+    x = rightX;
+    y = newY;
+    rightAligned = true;
+}
+
+float Text::lineWidth(std::string_view line) const {
+    const float charWidth = 8.0f * size;
+    float width = 0.0f;
+    float lastSpacing = 0.0f;
+
+    for (unsigned char character : line) {
+        if (character == '\n' || character == '\r') {
+            break;
+        }
+
+        lastSpacing = spaceCharacter(character, size);
+        width += charWidth + lastSpacing;
+    }
+
+    return width - lastSpacing;
+}
+
+void Text::render(
+    opengl::Shader& shaderProgram,
+    int windowWidth,
+    int windowHeight
+) {
+    const int atlasColumns = 16;
+    const int atlasRows = 16;
+
+    if (hidden) { return; }
+
+    shaderProgram.bind();
+    const glm::vec4 normalizedColor = color.normalize();
+    shaderProgram.setUniform4f(
+        "textColor",
+        normalizedColor.r,
+        normalizedColor.g,
+        normalizedColor.b,
+        normalizedColor.a
+    );
+
+    bitmapTexture->bind();
+    shaderProgram.setUniform1i("textAtlas", 0);
+
+    glm::mat4 projection = glm::ortho(
+        0.0f,
+        static_cast<float>(windowWidth),
+        0.0f,
+        static_cast<float>(windowHeight)
+    );
+    shaderProgram.setUniformMat4("projection", projection);
+
+    const GLboolean depthTestEnabled = glIsEnabled(GL_DEPTH_TEST);
+    glDisable(GL_DEPTH_TEST);
+
+    glBindVertexArray(vao);
+
+    const float charWidth = 8.0f * size;
+    const float charHeight = 8.0f * size;
+
+    if (backgroundColor) {
+        renderBackground(shaderProgram, charHeight);
+    }
+
+    shaderProgram.setUniform1i("useBackground", 0);
+    std::size_t lineStart = 0;
+    float cursorX = x - (rightAligned ? lineWidth(text) : 0.0f);
+    float cursorY = y;
+
+    for (std::size_t i = 0; i < text.size(); ++i) {
+        const auto character = static_cast<unsigned char>(text[i]);
+        float letterSpacing = spaceCharacter(character, size);
+        if (character == '\n') {
+            lineStart = i + 1;
+            cursorX = x - (rightAligned ? lineWidth(std::string_view(text).substr(lineStart)) : 0.0f);
+            cursorY -= (charHeight + 2);
+            continue;
+        }
+        if (character == '\r') {
+            cursorX = x;
+            continue;
+        }
+
+        const int glyphIndex = static_cast<int>(character);
+        const int col = glyphIndex % atlasColumns;
+        const int row = glyphIndex / atlasColumns;
+
+        float uWidth = 1.0f / atlasColumns;
+        float vHeight = 1.0f / atlasRows;
+        
+        float u = col * uWidth;
+        float v = row * vHeight;
+
+        float xpos = cursorX;
+        float ypos = cursorY;
+
+        float vertices[6][4] = {
+            { xpos,             ypos + charHeight, u,          v           },
+            { xpos,             ypos,              u,          v + vHeight },
+            { xpos + charWidth, ypos,              u + uWidth, v + vHeight },
+
+            { xpos,             ypos + charHeight, u,          v           },
+            { xpos + charWidth, ypos,              u + uWidth, v + vHeight },
+            { xpos + charWidth, ypos + charHeight, u + uWidth, v           }
+        };
+
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        
+        cursorX += charWidth + letterSpacing;
+    }
+
+    glBindVertexArray(0);
+    if (depthTestEnabled) {
+        glEnable(GL_DEPTH_TEST);
+    } else {
+        glDisable(GL_DEPTH_TEST);
+    }
+}
+
+}  // namespace engine

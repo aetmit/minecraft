@@ -210,6 +210,14 @@ float Window::aspectRatio() const {
     return static_cast<float>(width) / static_cast<float>(height);
 }
 
+int Window::getWidth() const {
+    return width;
+}
+
+int Window::getHeight() const {
+    return height;
+}
+
 void Window::setCursorLocked(bool locked) {
     cursorLocked = locked;
     if (cursorLocked) {

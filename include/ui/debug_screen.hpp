@@ -1,0 +1,55 @@
+#pragma once
+
+#include <core/clock.hpp>
+#include <game/player.hpp>
+#include <window/window.hpp>
+#include <render/renderer.hpp>
+#include <input/input.hpp>
+
+#include <string>
+
+namespace ui {
+
+class DebugScreen {
+
+public:
+    DebugScreen(engine::Renderer *renderer, engine::Window& window, engine::Clock& clock, game::Player& player);
+
+    void update(const engine::Input &input, engine::Window& window);
+
+private:
+    std::string leftPanelText;
+    std::string rightPanelText;
+
+    bool displayDebug;
+
+    engine::Text *leftPanel;
+    engine::Text *rightPanel;
+
+    engine::Clock& clock;
+
+    double fpsElapsed;
+    std::size_t fpsFrames;
+
+    engine::Camera& playerCam;
+
+    int roundedFps;
+
+    void renderLeftPanel(const int fps) const;
+
+    void renderRightPanel() const;
+
+    std::size_t getMemoryUsage() const;
+
+    std::size_t getSystemMemory() const;
+
+    std::string getCPUName() const;
+
+    std::string getDisplayName() const;
+
+    std::string getOpenGLProfile() const;
+
+    std::string getDriverVersion() const;
+};
+
+}  // namespace ui

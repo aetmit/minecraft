@@ -74,6 +74,16 @@ void Shader::setUniform1i(const std::string &name, int i1) {
     glUniform1i(location, i1);
 }
 
+void Shader::setUniform3f(const std::string &name, float f1, float f2, float f3) {
+    int location = getUniformLocation(name);
+    if (location == -1) {
+        logger.error(("failed to locate uniform with name: " + name).c_str());
+        logger.warn("uniform not set");
+        return;
+    }
+    glUniform3f(location, f1, f2, f3);
+}
+
 void Shader::setUniform4f(const std::string &name, float f1, float f2, float f3, float f4) {
     int location = getUniformLocation(name);
     if (location == -1) {
