@@ -6,20 +6,6 @@
 
 namespace engine {
 
-Color::Color(std::uint8_t red, std::uint8_t green, std::uint8_t blue, std::uint8_t alpha) :
-    r(red),
-    g(green),
-    b(blue),
-    a(alpha)
-{}
-
-Color::Color(std::uint32_t color) :
-    r(static_cast<std::uint8_t>((color & 0xff'00'00'00) >> 24)),
-    g(static_cast<std::uint8_t>((color & 0x00'ff'00'00) >> 16)),
-    b(static_cast<std::uint8_t>((color & 0x00'00'ff'00) >> 8)),
-    a(static_cast<std::uint8_t>((color & 0x00'00'00'ff) >> 0))
-{}
-
 void Color::set(std::uint8_t red, std::uint8_t green, std::uint8_t blue, std::uint8_t alpha) {
     r = red;
     g = green;
@@ -64,26 +50,6 @@ Color Color::contrast() const {
     else
         return {255, 255, 255, a};
 }
-
-// Preset colors
-
-inline const Color Color::Black(0, 0, 0);
-inline const Color Color::Silver(192, 192, 192);
-inline const Color Color::Gray(128, 128, 128);
-inline const Color Color::White(255, 255, 255);
-inline const Color Color::Maroon(128, 0, 0);
-inline const Color Color::Red(255, 0, 0);
-inline const Color Color::Purple(128, 0, 128);
-inline const Color Color::Fuchsia(255, 0, 255);
-inline const Color Color::Green(0, 255, 0);
-inline const Color Color::Lime(0, 220, 0);
-inline const Color Color::Olive(128, 128, 0);
-inline const Color Color::Yellow(255, 255, 0);
-inline const Color Color::Navy(0, 0, 128);
-inline const Color Color::Blue(0, 0, 255);
-inline const Color Color::Teal(0, 128, 128);
-inline const Color Color::Aqua(0, 255, 255);
-
 
 // Color
 

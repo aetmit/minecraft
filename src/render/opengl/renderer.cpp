@@ -144,16 +144,18 @@ void Renderer::setCamera(Camera *camera) {
     updateProjection();
 }
 
-Text* Renderer::addText(Text& text) {
-    texts.push_back(std::move(text));
-    texts.back().engineInit(*asciiFonts);
-    return &texts.back();
+Text& Renderer::addText(Text& text) {
+    texts.emplace_back(std::move(text));
+    Text& stored = texts.back();
+    stored.engineInit(*asciiFonts);
+    return stored;
 }
 
-Text* Renderer::addText(Text&& text) {
-    texts.push_back(std::move(text));
-    texts.back().engineInit(*asciiFonts);
-    return &texts.back();
+Text& Renderer::addText(Text&& text) {
+    texts.emplace_back(std::move(text));
+    Text& stored = texts.back();
+    stored.engineInit(*asciiFonts);
+    return stored;
 }
 
 } // namespace opengl

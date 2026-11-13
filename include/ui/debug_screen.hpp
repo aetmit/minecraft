@@ -23,8 +23,8 @@ private:
 
     bool displayDebug;
 
-    engine::Text *leftPanel;
-    engine::Text *rightPanel;
+    engine::Text& leftPanel;
+    engine::Text& rightPanel;
 
     engine::Clock& clock;
 
@@ -34,6 +34,10 @@ private:
     engine::Camera& playerCam;
 
     int roundedFps;
+
+    engine::Text& makeLeftPanel(engine::Renderer *renderer, engine::Window& window);
+
+    engine::Text& makeRightPanel(engine::Renderer *renderer, engine::Window& window);
 
     void renderLeftPanel(const int fps) const;
 
