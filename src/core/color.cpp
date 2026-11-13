@@ -51,26 +51,6 @@ Color Color::contrast() const {
         return {255, 255, 255, a};
 }
 
-// Preset colors
-
-inline const Color Color::Black(0, 0, 0);
-inline const Color Color::Silver(192, 192, 192);
-inline const Color Color::Gray(128, 128, 128);
-inline const Color Color::White(255, 255, 255);
-inline const Color Color::Maroon(128, 0, 0);
-inline const Color Color::Red(255, 0, 0);
-inline const Color Color::Purple(128, 0, 128);
-inline const Color Color::Fuchsia(255, 0, 255);
-inline const Color Color::Green(0, 255, 0);
-inline const Color Color::Lime(0, 220, 0);
-inline const Color Color::Olive(128, 128, 0);
-inline const Color Color::Yellow(255, 255, 0);
-inline const Color Color::Navy(0, 0, 128);
-inline const Color Color::Blue(0, 0, 255);
-inline const Color Color::Teal(0, 128, 128);
-inline const Color Color::Aqua(0, 255, 255);
-
-
 // Color
 
 // Color operations

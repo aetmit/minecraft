@@ -113,6 +113,25 @@ public:
     static const Color Aqua;    //!< Predefined Aqua color
 };
 
+// Preset colors
+
+inline constexpr Color Color::Black(0, 0, 0);
+inline constexpr Color Color::Silver(192, 192, 192);
+inline constexpr Color Color::Gray(128, 128, 128);
+inline constexpr Color Color::White(255, 255, 255);
+inline constexpr Color Color::Maroon(128, 0, 0);
+inline constexpr Color Color::Red(255, 0, 0);
+inline constexpr Color Color::Purple(128, 0, 128);
+inline constexpr Color Color::Fuchsia(255, 0, 255);
+inline constexpr Color Color::Green(0, 255, 0);
+inline constexpr Color Color::Lime(0, 220, 0);
+inline constexpr Color Color::Olive(128, 128, 0);
+inline constexpr Color Color::Yellow(255, 255, 0);
+inline constexpr Color Color::Navy(0, 0, 128);
+inline constexpr Color Color::Blue(0, 0, 255);
+inline constexpr Color Color::Teal(0, 128, 128);
+inline constexpr Color Color::Aqua(0, 255, 255);
+
 // Operators
 
 /// @relates Color
