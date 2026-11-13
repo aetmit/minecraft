@@ -111,7 +111,7 @@ public:
 ///
 /// @return `true` if `left` is equal to `right`.
 [[nodiscard]]
-bool operator==(Color left, Color right);
+bool operator==(const Color left, const Color right);
 
 /// @relates Color
 /// @brief Inequality
@@ -121,7 +121,7 @@ bool operator==(Color left, Color right);
 ///
 /// @return `true` if `left` is not equal to `right`.
 [[nodiscard]]
-bool operator!=(Color left, Color right);
+bool operator!=(const Color left, const Color right);
 
 /// @relates Color
 /// @brief Addition
