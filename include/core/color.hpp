@@ -110,7 +110,6 @@ public:
 /// @param right Right operand.
 ///
 /// @return `true` if `left` is equal to `right`.
-[[nodiscard]]
 bool operator==(const Color left, const Color right);
 
 /// @relates Color
@@ -120,7 +119,6 @@ bool operator==(const Color left, const Color right);
 /// @param right Right operand.
 ///
 /// @return `true` if `left` is not equal to `right`.
-[[nodiscard]]
 bool operator!=(const Color left, const Color right);
 
 /// @relates Color
@@ -133,7 +131,6 @@ bool operator!=(const Color left, const Color right);
 /// @param right Right operand.
 ///
 /// @return Member-wise addition of both colors.
-[[nodiscard]]
 Color operator+(Color left, Color right);
 
 /// @relates Color
@@ -146,7 +143,6 @@ Color operator+(Color left, Color right);
 /// @param right Right operand.
 ///
 /// @return Member-wise subtraction of both colors.
-[[nodiscard]]
 Color operator-(Color left, Color right);
 
 /// @relates Color
@@ -156,7 +152,6 @@ Color operator-(Color left, Color right);
 /// @param right Right operand.
 ///
 /// @return Memeber-wise multiplication of both colors.
-[[nodiscard]]
 Color operator*(Color left, Color right);
 
 /// @relates Color
