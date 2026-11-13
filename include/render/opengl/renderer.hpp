@@ -38,9 +38,9 @@ public:
 
     void setCamera(Camera *camera) override;
 
-    Text* addText(Text& text) override;
+    Text& addText(Text& text) override;
 
-    Text* addText(Text&& text) override;
+    Text& addText(Text&& text) override;
 
 private:
 

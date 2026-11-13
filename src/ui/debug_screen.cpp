@@ -35,15 +35,63 @@
 
 namespace ui {
 
-
-DebugScreen::DebugScreen(engine::Renderer *renderer, engine::Window& window, engine::Clock& clock, game::Player& player) :
+DebugScreen::DebugScreen(engine::Renderer *renderer, engine::Window& window, engine::Clock& clock, game::Player& player) : 
     displayDebug(false),
+    leftPanel(makeLeftPanel(renderer, window)),
+    rightPanel(makeRightPanel(renderer, window)),
     clock(clock),
     fpsElapsed(0.0),
     fpsFrames(0),
     playerCam(player.getCamera()),
     roundedFps(0)
 {
+
+    rightPanel.setRightAligned(window.getWidth(), window.getHeight() - 20);
+
+    leftPanel.setBackgroundColor({80, 80, 80, 80});
+
+    rightPanel.setBackgroundColor({80, 80, 80, 80});
+}
+
+
+void DebugScreen::update(const engine::Input &input, engine::Window& window) {
+    if (input.wasKeyPressed(engine::Key::F3)) {
+        displayDebug = !displayDebug;
+    }
+    if (window.wasResized()) {
+        leftPanel.setPos(0.0f, window.getHeight() - 20);
+        rightPanel.setRightAligned(window.getWidth(), window.getHeight() - 20);
+    }
+    if (displayDebug) {
+        leftPanel.show();
+        rightPanel.show();
+    }
+    else {
+        leftPanel.hide();
+        rightPanel.hide();
+    }
+
+    const double deltaTime = clock.getDeltaTime();
+    if (deltaTime > 0.0) {
+        fpsElapsed += deltaTime;
+        ++fpsFrames;
+    }
+
+    if (fpsElapsed >= 1.0) {
+        // Elapse FPS over time so the display will be stable
+        const double fps = static_cast<double>(fpsFrames) / fpsElapsed;
+
+        roundedFps = std::round(fps);
+
+        fpsElapsed = 0.0;
+        fpsFrames = 0;
+    }
+
+    renderLeftPanel(roundedFps);
+    renderRightPanel();
+}
+
+engine::Text& DebugScreen::makeLeftPanel(engine::Renderer *renderer, engine::Window& window) {
     leftPanelText = std::string("Minecraft 1.16 (1.16/vanilla)\n")
         + "{} fps\n"
         + "Integrated server @ 5ms ticks, 2 tx, 450 rx\n"  // TODO Hardcoded integrated server info
@@ -72,7 +120,13 @@ DebugScreen::DebugScreen(engine::Renderer *renderer, engine::Window& window, eng
         + "\n"
         + "Debug: Pie [shift]: hidden FPS + TPS [alt]: hidden\n"  // Inoperative
         + "For help: press F3 + Q";  // There is no help, go seek somewhere else!
+    
+    return renderer->addText(
+        engine::Text(leftPanelText, 0.0f, window.getHeight() - 20, 2.0f)
+    );
+}
 
+engine::Text& DebugScreen::makeRightPanel(engine::Renderer *renderer, engine::Window& window) {
     // TODO Hardcoded Java version and bitnesss
     rightPanelText = std::string("Java: 1.8.0_51 64bit\n")
         + "Mem: {}% {}/{}MB\n"
@@ -83,58 +137,10 @@ DebugScreen::DebugScreen(engine::Renderer *renderer, engine::Window& window, eng
         + "Display: " + getDisplayName() + "\n"
         + reinterpret_cast<const char*>(glGetString(GL_RENDERER)) + "\n"
         + getOpenGLProfile() + " " + getDriverVersion();
-
-    leftPanel = renderer->addText(
-        engine::Text(leftPanelText, 0.0f, window.getHeight() - 20, 2.0f)
-    );
-
-    rightPanel = renderer->addText(
+    
+    return renderer->addText(
         engine::Text(rightPanelText, window.getWidth(), window.getHeight() - 20, 2.0f)
     );
-
-    rightPanel->setRightAligned(window.getWidth(), window.getHeight() - 20);
-
-    leftPanel->setBackgroundColor({80, 80, 80, 80});
-
-    rightPanel->setBackgroundColor({80, 80, 80, 80});
-}
-
-
-void DebugScreen::update(const engine::Input &input, engine::Window& window) {
-    if (input.wasKeyPressed(engine::Key::F3)) {
-        displayDebug = !displayDebug;
-    }
-    if (window.wasResized()) {
-        leftPanel->setPos(0.0f, window.getHeight() - 20);
-        rightPanel->setRightAligned(window.getWidth(), window.getHeight() - 20);
-    }
-    if (displayDebug) {
-        leftPanel->show();
-        rightPanel->show();
-    }
-    else {
-        leftPanel->hide();
-        rightPanel->hide();
-    }
-
-    const double deltaTime = clock.getDeltaTime();
-    if (deltaTime > 0.0) {
-        fpsElapsed += deltaTime;
-        ++fpsFrames;
-    }
-
-    if (fpsElapsed >= 1.0) {
-        // Elapse FPS over time so the display will be stable
-        const double fps = static_cast<double>(fpsFrames) / fpsElapsed;
-
-        roundedFps = std::round(fps);
-
-        fpsElapsed = 0.0;
-        fpsFrames = 0;
-    }
-
-    renderLeftPanel(roundedFps);
-    renderRightPanel();
 }
 
 void DebugScreen::renderLeftPanel(const int fps) const {
@@ -158,7 +164,7 @@ void DebugScreen::renderLeftPanel(const int fps) const {
             ? (forward.x < 0 ? "negative X" : "positive X")
             : (forward.z < 0 ? "negative Z" : "positive Z");
 
-    leftPanel->setText(std::vformat(
+    leftPanel.setText(std::vformat(
         leftPanelText,
         std::make_format_args(
             fps,
@@ -184,7 +190,7 @@ void DebugScreen::renderRightPanel() const {
     const auto jvmAllocMemory = std::round(jvmMemory * 0.45f);
     const auto allocMemoryUsagePercentage = std::round((memoryUsage / jvmAllocMemory) * 100);
 
-    rightPanel->setText(std::vformat(
+    rightPanel.setText(std::vformat(
         rightPanelText,
         std::make_format_args(
             memoryUsagePercentage,
